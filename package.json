@@ -1,0 +1,39 @@
+{
+  "name": "scrape-gdt-invoices",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/cli.js",
+    "dev": "tsx src/ui/server.ts",
+    "dev:cli": "tsx src/cli.ts",
+    "dev:ui": "tsx src/ui/server.ts",
+    "start:ui": "node dist/ui/server.js",
+    "check": "tsc -p tsconfig.json --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "axios": "^1.11.0",
+    "cloakbrowser": "^0.4.3",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
+    "p-limit": "^6.1.0",
+    "playwright-core": "^1.54.1",
+    "sharp": "^0.34.2",
+    "tesseract.js": "^6.0.1",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.12",
+    "@types/xml2js": "^0.4.14",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}

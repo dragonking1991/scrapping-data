@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.token.json
+
+# Runtime logs and local artifacts
+.gdt-logs/
+.gdt-session-logs.jsonl
+.gdt-xml-export/
+gdt-fallback-downloads/
+
+# OS/editor noise
+.DS_Store
+.vscode/
