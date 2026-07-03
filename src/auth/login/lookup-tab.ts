@@ -24,25 +24,35 @@ async function clickLookupTab(page: Page, dataset: RescanDataset): Promise<boole
         document.querySelectorAll("a, li, div, span, button, [role='tab'], .ant-tabs-tab"),
       ) as HTMLElement[];
 
-      const matches = nodes.filter((el) => {
+      const isTabLike = (el: HTMLElement): boolean =>
+        el.getAttribute("role") === "tab" ||
+        /tab/i.test(el.className?.toString?.() || "") ||
+        el.tagName.toLowerCase() === "a" ||
+        el.tagName.toLowerCase() === "li";
+
+      // Prefer an element whose text EXACTLY equals a target tab label. This avoids
+      // matching a wrapper that concatenates both "ban ra" and "mua vao" labels.
+      const exactMatches = nodes.filter((el) => {
         const text = normalize(el.textContent || "");
-        return Boolean(text) && targets.some((target) => text === target || text.includes(target));
+        return Boolean(text) && targets.some((target) => text === target);
       });
 
+      // Fallback: elements that merely contain the target text (may be wrappers).
+      const looseMatches = nodes.filter((el) => {
+        const text = normalize(el.textContent || "");
+        return Boolean(text) && targets.some((target) => text.includes(target));
+      });
+
+      const matches = exactMatches.length ? exactMatches : looseMatches;
+
       if (matches.length) {
-        // Prefer a real tab-like element, otherwise the smallest (leaf) match so
-        // the click lands on the actual control and still bubbles to handlers.
-        const preferred =
-          matches.find(
-            (el) =>
-              el.getAttribute("role") === "tab" ||
-              /tab/i.test(el.className?.toString?.() || "") ||
-              el.tagName.toLowerCase() === "a" ||
-              el.tagName.toLowerCase() === "li",
-          ) ??
-          matches.reduce((best, el) =>
-            (el.textContent || "").length < (best.textContent || "").length ? el : best,
-          );
+        // Prefer a real tab-like element; among those, pick the leaf with the
+        // shortest text so the click lands on the actual tab control.
+        const tabLike = matches.filter(isTabLike);
+        const pool = tabLike.length ? tabLike : matches;
+        const preferred = pool.reduce((best, el) =>
+          (el.textContent || "").length < (best.textContent || "").length ? el : best,
+        );
 
         preferred.click();
         return { clicked: true, text: (preferred.textContent || "").trim().slice(0, 60), tabs: [] as string[] };

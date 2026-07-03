@@ -121,13 +121,34 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string): Promise<n
 
         // Step 3: click "Xem hóa đơn" to open the detail modal.
         const detailFromNetworkPromise = tryExtractDetailFromNetwork(page, record, modalTimeoutMs + 3000);
-        await page.locator('[data-gdt-view="1"]').first().click().catch(() => undefined);
-        emitEvent("click-view", `Click 'Xem hoa don' cho so ${record.shdon}`);
+        let modalOpened = false;
+        for (let clickTry = 1; clickTry <= 2; clickTry += 1) {
+          if (clickTry > 1) {
+            // Re-select invoice row to ensure toolbar action is enabled/highlighted.
+            await row.click().catch(() => undefined);
+            await page.waitForTimeout(220);
+            emitEvent("click-row", `Retry select row so ${record.shdon} truoc khi bam icon`);
+          }
+
+          await page.locator('[data-gdt-view="1"]').first().click().catch(() => undefined);
+          emitEvent("click-view", `Click icon lan ${clickTry} cho so ${record.shdon}`);
+
+          modalOpened = await page
+            .waitForSelector(".ant-modal-body, .ant-modal", { timeout: 4000, state: "visible" })
+            .then(() => true)
+            .catch(() => false);
+          if (modalOpened) {
+            break;
+          }
+        }
+
+        if (!modalOpened) {
+          emitEvent("detail-modal", `So ${record.shdon}: bam icon 2 lan nhung modal chua mo`);
+          logger.warn(`[VIEW] So ${record.shdon}: khong mo duoc modal sau 2 lan click icon`);
+          continue;
+        }
 
         // Step 4: wait for the modal to render.
-        await page
-          .waitForSelector(".ant-modal-body, .ant-modal", { timeout: modalTimeoutMs, state: "visible" })
-          .catch(() => undefined);
         const ready = await waitForInvoiceDetailReady(page, modalTimeoutMs);
         if (!ready) {
           emitEvent("detail-modal", `Modal so ${record.shdon}: chua san sang sau timeout, se thu doc co retry`);

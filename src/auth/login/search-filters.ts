@@ -1,5 +1,6 @@
 import type { Page } from "playwright-core";
 import { clickFirstAvailable } from "./ui-manual.js";
+import { normalizeInvoiceDate } from "./shared.js";
 
 async function fillInvoiceNumberFilter(page: Page, invoiceNumber: string): Promise<boolean> {
   const marked = await page
@@ -13,13 +14,28 @@ async function fillInvoiceNumberFilter(page: Page, invoiceNumber: string): Promi
           .replace(/\s+/g, " ")
           .trim();
 
+      const isActuallyVisible = (el: HTMLElement): boolean => {
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") {
+          return false;
+        }
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) {
+          return false;
+        }
+
+        const cx = Math.min(window.innerWidth - 1, Math.max(0, rect.left + rect.width / 2));
+        const cy = Math.min(window.innerHeight - 1, Math.max(0, rect.top + rect.height / 2));
+        const top = document.elementFromPoint(cx, cy);
+        return Boolean(top && (top === el || el.contains(top) || (top as HTMLElement).contains(el)));
+      };
+
       const isTypable = (input: HTMLInputElement): boolean => {
         const type = (input.getAttribute("type") || "text").toLowerCase();
         if (["hidden", "checkbox", "radio", "button", "submit"].includes(type)) {
           return false;
         }
-        const rect = input.getBoundingClientRect();
-        return rect.width > 0 && rect.height > 0;
+        return isActuallyVisible(input);
       };
 
       // The GDT form lays label and input in separate columns, so pick the input
@@ -31,6 +47,9 @@ async function fillInvoiceNumberFilter(page: Page, invoiceNumber: string): Promi
       for (const el of labelNodes) {
         const text = normalize(el.textContent || "");
         if (!text) {
+          continue;
+        }
+        if (!isActuallyVisible(el)) {
           continue;
         }
         // Leaf-most exact label only (ignore wrappers that merely contain the text).
@@ -120,13 +139,28 @@ async function fillInvoiceDateFilter(page: Page, invoiceDate: string): Promise<b
           .replace(/\s+/g, " ")
           .trim();
 
+      const isActuallyVisible = (el: HTMLElement): boolean => {
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") {
+          return false;
+        }
+        const rect = el.getBoundingClientRect();
+        if (rect.width <= 0 || rect.height <= 0) {
+          return false;
+        }
+
+        const cx = Math.min(window.innerWidth - 1, Math.max(0, rect.left + rect.width / 2));
+        const cy = Math.min(window.innerHeight - 1, Math.max(0, rect.top + rect.height / 2));
+        const top = document.elementFromPoint(cx, cy);
+        return Boolean(top && (top === el || el.contains(top) || (top as HTMLElement).contains(el)));
+      };
+
       const isTypable = (input: HTMLInputElement): boolean => {
         const type = (input.getAttribute("type") || "text").toLowerCase();
         if (["hidden", "checkbox", "radio", "button", "submit"].includes(type)) {
           return false;
         }
-        const rect = input.getBoundingClientRect();
-        return rect.width > 0 && rect.height > 0;
+        return isActuallyVisible(input);
       };
 
       // Find the input on the same visual row as a label, positioned to its right.
@@ -136,6 +170,9 @@ async function fillInvoiceDateFilter(page: Page, invoiceDate: string): Promise<b
         for (const el of labelNodes) {
           const text = normalize(el.textContent || "");
           if (!text) {
+            continue;
+          }
+          if (!isActuallyVisible(el)) {
             continue;
           }
           if (!exactLabels.includes(text)) {
@@ -180,24 +217,18 @@ async function fillInvoiceDateFilter(page: Page, invoiceDate: string): Promise<b
       };
 
       const fromInput = inputForLabel(["tu ngay"]);
-      const toInput = inputForLabel(["den ngay"]);
 
       let fromMarked = false;
-      let toMarked = false;
       if (fromInput) {
         fromInput.setAttribute("data-gdt-from-date", "1");
         fromMarked = true;
       }
-      if (toInput && toInput !== fromInput) {
-        toInput.setAttribute("data-gdt-to-date", "1");
-        toMarked = true;
-      }
 
-      return { fromMarked, toMarked };
+      return { fromMarked };
     })
-    .catch(() => ({ fromMarked: false, toMarked: false }));
+    .catch(() => ({ fromMarked: false }));
 
-  if (!marked.fromMarked && !marked.toMarked) {
+  if (!marked.fromMarked) {
     return false;
   }
 
@@ -212,24 +243,35 @@ async function fillInvoiceDateFilter(page: Page, invoiceDate: string): Promise<b
     await field.press("Enter").catch(() => undefined);
     await page.waitForTimeout(150);
     await field.evaluate((node) => node.removeAttribute("data-gdt-from-date")).catch(() => undefined);
-    await field.evaluate((node) => node.removeAttribute("data-gdt-to-date")).catch(() => undefined);
   };
 
-  // Fill both ends of the range with the invoice date so the search targets that exact day.
-  if (marked.fromMarked) {
-    await typeDate("[data-gdt-from-date='1']");
-  }
-  if (marked.toMarked) {
-    await typeDate("[data-gdt-to-date='1']");
-  }
+  // Only fill "Tu ngay" with the invoice date; leave "Den ngay" untouched.
+  await typeDate("[data-gdt-from-date='1']");
 
-  // Close any lingering datepicker popup so it does not block the search button.
+  // Close the antd DatePicker dropdown so it does not cover the search button,
+  // then wait until it is actually gone before continuing the flow.
   await page.keyboard.press("Escape").catch(() => undefined);
+  await page.mouse.click(5, 5).catch(() => undefined);
+  await page
+    .waitForFunction(
+      () => !document.querySelector(".ant-picker-dropdown:not(.ant-picker-dropdown-hidden)"),
+      { timeout: 3000 },
+    )
+    .catch(() => undefined);
   await page.waitForTimeout(120);
   return true;
 }
 
 async function clickSearchByInvoice(page: Page): Promise<boolean> {
+  // Make sure no antd DatePicker dropdown is still covering the search button.
+  await page.keyboard.press("Escape").catch(() => undefined);
+  await page
+    .waitForFunction(
+      () => !document.querySelector(".ant-picker-dropdown:not(.ant-picker-dropdown-hidden)"),
+      { timeout: 2000 },
+    )
+    .catch(() => undefined);
+
   const clicked = await clickFirstAvailable(page, [
     "button:has-text('Tìm kiếm')",
     "button:has-text('Tim kiem')",
@@ -249,10 +291,76 @@ async function clickSearchByInvoice(page: Page): Promise<boolean> {
 }
 
 async function findRowIndexByInvoiceNumber(page: Page, invoiceNumber: string, invoiceDate?: string): Promise<number> {
+  const expectedDate = normalizeInvoiceDate(invoiceDate ?? "");
   return page
     .evaluate(({ rawValue, rawDate }: { rawValue: string; rawDate: string }) => {
-      const expected = rawValue.trim().replace(/\s+/g, "");
-      const expectedDate = (rawDate || "").trim();
+      const expectedCompact = rawValue.trim().replace(/\s+/g, "");
+      const expectedAlnum = expectedCompact.replace(/[^0-9a-zA-Z]/g, "").toUpperCase();
+      const expectedDigits = expectedCompact.replace(/\D+/g, "").replace(/^0+/, "") || "0";
+
+      const toDateKey = (value: string): string => {
+        const parts = value.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        if (!parts) {
+          return "";
+        }
+        const day = Number(parts[1]);
+        const month = Number(parts[2]);
+        const year = Number(parts[3]);
+        if (!Number.isFinite(day) || !Number.isFinite(month) || !Number.isFinite(year)) {
+          return "";
+        }
+        if (day < 1 || day > 31 || month < 1 || month > 12) {
+          return "";
+        }
+        return `${String(day).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year}`;
+      };
+
+      const expectedDateKey = toDateKey(rawDate || "");
+      const collectDateKeys = (text: string): Set<string> => {
+        const keys = new Set<string>();
+        const normalized = text.replace(/\s+/g, " ").trim();
+        const matches = normalized.match(/\b(\d{1,4})[\/\-](\d{1,2})[\/\-](\d{1,4})\b/g) || [];
+        for (const token of matches) {
+          const parts = token.split(/[\/\-]/).map((p) => Number(p));
+          const a = parts[0] ?? Number.NaN;
+          const b = parts[1] ?? Number.NaN;
+          const c = parts[2] ?? Number.NaN;
+          if (parts.length !== 3 || !Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(c)) {
+            continue;
+          }
+
+          let day = 0;
+          let month = 0;
+          let year = 0;
+
+          if (a > 999) {
+            year = a;
+            month = b;
+            day = c;
+          } else if (c > 999) {
+            year = c;
+            // Default DD/MM for ambiguous forms to align with GDT input style.
+            if (a <= 12 && b > 12) {
+              month = a;
+              day = b;
+            } else {
+              day = a;
+              month = b;
+            }
+          } else {
+            continue;
+          }
+
+          if (year < 1900 || year > 2200 || day < 1 || day > 31 || month < 1 || month > 12) {
+            continue;
+          }
+
+          keys.add(`${String(day).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year}`);
+        }
+
+        return keys;
+      };
+
       const rows = Array.from(document.querySelectorAll(".ant-table-tbody tr"));
       for (let i = 0; i < rows.length; i += 1) {
         const row = rows[i];
@@ -260,18 +368,43 @@ async function findRowIndexByInvoiceNumber(page: Page, invoiceNumber: string, in
           continue;
         }
         const cells = Array.from(row.querySelectorAll("td"));
-        const invoiceHit = cells.some((cell) => (cell.textContent || "").trim().replace(/\s+/g, "") === expected);
+        const invoiceHit = cells.some((cell) => {
+          const text = (cell.textContent || "").trim();
+          if (!text) {
+            return false;
+          }
+          const compact = text.replace(/\s+/g, "");
+          if (compact === expectedCompact) {
+            return true;
+          }
+
+          const alnum = compact.replace(/[^0-9a-zA-Z]/g, "").toUpperCase();
+          if (alnum && alnum === expectedAlnum) {
+            return true;
+          }
+
+          const digits = compact.replace(/\D+/g, "").replace(/^0+/, "") || "0";
+          return digits === expectedDigits;
+        });
         if (!invoiceHit) {
           continue;
         }
 
-        if (!expectedDate) {
+        if (!expectedDateKey) {
           return i;
         }
 
         const dateHit = cells.some((cell) => {
           const text = (cell.textContent || "").replace(/\s+/g, " ").trim();
-          return text.includes(expectedDate);
+          if (!text) {
+            return false;
+          }
+          if (text.includes(expectedDateKey)) {
+            return true;
+          }
+
+          const dateKeys = collectDateKeys(text);
+          return dateKeys.has(expectedDateKey);
         });
 
         if (dateHit) {
@@ -279,9 +412,9 @@ async function findRowIndexByInvoiceNumber(page: Page, invoiceNumber: string, in
         }
       }
       return -1;
-    }, { rawValue: invoiceNumber, rawDate: invoiceDate ?? "" })
+    }, { rawValue: invoiceNumber, rawDate: expectedDate })
     .catch(() => -1);
 }
 
-  export { fillInvoiceNumberFilter, fillInvoiceDateFilter, clickSearchByInvoice, findRowIndexByInvoiceNumber };
+export { fillInvoiceNumberFilter, fillInvoiceDateFilter, clickSearchByInvoice, findRowIndexByInvoiceNumber };
 

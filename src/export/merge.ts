@@ -80,6 +80,13 @@ function detailCellText(value: unknown): string {
   return String(value).trim();
 }
 
+function joinDetailFields(fields: string[]): string {
+  return fields
+    .map((field) => field.trim())
+    .filter(Boolean)
+    .join(" - ");
+}
+
 function toPercentText(raw: string): string {
   const v = raw.trim();
   if (!v) {
@@ -169,19 +176,18 @@ function normalizeQuantity(raw: string): string {
 }
 
 function formatLineItemRecord(item: Record<string, unknown>): string {
-  const ten = detailCellText(item.ten);
-  const sluong = detailCellText(item.sluong);
-  const dvtinh = detailCellText(item.dvtinh);
-  const dgia = detailCellText(item.dgia);
-  const thtien = detailCellText(item.thtien);
-  const ltsuat = detailCellText(item.ltsuat) || toPercentText(detailCellText(item.tsuat));
+  const ten = firstNonEmpty(item, ["ten", "Tên hàng hóa, dịch vụ", "Ten hang hoa, dich vu"]);
+  const sluong = normalizeQuantity(firstNonEmpty(item, ["sluong", "Số lượng", "So luong"]));
+  const dvtinh = firstNonEmpty(item, ["dvtinh", "Đơn vị tính", "Don vi tinh"]);
+  const dgia = normalizeMoney(firstNonEmpty(item, ["dgia", "Đơn giá", "Don gia"]));
+  const thtien = normalizeMoney(
+    firstNonEmpty(item, ["thtien", "Thành tiền chưa có thuế GTGT", "Thanh tien chua co thue GTGT"]),
+  );
+  const ltsuat =
+    firstNonEmpty(item, ["ltsuat", "Thuế suất", "Thue suat"]) ||
+    toPercentText(firstNonEmpty(item, ["tsuat"]));
 
-  const fields = [ten, sluong, dvtinh, dgia, thtien, ltsuat];
-  if (fields.every((field) => field === "")) {
-    return "";
-  }
-
-  return fields.join(",");
+  return joinDetailFields([ten, sluong, dvtinh, dgia, thtien, ltsuat]);
 }
 
 function formatPurchasedLineItemRecord(item: Record<string, unknown>): string {
@@ -199,12 +205,7 @@ function formatPurchasedLineItemRecord(item: Record<string, unknown>): string {
     firstNonEmpty(item, ["Thuế suất", "Thue suat", "ltsuat"]) ||
     toPercentText(firstNonEmpty(item, ["tsuat"]));
 
-  const fields = [tinhChat, ten, soLuong, donViTinh, donGia, thanhTien, thueSuat];
-  if (fields.every((field) => field === "")) {
-    return "";
-  }
-
-  return fields.join(",");
+  return joinDetailFields([tinhChat, ten, soLuong, donViTinh, donGia, thanhTien, thueSuat]);
 }
 
 function buildDetailTextFromLineItems(lineItems: Array<Record<string, unknown>>, mode: ExtractedInvoiceMode): string {
@@ -219,12 +220,10 @@ function formatItemNameAsDetailLine(name: string, mode: ExtractedInvoiceMode): s
   }
 
   if (mode === "purchased") {
-    // Ordered as: Tinh chat, Ten hang hoa, So luong, Don vi tinh, Don gia, Thanh tien, Thue suat
-    return ["", ten, "", "", "", "", ""].join(",");
+    return joinDetailFields(["", ten, "", "", "", "", ""]);
   }
 
-  // Sold format: ten, sluong, dvtinh, dgia, thtien, ltsuat
-  return [ten, "", "", "", "", ""].join(",");
+  return joinDetailFields([ten, "", "", "", "", ""]);
 }
 
 function detectOrCreateDetailColumn(headerRow: ExcelJS.Row): number {

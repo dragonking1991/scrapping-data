@@ -1,6 +1,6 @@
 import { promises as fs } from "node:fs";
 import { join } from "node:path";
-import type { Page } from "playwright-core";
+import type { Locator, Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
 import type { RescanDataset, RescanDatasetCounters } from "./shared.js";
 import { emitRescanStatus, buildRescanCandidates, writeJsonAtomic } from "./rescan-common.js";
@@ -12,7 +12,44 @@ import {
   findRowIndexByInvoiceNumber,
 } from "./search-filters.js";
 import { tryExtractDetailFromNetwork, extractInvoiceDetail, closeInvoiceModal } from "./detail.js";
-import { findAndMarkViewInvoiceButton } from "./toolbar-view.js";
+import { findAndMarkViewInvoiceButton, clearViewInvoiceMark } from "./toolbar-view.js";
+
+/**
+ * Click the matching invoice row in the result list and confirm it becomes
+ * active/selected (highlighted/bold) before continuing. Retries a few times
+ * because the table may still be settling right after the search finishes.
+ * Always returns after clicking; the boolean reports whether the row was
+ * detected as active (some tables never add a selected class).
+ */
+async function selectResultRow(page: Page, row: Locator): Promise<boolean> {
+  let active = false;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    // Click a real cell so the row's click handlers fire and it highlights.
+    const target = (await row.locator("td").count().catch(() => 0)) ? row.locator("td").first() : row;
+    await target.click().catch(() => undefined);
+    await page.waitForTimeout(250 * attempt);
+
+    active = await row
+      .evaluate((tr) => {
+        const el = tr as HTMLElement;
+        const cls = el.className || "";
+        const highlighted =
+          /ant-table-row-selected|selected|active|row-active/i.test(cls) ||
+          el.getAttribute("aria-selected") === "true";
+        const hasCheckedBox = Boolean(
+          el.querySelector("input[type='checkbox']:checked, .ant-checkbox-checked, .ant-radio-checked"),
+        );
+        return highlighted || hasCheckedBox;
+      })
+      .catch(() => false);
+
+    if (active) {
+      break;
+    }
+  }
+
+  return active;
+}
 
 function emitDatasetProgress(dataset: RescanDataset, status: "running" | "success" | "failed", counters: RescanDatasetCounters): void {
   emitRescanStatus({
@@ -121,9 +158,20 @@ async function rescanDataset(
       }
 
       const row = page.locator(".ant-table-tbody tr").nth(rowIndex);
-      await row.click().catch(() => undefined);
-      await page.waitForTimeout(220);
 
+      // After search results render, we MUST click the matching invoice row in the
+      // result list so it becomes active/selected before doing anything else.
+      const rowSelected = await selectResultRow(page, row);
+      emitDatasetProgress(dataset, "running", {
+        ...counters,
+        message: rowSelected
+          ? `Da chon dong hoa don ${candidate.shdon} trong ket qua`
+          : `Da click dong hoa don ${candidate.shdon} (chua thay highlight, van tiep tuc)`,
+      });
+
+      // Fresh search re-rendered the toolbar/table, so drop any stale mark from a
+      // previous invoice before locating the "Xem hoa don" icon for this row.
+      await clearViewInvoiceMark(page);
       const foundViewIcon = await findAndMarkViewInvoiceButton(page);
       if (!foundViewIcon) {
         counters.failed += 1;
@@ -144,8 +192,46 @@ async function rescanDataset(
         18000,
       );
 
-      await page.locator('[data-gdt-view="1"]').first().click().catch(() => undefined);
-      await page.waitForSelector(".ant-modal-body, .ant-modal", { timeout: 15000, state: "visible" }).catch(() => undefined);
+      let modalOpened = false;
+      for (let clickTry = 1; clickTry <= 2; clickTry += 1) {
+        if (clickTry > 1) {
+          // Re-select the row and re-detect the icon (the mark may have gone stale).
+          await selectResultRow(page, row);
+          await clearViewInvoiceMark(page);
+          await findAndMarkViewInvoiceButton(page);
+          emitDatasetProgress(dataset, "running", {
+            ...counters,
+            message: `Retry click hoa don ${candidate.shdon} truoc khi bam icon`,
+          });
+        }
+
+        // Click the actual clickable control (button/anchor ancestor), not a
+        // possibly-detached inner <span>/<svg>.
+        const viewBtn = page.locator('[data-gdt-view="1"]').first();
+        const clickable = viewBtn.locator(
+          'xpath=ancestor-or-self::*[self::button or self::a or @role="button"][1]',
+        );
+        if (await clickable.count()) {
+          await clickable.first().click().catch(() => undefined);
+        } else {
+          await viewBtn.click().catch(() => undefined);
+        }
+        modalOpened = await page
+          .waitForSelector(".ant-modal-body, .ant-modal", { timeout: 4000, state: "visible" })
+          .then(() => true)
+          .catch(() => false);
+        if (modalOpened) {
+          break;
+        }
+      }
+
+      if (!modalOpened) {
+        counters.failed += 1;
+        counters.message = `Khong mo duoc modal cho ${candidate.shdon} sau 2 lan click icon`;
+        emitDatasetProgress(dataset, "running", counters);
+        counters.processing -= 1;
+        continue;
+      }
 
       let detail = (await networkDetail) ?? (await extractInvoiceDetail(page));
       if (!detail.lineItems.length) {
