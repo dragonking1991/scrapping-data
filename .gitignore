@@ -14,7 +14,7 @@ dist/
 # Runtime logs and local artifacts
 .gdt-logs/
 .gdt-session-logs.jsonl
-.gdt-xml-export/
+
 gdt-fallback-downloads/
 
 # OS/editor noise

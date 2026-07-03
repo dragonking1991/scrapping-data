@@ -29,6 +29,96 @@ import {
 import { ensureLoginFormVisible, fillFirst, clickFirst } from "./ui-core.js";
 import { waitForManualLoginToken, waitForManualSearchReady, waitForContinueSignal } from "./manual-waits.js";
 
+type CaptchaAttemptMetric = {
+  attempt: number;
+  method: LoginResult["captchaMethod"];
+  textLength: number;
+  hasAmbiguousChars: boolean;
+  submitted: boolean;
+  outcome: "success" | "captcha" | "credential" | "other" | "no-text";
+};
+
+const AMBIGUOUS_CHAR_SET = new Set(["0", "O", "1", "I", "L", "2", "Z", "5", "S", "6", "G", "8", "B"]);
+
+function hasAmbiguousCaptchaChars(text: string): boolean {
+  return Array.from(text).some((ch) => AMBIGUOUS_CHAR_SET.has(ch));
+}
+
+function emitCaptchaOcrSummary(metrics: CaptchaAttemptMetric[], finalStatus: "success" | "failed"): void {
+  if (metrics.length === 0) {
+    return;
+  }
+
+  const submitted = metrics.filter((m) => m.submitted);
+  const successCount = metrics.filter((m) => m.outcome === "success").length;
+  const captchaFailCount = metrics.filter((m) => m.outcome === "captcha").length;
+  const noTextCount = metrics.filter((m) => m.outcome === "no-text").length;
+  const ambiguousCount = metrics.filter((m) => m.hasAmbiguousChars).length;
+  const shortTextCount = metrics.filter((m) => m.textLength > 0 && m.textLength < 6).length;
+
+  const methodStats = new Map<string, { submitted: number; success: number; captchaFail: number; noText: number }>();
+  for (const metric of metrics) {
+    const key = metric.method;
+    const current = methodStats.get(key) ?? { submitted: 0, success: 0, captchaFail: 0, noText: 0 };
+    if (metric.submitted) {
+      current.submitted += 1;
+    }
+    if (metric.outcome === "success") {
+      current.success += 1;
+    }
+    if (metric.outcome === "captcha") {
+      current.captchaFail += 1;
+    }
+    if (metric.outcome === "no-text") {
+      current.noText += 1;
+    }
+    methodStats.set(key, current);
+  }
+
+  const failPatternCounts = new Map<string, number>();
+  for (const metric of metrics) {
+    if (metric.outcome !== "captcha" && metric.outcome !== "no-text") {
+      continue;
+    }
+    if (metric.outcome === "no-text") {
+      failPatternCounts.set("no-text", (failPatternCounts.get("no-text") ?? 0) + 1);
+      continue;
+    }
+    if (metric.hasAmbiguousChars) {
+      failPatternCounts.set("captcha-with-ambiguous-chars", (failPatternCounts.get("captcha-with-ambiguous-chars") ?? 0) + 1);
+    }
+    if (metric.textLength < 6) {
+      failPatternCounts.set("captcha-short-text", (failPatternCounts.get("captcha-short-text") ?? 0) + 1);
+    }
+    if (metric.method === "unknown") {
+      failPatternCounts.set("captcha-method-unknown", (failPatternCounts.get("captcha-method-unknown") ?? 0) + 1);
+    }
+  }
+
+  const methodBreakdown = Array.from(methodStats.entries()).map(([method, values]) => ({ method, ...values }));
+  const topFailPatterns = Array.from(failPatternCounts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([pattern, count]) => ({ pattern, count }));
+
+  const report = {
+    finalStatus,
+    attempts: metrics.length,
+    submittedAttempts: submitted.length,
+    successCount,
+    captchaFailCount,
+    noTextCount,
+    accuracyByAttempt: metrics.length > 0 ? Number((successCount / metrics.length).toFixed(4)) : 0,
+    accuracyBySubmitted: submitted.length > 0 ? Number((successCount / submitted.length).toFixed(4)) : 0,
+    ambiguousCount,
+    shortTextCount,
+    methodBreakdown,
+    topFailPatterns,
+  };
+
+  logger.info(`[OCR-RETRY-SUMMARY] ${JSON.stringify(report)}`);
+}
+
 export async function loginAndGetToken(
   config: AppConfig,
   captchaFallback?: (payload: string, attempt: number) => Promise<string>,
@@ -189,10 +279,34 @@ export async function loginAndGetToken(
       throw new Error("Khong tim thay o nhap username/password tren trang dang nhap");
     }
 
+    if (config.captchaMode === "manual") {
+      if (headless) {
+        throw new Error("GDT_CAPTCHA_MODE=manual yeu cau GDT_HEADLESS=false de ban co the tu nhap captcha");
+      }
+
+      logger.info("Captcha mode=manual: vui long nhap captcha tren browser va bam Dang nhap.");
+      const manualToken = await waitForManualLoginToken(
+        page,
+        manualLoginTimeoutMs,
+        async () => tokenFromResponse ?? (await inferTokenFromStorage(page)),
+      );
+      if (!manualToken) {
+        throw new Error("Khong phat hien dang nhap thanh cong trong thoi gian cho captcha thu cong");
+      }
+
+      logger.info("Da phat hien dang nhap thu cong thanh cong tren browser");
+      return {
+        token: manualToken,
+        expiresAt: readJwtExp(manualToken),
+        captchaMethod: "unknown",
+      };
+    }
+
     let captchaMethod: LoginResult["captchaMethod"] = "unknown";
     const autoFailThreshold = Math.max(3, Math.floor(config.captchaMaxAttempts / 2));
     let consecutiveAutoFail = 0;
     let manualModeStarted = false;
+    const captchaAttemptMetrics: CaptchaAttemptMetric[] = [];
 
     for (let attempt = 1; attempt <= config.captchaMaxAttempts; attempt += 1) {
       const captchaPayload = await extractCaptchaPayload(page);
@@ -238,6 +352,14 @@ export async function loginAndGetToken(
         captchaMethod = solved.method;
       }
       if (!captchaText) {
+        captchaAttemptMetrics.push({
+          attempt,
+          method: captchaMethod,
+          textLength: 0,
+          hasAmbiguousChars: false,
+          submitted: false,
+          outcome: "no-text",
+        });
         consecutiveAutoFail += 1;
         await clickFirst(page, CAPTCHA_REFRESH_SELECTORS);
         await page.waitForTimeout(450);
@@ -245,6 +367,14 @@ export async function loginAndGetToken(
       }
 
       consecutiveAutoFail = 0;
+      const attemptMetric: CaptchaAttemptMetric = {
+        attempt,
+        method: captchaMethod,
+        textLength: captchaText.length,
+        hasAmbiguousChars: hasAmbiguousCaptchaChars(captchaText),
+        submitted: false,
+        outcome: "other",
+      };
       const captchaFilled = await fillFirst(page, CAPTCHA_SELECTORS, captchaText);
 
       if (!captchaFilled) {
@@ -252,12 +382,17 @@ export async function loginAndGetToken(
       }
 
       await clickFirst(page, LOGIN_SUBMIT_SELECTORS);
+      attemptMetric.submitted = true;
 
       await page.waitForTimeout(1200);
 
       const stored = await inferTokenFromStorage(page);
       const finalToken = tokenFromResponse ?? stored;
       if (finalToken) {
+        attemptMetric.outcome = "success";
+        captchaAttemptMetrics.push(attemptMetric);
+        logger.info(`[OCR-RETRY-ATTEMPT] ${JSON.stringify(attemptMetric)}`);
+        emitCaptchaOcrSummary(captchaAttemptMetrics, "success");
         logger.info(`Dang nhap thanh cong sau ${attempt} lan thu captcha`);
         return {
           token: finalToken,
@@ -269,6 +404,10 @@ export async function loginAndGetToken(
       const errorText = await readVisibleError(page);
       const kind = classifyErrorMessage(errorText);
       if (kind === "credential") {
+        attemptMetric.outcome = "credential";
+        captchaAttemptMetrics.push(attemptMetric);
+        logger.info(`[OCR-RETRY-ATTEMPT] ${JSON.stringify(attemptMetric)}`);
+        emitCaptchaOcrSummary(captchaAttemptMetrics, "failed");
         throw new Error(errorText || "Thong tin dang nhap khong hop le");
       }
 
@@ -277,22 +416,22 @@ export async function loginAndGetToken(
       await page.waitForTimeout(450);
 
       if (kind === "captcha") {
+        attemptMetric.outcome = "captcha";
         consecutiveAutoFail += 1;
         logger.warn(`Sai captcha o lan thu ${attempt}, dang thu lai`);
+      } else {
+        attemptMetric.outcome = "other";
       }
+
+      captchaAttemptMetrics.push(attemptMetric);
+      logger.info(`[OCR-RETRY-ATTEMPT] ${JSON.stringify(attemptMetric)}`);
     }
 
+    emitCaptchaOcrSummary(captchaAttemptMetrics, "failed");
     throw new Error(`Dang nhap that bai sau ${config.captchaMaxAttempts} lan thu`);
   } finally {
     if (keepBrowserOpenOnManualFirst) {
       logger.info("Manual-first: giu browser mo de ban co the kiem tra va thu lai neu can.");
-
-      const closeOnExit = (): void => {
-        void browser.close().catch(() => undefined);
-      };
-      process.once("exit", closeOnExit);
-      process.once("SIGINT", closeOnExit);
-      process.once("SIGTERM", closeOnExit);
     } else {
       await browser.close();
     }

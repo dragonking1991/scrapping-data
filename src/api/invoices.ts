@@ -280,8 +280,9 @@ export async function collectInvoiceNameMap(
     seedMetadata?: InvoiceCrawlMetadataMap;
     seedFailed?: Array<{ key: string; shdon: string }>;
     onProgress?: (progress: InvoiceNameCollectionProgress) => Promise<void> | void;
+    shouldStop?: () => Promise<boolean> | boolean;
   },
-): Promise<{ map: InvoiceNameMap; metadata: InvoiceCrawlMetadataMap; failed: InvoiceHeader[] }> {
+): Promise<{ map: InvoiceNameMap; metadata: InvoiceCrawlMetadataMap; failed: InvoiceHeader[]; stopped: boolean; nextIndex: number }> {
   const byComposite = new Map(options.seedMap?.byComposite ?? []);
   const byNumberOnly = new Map(options.seedMap?.byNumberOnly ?? []);
   const metadataByComposite = new Map(options.seedMetadata?.byComposite ?? []);
@@ -295,6 +296,20 @@ export async function collectInvoiceNameMap(
   const startIndex = Math.max(0, options.resumeFromIndex ?? 0);
 
   for (let index = startIndex; index < invoices.length; index += 1) {
+    if (await options.shouldStop?.()) {
+      const failedInvoices: InvoiceHeader[] = Array.from(failedKeys.values())
+        .map((entry) => invoices.find((invoice) => invoice && invoiceKey(invoice) === entry.key))
+        .filter((invoice): invoice is InvoiceHeader => Boolean(invoice));
+
+      return {
+        map: { byComposite, byNumberOnly },
+        metadata: { byComposite: metadataByComposite, byNumberOnly: metadataByNumber },
+        failed: failedInvoices,
+        stopped: true,
+        nextIndex: index,
+      };
+    }
+
     const invoice = invoices[index];
     if (!invoice) {
       continue;
@@ -371,5 +386,7 @@ export async function collectInvoiceNameMap(
     map: { byComposite, byNumberOnly },
     metadata: { byComposite: metadataByComposite, byNumberOnly: metadataByNumber },
     failed: failedInvoices,
+    stopped: false,
+    nextIndex: invoices.length,
   };
 }

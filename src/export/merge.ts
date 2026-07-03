@@ -13,6 +13,7 @@ interface MergeResult {
 interface ExtractedInvoiceLike {
   khhdon?: string;
   shdon?: string;
+  info?: Record<string, unknown>;
   lineItems?: Array<Record<string, unknown>>;
   itemNames?: string[];
 }
@@ -226,6 +227,29 @@ function formatItemNameAsDetailLine(name: string, mode: ExtractedInvoiceMode): s
   return joinDetailFields([ten, "", "", "", "", ""]);
 }
 
+function extractBuyerFullName(info?: Record<string, unknown>): string {
+  if (!info) {
+    return "";
+  }
+
+  const direct = detailCellText(info.nmtnmua);
+  if (direct) {
+    return direct;
+  }
+
+  for (const [key, value] of Object.entries(info)) {
+    const normalizedKey = normalize(key);
+    if (normalizedKey.includes("ho ten nguoi mua hang")) {
+      const text = detailCellText(value);
+      if (text) {
+        return text;
+      }
+    }
+  }
+
+  return "";
+}
+
 function detectOrCreateDetailColumn(headerRow: ExcelJS.Row): number {
   let detailCol: number | null = null;
   let legacyResultCol: number | null = null;
@@ -260,9 +284,13 @@ export function buildDetailMapFromExtractedInvoices(
     }
 
     const khhdon = detailCellText(record.khhdon).toUpperCase();
+    const buyerFullName = extractBuyerFullName(record.info);
     const fromLines = buildDetailTextFromLineItems((record.lineItems ?? []).filter(Boolean), mode);
     const fromNames = (record.itemNames ?? []).map((name) => formatItemNameAsDetailLine(name, mode)).filter(Boolean).join("\n");
-    const detail = fromLines || fromNames;
+    const detailBody = fromLines || fromNames;
+    const detail = buyerFullName
+      ? [joinDetailFields([`Họ tên người mua hàng: ${buyerFullName}`]), detailBody].filter(Boolean).join("\n")
+      : detailBody;
 
     if (!detail) {
       continue;

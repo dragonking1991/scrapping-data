@@ -45,23 +45,50 @@ interface CliOptions {
   autoExportXml?: boolean;
 }
 
+type ContinueFileAction = "continue" | "rescan-empty-line-items" | "stop-current-flow";
+
+const CONTINUE_READY_MARKER =
+  "Da san sang. Vui long bam Lay thong tin trong UI de tiep tuc crawl tu cung browser session.";
+
+function parseContinueFileAction(input: string): ContinueFileAction {
+  const normalized = input.trim().toLowerCase();
+  if (normalized === "rescan-empty-line-items") {
+    return "rescan-empty-line-items";
+  }
+  if (normalized === "stop-current-flow") {
+    return "stop-current-flow";
+  }
+  return "continue";
+}
+
+async function consumeContinueSignal(path: string): Promise<ContinueFileAction | null> {
+  try {
+    await fs.access(path);
+  } catch {
+    return null;
+  }
+
+  const action = parseContinueFileAction(await fs.readFile(path, "utf8").catch(() => "continue"));
+  await fs.unlink(path).catch(() => undefined);
+  return action;
+}
+
 function sanitizeFilePart(input: string): string {
   return input.replace(/[^0-9a-zA-Z_-]/g, "-");
 }
 
-async function waitForContinueSignalFile(path: string, timeoutMs: number): Promise<boolean> {
+async function waitForContinueSignalFile(path: string, timeoutMs: number): Promise<ContinueFileAction | null> {
   const startedAt = Date.now();
   while (Date.now() - startedAt < timeoutMs) {
-    try {
-      await fs.access(path);
-      await fs.unlink(path).catch(() => undefined);
-      return true;
-    } catch {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    const action = await consumeContinueSignal(path);
+    if (action) {
+      return action;
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 
-  return false;
+  return null;
 }
 
 function buildProgram(): Command {
@@ -347,6 +374,24 @@ async function main(): Promise<void> {
   let invoices;
   let attempt = 0;
   const retrySignalTimeoutMs = Number(process.env.GDT_RETRY_SIGNAL_TIMEOUT_MS ?? 7200000);
+  const shouldStopFlow = async (): Promise<boolean> => {
+    if (!options.continueSignalFile) {
+      return false;
+    }
+
+    const action = await consumeContinueSignal(options.continueSignalFile);
+    if (!action) {
+      return false;
+    }
+
+    if (action === "stop-current-flow") {
+      return true;
+    }
+
+    // Preserve non-stop signals that may arrive unexpectedly while flow is running.
+    await fs.writeFile(options.continueSignalFile, action, "utf8").catch(() => undefined);
+    return false;
+  };
 
   // Determine XML source: explicit --xml-dir, or auto-exported dir from login flow
   const autoExportedXmlDir = tokenProvider.getLastXmlDir();
@@ -405,9 +450,15 @@ async function main(): Promise<void> {
           logger.warn(
             "Lay danh sach that bai. Browser van dang mo. Vui long kiem tra tab/bo loc tren GDT, bam Tim kiem lai, sau do bam Lay thong tin de thu lai.",
           );
-          const signaled = await waitForContinueSignalFile(options.continueSignalFile, retrySignalTimeoutMs);
-          if (!signaled) {
+          const action = await waitForContinueSignalFile(options.continueSignalFile, retrySignalTimeoutMs);
+          if (!action) {
             throw new Error("Het thoi gian cho tin hieu thu lai tu UI");
+          }
+
+          if (action === "stop-current-flow") {
+            logger.warn("Da nhan yeu cau dung flow hien tai. Session browser van duoc giu nguyen.");
+            logger.info(CONTINUE_READY_MARKER);
+            continue;
           }
 
           logger.info("Da nhan tin hieu thu lai tu UI, tiep tuc truy van danh sach hoa don...");
@@ -426,105 +477,146 @@ async function main(): Promise<void> {
     return;
   }
 
-  let resumeIndex = 0;
-  let seedMap;
-  let seedMetadata;
-  let seedFailed;
+  while (true) {
+    let resumeIndex = 0;
+    let seedMap;
+    let seedMetadata;
+    let seedFailed;
 
-  const loadedCheckpoint = await readCheckpoint(config.checkpointPath);
-  if (
-    loadedCheckpoint &&
-    matchesScope(loadedCheckpoint, {
+    const loadedCheckpoint = await readCheckpoint(config.checkpointPath);
+    if (
+      loadedCheckpoint &&
+      matchesScope(loadedCheckpoint, {
+        from: effectiveFrom,
+        to: effectiveTo,
+        out: options.out,
+        invoiceType: config.invoiceType,
+        endpointProfile: activeProfile,
+        invoicesTotal: invoices.length,
+      })
+    ) {
+      const state = toRuntimeState(loadedCheckpoint);
+      resumeIndex = state.nextIndex;
+      seedMap = state.map;
+      seedMetadata = state.metadata;
+      seedFailed = state.failed;
+      logger.info(`RESUME: tiep tuc tu invoice index ${resumeIndex}/${invoices.length}`);
+    }
+
+    const { map, metadata, failed, stopped, nextIndex } = await collectInvoiceNameMap(client, invoices, {
+      concurrency: config.requestConcurrency,
+      delayMs: config.requestDelayMs,
+      detailEndpoint: activeDetailEndpoint,
+      endpointProfile: activeProfile,
+      mst: config.username,
       from: effectiveFrom,
       to: effectiveTo,
-      out: options.out,
-      invoiceType: config.invoiceType,
-      endpointProfile: activeProfile,
-      invoicesTotal: invoices.length,
-    })
-  ) {
-    const state = toRuntimeState(loadedCheckpoint);
-    resumeIndex = state.nextIndex;
-    seedMap = state.map;
-    seedMetadata = state.metadata;
-    seedFailed = state.failed;
-    logger.info(`RESUME: tiep tuc tu invoice index ${resumeIndex}/${invoices.length}`);
-  }
+      resumeFromIndex: resumeIndex,
+      seedMap,
+      seedMetadata,
+      seedFailed,
+      shouldStop: shouldStopFlow,
+      onProgress: async (progress) => {
+        const checkpoint: CrawlCheckpoint = {
+          version: 1,
+          from: effectiveFrom,
+          to: effectiveTo,
+          out: options.out,
+          invoiceType: config.invoiceType,
+          endpointProfile: activeProfile,
+          nextIndex: progress.nextIndex,
+          invoicesTotal: invoices.length,
+          byCompositeEntries: Array.from(progress.map.byComposite.entries()),
+          byNumberEntries: Array.from(progress.map.byNumberOnly.entries()),
+          metadataByCompositeEntries: Array.from(progress.metadata.byComposite.entries()),
+          metadataByNumberEntries: Array.from(progress.metadata.byNumberOnly.entries()),
+          failedEntries: progress.failed.map((entry) => [entry.key, entry.shdon]),
+          updatedAt: Date.now(),
+          reason: "phase_progress",
+        };
+        await writeCheckpoint(config.checkpointPath, checkpoint);
+      },
+    });
 
-  const { map, metadata, failed } = await collectInvoiceNameMap(client, invoices, {
-    concurrency: config.requestConcurrency,
-    delayMs: config.requestDelayMs,
-    detailEndpoint: activeDetailEndpoint,
-    endpointProfile: activeProfile,
-    mst: config.username,
-    from: effectiveFrom,
-    to: effectiveTo,
-    resumeFromIndex: resumeIndex,
-    seedMap,
-    seedMetadata,
-    seedFailed,
-    onProgress: async (progress) => {
-      const checkpoint: CrawlCheckpoint = {
+    if (stopped) {
+      await writeCheckpoint(config.checkpointPath, {
         version: 1,
         from: effectiveFrom,
         to: effectiveTo,
         out: options.out,
         invoiceType: config.invoiceType,
         endpointProfile: activeProfile,
-        nextIndex: progress.nextIndex,
+        nextIndex,
         invoicesTotal: invoices.length,
-        byCompositeEntries: Array.from(progress.map.byComposite.entries()),
-        byNumberEntries: Array.from(progress.map.byNumberOnly.entries()),
-        metadataByCompositeEntries: Array.from(progress.metadata.byComposite.entries()),
-        metadataByNumberEntries: Array.from(progress.metadata.byNumberOnly.entries()),
-        failedEntries: progress.failed.map((entry) => [entry.key, entry.shdon]),
+        byCompositeEntries: Array.from(map.byComposite.entries()),
+        byNumberEntries: Array.from(map.byNumberOnly.entries()),
+        metadataByCompositeEntries: Array.from(metadata.byComposite.entries()),
+        metadataByNumberEntries: Array.from(metadata.byNumberOnly.entries()),
+        failedEntries: failed.map((invoice) => [`${invoice.khhdon.toUpperCase()}|${invoice.shdon}`, invoice.shdon]),
         updatedAt: Date.now(),
-        reason: "phase_progress",
-      };
-      await writeCheckpoint(config.checkpointPath, checkpoint);
-    },
-  });
+        reason: "manual_pause",
+      });
 
-  await writeCheckpoint(config.checkpointPath, {
-    version: 1,
-    from: effectiveFrom,
-    to: effectiveTo,
-    out: options.out,
-    invoiceType: config.invoiceType,
-    endpointProfile: activeProfile,
-    nextIndex: invoices.length,
-    invoicesTotal: invoices.length,
-    byCompositeEntries: Array.from(map.byComposite.entries()),
-    byNumberEntries: Array.from(map.byNumberOnly.entries()),
-    metadataByCompositeEntries: Array.from(metadata.byComposite.entries()),
-    metadataByNumberEntries: Array.from(metadata.byNumberOnly.entries()),
-    failedEntries: failed.map((invoice) => [`${invoice.khhdon.toUpperCase()}|${invoice.shdon}`, invoice.shdon]),
-    updatedAt: Date.now(),
-    reason: "before_persist",
-  });
+      if (config.manualFirst && options.continueSignalFile) {
+        logger.warn("Da tam dung flow hien tai theo yeu cau. Browser/session van duoc giu nguyen.");
+        logger.info(CONTINUE_READY_MARKER);
+        const action = await waitForContinueSignalFile(options.continueSignalFile, retrySignalTimeoutMs);
+        if (!action) {
+          throw new Error("Het thoi gian cho tin hieu tiep tuc tu UI");
+        }
+        if (action === "stop-current-flow") {
+          continue;
+        }
 
-  const workbookBuffer = await downloadInvoiceWorkbook(
-    client,
-    config.baseUrl,
-    effectiveFrom,
-    effectiveTo,
-    config.invoiceType,
-    activeExportEndpoints,
-    activeProfile,
-    config.username,
-  );
+        logger.info("Da nhan tin hieu tiep tuc. Tiep tuc flow tu checkpoint gan nhat...");
+        continue;
+      }
 
-  const merged = await mergeNamesIntoWorkbookWithMetadata(workbookBuffer, map, { metadata });
-  await fs.writeFile(options.out, merged.output);
+      throw new Error("Flow da duoc dung theo yeu cau nguoi dung");
+    }
 
-  await clearCheckpoint(config.checkpointPath);
+    await writeCheckpoint(config.checkpointPath, {
+      version: 1,
+      from: effectiveFrom,
+      to: effectiveTo,
+      out: options.out,
+      invoiceType: config.invoiceType,
+      endpointProfile: activeProfile,
+      nextIndex: invoices.length,
+      invoicesTotal: invoices.length,
+      byCompositeEntries: Array.from(map.byComposite.entries()),
+      byNumberEntries: Array.from(map.byNumberOnly.entries()),
+      metadataByCompositeEntries: Array.from(metadata.byComposite.entries()),
+      metadataByNumberEntries: Array.from(metadata.byNumberOnly.entries()),
+      failedEntries: failed.map((invoice) => [`${invoice.khhdon.toUpperCase()}|${invoice.shdon}`, invoice.shdon]),
+      updatedAt: Date.now(),
+      reason: "before_persist",
+    });
 
-  logger.info(`Dang nhap bang: ${tokenProvider.getLastLoginMeta() ?? "unknown"}`);
-  logger.info(`Hoa don co ten hang hoa: ${map.byNumberOnly.size}/${invoices.length}`);
-  logger.info(`Dong xlsx da khop ten: ${merged.matchedRows}`);
-  logger.info(`Dong xlsx khong khop ten: ${merged.unmatchedRows}`);
-  logger.warn(`Hoa don loi khi lay detail: ${failed.length}`);
-  logger.info(`Xuat file thanh cong: ${options.out}`);
+    const workbookBuffer = await downloadInvoiceWorkbook(
+      client,
+      config.baseUrl,
+      effectiveFrom,
+      effectiveTo,
+      config.invoiceType,
+      activeExportEndpoints,
+      activeProfile,
+      config.username,
+    );
+
+    const merged = await mergeNamesIntoWorkbookWithMetadata(workbookBuffer, map, { metadata });
+    await fs.writeFile(options.out, merged.output);
+
+    await clearCheckpoint(config.checkpointPath);
+
+    logger.info(`Dang nhap bang: ${tokenProvider.getLastLoginMeta() ?? "unknown"}`);
+    logger.info(`Hoa don co ten hang hoa: ${map.byNumberOnly.size}/${invoices.length}`);
+    logger.info(`Dong xlsx da khop ten: ${merged.matchedRows}`);
+    logger.info(`Dong xlsx khong khop ten: ${merged.unmatchedRows}`);
+    logger.warn(`Hoa don loi khi lay detail: ${failed.length}`);
+    logger.info(`Xuat file thanh cong: ${options.out}`);
+    return;
+  }
 }
 
 main().catch((error: unknown) => {

@@ -52,6 +52,10 @@ npm start -- --from 05/05/2026 --to 31/05/2026 --out ./DANH-SACH-HOA-DON.xlsx
 - `--manual-first`: mo browser va cho nguoi dung thao tac login/captcha/tim kiem thu cong
 - `--verify-only`: chi verify endpoint, khong ghi file
 
+Bien moi truong lien quan captcha:
+
+- `GDT_CAPTCHA_MODE=auto|manual`: `manual` se bo qua OCR va cho ban tu nhap captcha tren browser.
+
 ## Luu y
 
 - Pipeline su dung browser cho buoc login/captcha, sau do goi API JSON cho list/detail/export.

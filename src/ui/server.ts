@@ -31,7 +31,7 @@ interface ContinuePayload {
   jobId?: string;
 }
 
-type JobStatus = "running" | "success" | "failed";
+type JobStatus = "running" | "paused" | "success" | "failed";
 
 interface Job {
   id: string;
@@ -1013,20 +1013,26 @@ function html(defaults: UiDefaults): string {
             return;
           }
 
+          if (payload.status === 'paused') {
+            setStatus('Đã dừng flow', 'rounded-full bg-sky-500/20 px-3 py-1 text-xs font-bold text-sky-300');
+            setBusy(null, false);
+            return;
+          }
+
           if (payload.status === 'success') {
             setStatus('Thành công', 'rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300');
           } else {
             setStatus('Thất bại', 'rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300');
           }
 
-          if (payload.status !== 'running') {
+          if (payload.status === 'success' || payload.status === 'failed') {
             setSessionJobId(null);
             setBusy(null, false);
-          }
 
-          if (eventSource) {
-            eventSource.close();
-            eventSource = null;
+            if (eventSource) {
+              eventSource.close();
+              eventSource = null;
+            }
           }
         });
 
@@ -1274,32 +1280,6 @@ function html(defaults: UiDefaults): string {
 </html>`;
 }
 
-/**
- * Kill the whole process tree for a job. The child was spawned `detached`,
- * so it owns a process group whose id equals the child pid; killing the
- * negative pid signals every process in that group (npm, tsx, cli, browser).
- */
-function killJobTree(job: Job, signal: NodeJS.Signals): void {
-  const child = job.child;
-  if (!child || child.killed) {
-    return;
-  }
-  try {
-    if (typeof child.pid === "number") {
-      process.kill(-child.pid, signal);
-    } else {
-      child.kill(signal);
-    }
-  } catch {
-    // Group may already be gone; fall back to a direct kill.
-    try {
-      child.kill(signal);
-    } catch {
-      // ignore
-    }
-  }
-}
-
 function startJob(payload: RunPayload): Job {
   const id = randomId();
   const job: Job = {
@@ -1347,7 +1327,7 @@ function startJob(payload: RunPayload): Job {
   child.on("close", (code) => {
     job.status = job.stopped ? "failed" : code === 0 ? "success" : "failed";
     if (job.stopped) {
-      job.output += "\n[UI] Da dung job theo yeu cau nguoi dung.\n";
+      job.output += "\n[UI] Da dung job theo yeu cau nguoi dung (giu browser mo de thu lai).\n";
     }
     job.finishedAt = Date.now();
     job.child = undefined;
@@ -1470,6 +1450,12 @@ const server = createServer(async (req, res) => {
       return;
     }
 
+    const activeJob = jobs.get(active.jobId);
+    if (activeJob && activeJob.status === "paused") {
+      activeJob.status = "running";
+      activeJob.output += "\n[UI] Tiep tuc flow dang tam dung tu session hien tai.\n";
+    }
+
     addLog("ui-api", "/run signal sent", { jobId: active.jobId, signalFile: active.continueSignalFile });
     await fs.writeFile(active.continueSignalFile, "continue", "utf8");
     writeJson(res, 200, { ok: true, jobId: active.jobId });
@@ -1489,51 +1475,30 @@ const server = createServer(async (req, res) => {
       }
     }
 
-    // Find the running job: by jobId or the latest running one
+    // Find the active job: by jobId or the latest running/paused one
     const job =
       (payload.jobId ? jobs.get(payload.jobId) : undefined) ??
       Array.from(jobs.values())
-        .filter((j) => j.status === "running")
+        .filter((j) => j.status === "running" || j.status === "paused")
         .sort((a, b) => b.startedAt - a.startedAt)[0];
 
-    if (!job || job.status !== "running") {
+    if (!job || (job.status !== "running" && job.status !== "paused")) {
       addLog("ui-api", "/stop no running job", { jobId: payload.jobId });
       writeJson(res, 400, { ok: false, output: "Khong co job dang chay de dung." });
       return;
     }
 
-    addLog("ui-api", "/stop killing job", { jobId: job.id });
+    addLog("ui-api", "/stop pausing job flow", { jobId: job.id });
     job.stopped = true;
 
-    // Clean up session + signal file
-    const session = activeSessions.get(job.id);
-    if (session) {
-      activeSessions.delete(job.id);
-      fs.unlink(session.continueSignalFile).catch(() => undefined);
+    if (job.status === "running") {
+      job.status = "paused";
+      job.output += "\n[UI] Da tam dung flow hien tai theo yeu cau. Browser va session duoc giu nguyen.\n";
     }
 
-    // Kill the whole child process tree (npm -> tsx -> cli -> browser).
-    if (job.child && !job.child.killed) {
-      killJobTree(job, "SIGTERM");
-      // Force kill the tree after a grace period if still alive.
-      setTimeout(() => {
-        if (job.child && !job.child.killed) {
-          killJobTree(job, "SIGKILL");
-        }
-      }, 3000);
-      // Safety net: if the close event never fires (lingering browser),
-      // mark the job finished so the UI unlocks its controls.
-      setTimeout(() => {
-        if (job.status === "running") {
-          job.status = "failed";
-          job.finishedAt = Date.now();
-          job.output += "\n[UI] Job bi ep dung (process khong tu thoat).\n";
-        }
-      }, 5000);
-    } else {
-      // No child handle: mark as failed directly
-      job.status = "failed";
-      job.finishedAt = Date.now();
+    const session = activeSessions.get(job.id);
+    if (session) {
+      await fs.writeFile(session.continueSignalFile, "stop-current-flow", "utf8");
     }
 
     writeJson(res, 200, { ok: true, jobId: job.id });
@@ -1694,7 +1659,7 @@ const server = createServer(async (req, res) => {
       }
 
       sseWrite(res, "status", { status: current.status });
-      if (current.status !== "running") {
+      if (current.status === "success" || current.status === "failed") {
         clearInterval(interval);
         setTimeout(() => res.end(), 50);
       }

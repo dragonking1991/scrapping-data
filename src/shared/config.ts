@@ -11,6 +11,7 @@ export interface AppConfig {
   detailEndpoint: string;
   purchasedEndpoint: string;
   purchasedDetailEndpoint: string;
+  captchaMode: "auto" | "manual";
   captchaMaxAttempts: number;
   tokenCachePath: string;
   requestDelayMs: number;
@@ -82,6 +83,7 @@ export function getConfig(overrides: Partial<AppConfig> = {}): AppConfig {
         : "/api/query/invoices/detail"),
     purchasedEndpoint: process.env.GDT_PURCHASED_ENDPOINT ?? "/api/query/invoices/purchased",
     purchasedDetailEndpoint: process.env.GDT_PURCHASED_DETAIL_ENDPOINT ?? "/api/query/invoices/detail-purchased",
+    captchaMode: (process.env.GDT_CAPTCHA_MODE ?? "auto").toLowerCase() === "manual" ? "manual" : "auto",
     captchaMaxAttempts: readNumber(process.env.GDT_CAPTCHA_MAX_ATTEMPTS, 8),
     tokenCachePath: process.env.GDT_TOKEN_CACHE_PATH ?? path.resolve(process.cwd(), ".token.json"),
     requestDelayMs: readNumber(process.env.GDT_REQUEST_DELAY_MS, 200),

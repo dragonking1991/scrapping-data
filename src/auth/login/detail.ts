@@ -42,6 +42,7 @@ function buildDetailFromApiPayload(payload: unknown): InvoiceDetail {
   const source = nested ?? raw;
   for (const key of [
     "tnmua",
+    "nmtnmua",
     "tnban",
     "nmst",
     "nbmst",
