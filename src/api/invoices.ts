@@ -67,7 +67,44 @@ function extractList(data: ListResponseShape | unknown[]): unknown[] {
   return [];
 }
 
-function detailNames(payload: unknown): string[] {
+function toPercentText(raw: string): string {
+  const v = raw.trim();
+  if (!v) {
+    return "";
+  }
+
+  if (v.endsWith("%")) {
+    return v;
+  }
+
+  const n = Number(v);
+  if (Number.isFinite(n)) {
+    if (n > 0 && n < 1) {
+      return `${(n * 100).toFixed(0)}%`;
+    }
+    return `${n.toFixed(0)}%`;
+  }
+
+  return v;
+}
+
+function formatLineItem(line: Record<string, unknown>): string {
+  const ten = normalize(line.ten);
+  const sluong = normalize(line.sluong);
+  const dvtinh = normalize(line.dvtinh);
+  const dgia = normalize(line.dgia);
+  const thtien = normalize(line.thtien);
+  const ltsuat = normalize(line.ltsuat) || toPercentText(normalize(line.tsuat));
+
+  const fields = [ten, sluong, dvtinh, dgia, thtien, ltsuat];
+  if (fields.every((field) => field === "")) {
+    return "";
+  }
+
+  return fields.join(",");
+}
+
+function detailRows(payload: unknown): string[] {
   if (!payload || typeof payload !== "object") {
     return [];
   }
@@ -81,19 +118,14 @@ function detailNames(payload: unknown): string[] {
     return [];
   }
 
-  return Array.from(
-    new Set(
-      candidates
-        .map((line) => {
-          if (!line || typeof line !== "object") {
-            return "";
-          }
-          const value = (line as Record<string, unknown>).ten;
-          return normalize(value);
-        })
-        .filter(Boolean),
-    ),
-  );
+  return candidates
+    .map((line) => {
+      if (!line || typeof line !== "object") {
+        return "";
+      }
+      return formatLineItem(line as Record<string, unknown>);
+    })
+    .filter(Boolean);
 }
 
 export function invoiceKey(invoice: InvoiceHeader): string {
@@ -229,7 +261,7 @@ export async function getInvoiceItemNames(
     500,
   );
 
-  return detailNames(data);
+  return detailRows(data);
 }
 
 export async function collectInvoiceNameMap(
@@ -283,7 +315,7 @@ export async function collectInvoiceNameMap(
     };
 
     try {
-      const names = await getInvoiceItemNames(
+      const detailLines = await getInvoiceItemNames(
         client,
         invoice,
         options.detailEndpoint,
@@ -293,18 +325,18 @@ export async function collectInvoiceNameMap(
         options.to,
       );
 
-      if (names.length === 0) {
+      if (detailLines.length === 0) {
         metadataByComposite.set(key, baseMetadata);
         metadataByNumber.set(invoice.shdon, baseMetadata);
         failedKeys.set(key, { key, shdon: invoice.shdon });
       } else {
-        const joined = names.join("; ");
+        const joined = detailLines.join("\n");
         byComposite.set(key, joined);
         byNumberOnly.set(invoice.shdon, joined);
 
         const metadata: InvoiceCrawlMetadata = {
           ...baseMetadata,
-          itemCount: names.length,
+          itemCount: detailLines.length,
           status: "success",
         };
         metadataByComposite.set(key, metadata);

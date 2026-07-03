@@ -6,16 +6,56 @@ interface MergeResult {
   output: Buffer;
   unmatchedRows: number;
   matchedRows: number;
+  matchedInvoiceKeys: string[];
+  unmatchedInvoiceKeys: string[];
 }
+
+interface ExtractedInvoiceLike {
+  khhdon?: string;
+  shdon?: string;
+  lineItems?: Array<Record<string, unknown>>;
+  itemNames?: string[];
+}
+
+type ExtractedInvoiceMode = "sold" | "purchased";
+
+interface BuildDetailMapOptions {
+  mode?: ExtractedInvoiceMode;
+}
+
+const DETAIL_HEADER = "Chi tiết hoá đơn";
 
 function normalize(value: unknown): string {
   if (value == null) {
     return "";
   }
 
+  if (typeof value === "object") {
+    const obj = value as { text?: unknown; richText?: Array<{ text?: unknown }> };
+    if (typeof obj.text === "string") {
+      return obj.text
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[đĐ]/g, "d")
+        .toLowerCase()
+        .trim();
+    }
+
+    if (Array.isArray(obj.richText)) {
+      const merged = obj.richText.map((part) => String(part.text ?? "")).join("");
+      return merged
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[đĐ]/g, "d")
+        .toLowerCase()
+        .trim();
+    }
+  }
+
   return String(value)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[đĐ]/g, "d")
     .toLowerCase()
     .trim();
 }
@@ -30,6 +70,212 @@ function cellText(value: ExcelJS.CellValue): string {
   }
 
   return String(value).trim();
+}
+
+function detailCellText(value: unknown): string {
+  if (value == null) {
+    return "";
+  }
+
+  return String(value).trim();
+}
+
+function toPercentText(raw: string): string {
+  const v = raw.trim();
+  if (!v) {
+    return "";
+  }
+
+  if (v.endsWith("%")) {
+    return v;
+  }
+
+  const n = Number(v);
+  if (Number.isFinite(n)) {
+    if (n > 0 && n < 1) {
+      return `${(n * 100).toFixed(0)}%`;
+    }
+    return `${n.toFixed(0)}%`;
+  }
+
+  return v;
+}
+
+function firstNonEmpty(item: Record<string, unknown>, keys: string[]): string {
+  for (const key of keys) {
+    const value = detailCellText(item[key]);
+    if (value) {
+      return value;
+    }
+  }
+  return "";
+}
+
+function normalizeTinhChat(raw: string): string {
+  const v = raw.trim();
+  if (v === "1") {
+    return "Hàng hóa, dịch vụ";
+  }
+  if (v === "4") {
+    return "Ghi chú, diễn giải";
+  }
+  return v;
+}
+
+function normalizeMoney(raw: string): string {
+  const v = raw.trim();
+  if (!v) {
+    return "";
+  }
+
+  const isNegative = v.startsWith("-");
+  const digits = v.replace(/[^0-9]/g, "");
+  if (!digits) {
+    return "";
+  }
+
+  const normalizedDigits = digits.replace(/^0+(?=\d)/, "");
+  const formatted = normalizedDigits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  return isNegative && formatted !== "0" ? `-${formatted}` : formatted;
+}
+
+function normalizeQuantity(raw: string): string {
+  const v = raw.trim().replace(/\s+/g, "");
+  if (!v) {
+    return "";
+  }
+
+  if (/^-?\d+$/.test(v)) {
+    return v;
+  }
+
+  const hasComma = v.includes(",");
+  const hasDot = v.includes(".");
+
+  if (hasComma && hasDot) {
+    const lastComma = v.lastIndexOf(",");
+    const lastDot = v.lastIndexOf(".");
+    const decimalIdx = Math.max(lastComma, lastDot);
+    const intPart = v.slice(0, decimalIdx).replace(/[.,]/g, "");
+    const fracPart = v.slice(decimalIdx + 1).replace(/[.,]/g, "");
+    return fracPart ? `${intPart || "0"}.${fracPart}` : intPart;
+  }
+
+  if (hasComma) {
+    return v.replace(/,/g, ".");
+  }
+
+  return v;
+}
+
+function formatLineItemRecord(item: Record<string, unknown>): string {
+  const ten = detailCellText(item.ten);
+  const sluong = detailCellText(item.sluong);
+  const dvtinh = detailCellText(item.dvtinh);
+  const dgia = detailCellText(item.dgia);
+  const thtien = detailCellText(item.thtien);
+  const ltsuat = detailCellText(item.ltsuat) || toPercentText(detailCellText(item.tsuat));
+
+  const fields = [ten, sluong, dvtinh, dgia, thtien, ltsuat];
+  if (fields.every((field) => field === "")) {
+    return "";
+  }
+
+  return fields.join(",");
+}
+
+function formatPurchasedLineItemRecord(item: Record<string, unknown>): string {
+  const tinhChat = normalizeTinhChat(
+    firstNonEmpty(item, ["Tính chất", "Tinh chat", "tinhchat", "tchat"]),
+  );
+  const ten = firstNonEmpty(item, ["Tên hàng hóa, dịch vụ", "Ten hang hoa, dich vu", "ten"]);
+  const soLuong = normalizeQuantity(firstNonEmpty(item, ["Số lượng", "So luong", "sluong"]));
+  const donViTinh = firstNonEmpty(item, ["Đơn vị tính", "Don vi tinh", "dvtinh"]);
+  const donGia = normalizeMoney(firstNonEmpty(item, ["Đơn giá", "Don gia", "dgia"]));
+  const thanhTien = normalizeMoney(
+    firstNonEmpty(item, ["Thành tiền chưa có thuế GTGT", "Thanh tien chua co thue GTGT", "thtien"]),
+  );
+  const thueSuat =
+    firstNonEmpty(item, ["Thuế suất", "Thue suat", "ltsuat"]) ||
+    toPercentText(firstNonEmpty(item, ["tsuat"]));
+
+  const fields = [tinhChat, ten, soLuong, donViTinh, donGia, thanhTien, thueSuat];
+  if (fields.every((field) => field === "")) {
+    return "";
+  }
+
+  return fields.join(",");
+}
+
+function buildDetailTextFromLineItems(lineItems: Array<Record<string, unknown>>, mode: ExtractedInvoiceMode): string {
+  const formatter = mode === "purchased" ? formatPurchasedLineItemRecord : formatLineItemRecord;
+  return lineItems.map(formatter).filter(Boolean).join("\n");
+}
+
+function formatItemNameAsDetailLine(name: string, mode: ExtractedInvoiceMode): string {
+  const ten = detailCellText(name);
+  if (!ten) {
+    return "";
+  }
+
+  if (mode === "purchased") {
+    // Ordered as: Tinh chat, Ten hang hoa, So luong, Don vi tinh, Don gia, Thanh tien, Thue suat
+    return ["", ten, "", "", "", "", ""].join(",");
+  }
+
+  // Sold format: ten, sluong, dvtinh, dgia, thtien, ltsuat
+  return [ten, "", "", "", "", ""].join(",");
+}
+
+function detectOrCreateDetailColumn(headerRow: ExcelJS.Row): number {
+  let detailCol: number | null = null;
+  let legacyResultCol: number | null = null;
+
+  headerRow.eachCell((cell, col) => {
+    const normalized = normalize(cell.value);
+    if (normalized.includes("chi tiet hoa don") && detailCol == null) {
+      detailCol = col;
+    }
+    if (normalized.includes("ket qua kiem tra hoa don") && legacyResultCol == null) {
+      legacyResultCol = col;
+    }
+  });
+
+  const targetCol = detailCol ?? legacyResultCol ?? (headerRow.cellCount + 1);
+  headerRow.getCell(targetCol).value = DETAIL_HEADER;
+  return targetCol;
+}
+
+export function buildDetailMapFromExtractedInvoices(
+  records: ExtractedInvoiceLike[],
+  options: BuildDetailMapOptions = {},
+): InvoiceNameMap {
+  const mode = options.mode ?? "sold";
+  const byComposite = new Map<string, string>();
+  const byNumberOnly = new Map<string, string>();
+
+  for (const record of records) {
+    const shdon = detailCellText(record.shdon);
+    if (!shdon) {
+      continue;
+    }
+
+    const khhdon = detailCellText(record.khhdon).toUpperCase();
+    const fromLines = buildDetailTextFromLineItems((record.lineItems ?? []).filter(Boolean), mode);
+    const fromNames = (record.itemNames ?? []).map((name) => formatItemNameAsDetailLine(name, mode)).filter(Boolean).join("\n");
+    const detail = fromLines || fromNames;
+
+    if (!detail) {
+      continue;
+    }
+
+    byNumberOnly.set(shdon, detail);
+    if (khhdon) {
+      byComposite.set(`${khhdon}|${shdon}`, detail);
+    }
+  }
+
+  return { byComposite, byNumberOnly };
 }
 
 function detectColumns(headerRow: ExcelJS.Row): { numberCol: number; symbolCol: number | null } {
@@ -83,11 +329,12 @@ export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceName
   const headerRow = sheet.getRow(headerRowIndex);
   const { numberCol, symbolCol } = detectColumns(headerRow);
 
-  const targetCol = headerRow.cellCount + 1;
-  headerRow.getCell(targetCol).value = "Tên hàng hóa, dịch vụ";
+  const targetCol = detectOrCreateDetailColumn(headerRow);
 
   let unmatchedRows = 0;
   let matchedRows = 0;
+  const matchedInvoiceKeys: string[] = [];
+  const unmatchedInvoiceKeys: string[] = [];
 
   for (let rowIndex = headerRowIndex + 1; rowIndex <= sheet.rowCount; rowIndex += 1) {
     const row = sheet.getRow(rowIndex);
@@ -97,16 +344,21 @@ export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceName
     }
 
     const symbol = symbolCol ? cellText(row.getCell(symbolCol).value).trim().toUpperCase() : "";
+    const invoiceKey = symbol ? `${symbol}|${shdon}` : shdon;
     const byComposite = symbol ? map.byComposite.get(`${symbol}|${shdon}`) : undefined;
     const byNumber = map.byNumberOnly.get(shdon);
     const name = byComposite ?? byNumber;
 
     if (name) {
       row.getCell(targetCol).value = name;
+      row.getCell(targetCol).alignment = { wrapText: true, vertical: "top" };
       matchedRows += 1;
+      matchedInvoiceKeys.push(invoiceKey);
     } else {
       row.getCell(targetCol).value = "";
+      row.getCell(targetCol).alignment = { wrapText: true, vertical: "top" };
       unmatchedRows += 1;
+      unmatchedInvoiceKeys.push(invoiceKey);
     }
   }
 
@@ -115,6 +367,8 @@ export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceName
     output: Buffer.from(output),
     unmatchedRows,
     matchedRows,
+    matchedInvoiceKeys,
+    unmatchedInvoiceKeys,
   };
 }
 
@@ -141,23 +395,12 @@ export async function mergeNamesIntoWorkbookWithMetadata(
   const headerRow = sheet.getRow(headerRowIndex);
   const { numberCol, symbolCol } = detectColumns(headerRow);
 
-  const startCol = headerRow.cellCount + 1;
-  const nameCol = startCol;
-  const sourceCol = startCol + 1;
-  const crawledAtCol = startCol + 2;
-  const pageCol = startCol + 3;
-  const itemCountCol = startCol + 4;
-  const statusCol = startCol + 5;
-
-  headerRow.getCell(nameCol).value = "Tên hàng hóa, dịch vụ";
-  headerRow.getCell(sourceCol).value = "Nguon du lieu";
-  headerRow.getCell(crawledAtCol).value = "Thoi diem crawl";
-  headerRow.getCell(pageCol).value = "Trang";
-  headerRow.getCell(itemCountCol).value = "So luong dong hang hoa";
-  headerRow.getCell(statusCol).value = "Tinh trang crawl";
+  const detailCol = detectOrCreateDetailColumn(headerRow);
 
   let unmatchedRows = 0;
   let matchedRows = 0;
+  const matchedInvoiceKeys: string[] = [];
+  const unmatchedInvoiceKeys: string[] = [];
 
   for (let rowIndex = headerRowIndex + 1; rowIndex <= sheet.rowCount; rowIndex += 1) {
     const row = sheet.getRow(rowIndex);
@@ -168,6 +411,7 @@ export async function mergeNamesIntoWorkbookWithMetadata(
 
     const symbol = symbolCol ? cellText(row.getCell(symbolCol).value).trim().toUpperCase() : "";
     const compositeKey = symbol ? `${symbol}|${shdon}` : "";
+    const invoiceKey = symbol ? `${symbol}|${shdon}` : shdon;
     const byComposite = symbol ? map.byComposite.get(compositeKey) : undefined;
     const byNumber = map.byNumberOnly.get(shdon);
     const name = byComposite ?? byNumber;
@@ -177,18 +421,18 @@ export async function mergeNamesIntoWorkbookWithMetadata(
       options.metadata?.byNumberOnly.get(shdon);
 
     if (name) {
-      row.getCell(nameCol).value = name;
+      row.getCell(detailCol).value = name;
+      row.getCell(detailCol).alignment = { wrapText: true, vertical: "top" };
       matchedRows += 1;
+      matchedInvoiceKeys.push(invoiceKey);
     } else {
-      row.getCell(nameCol).value = "";
+      row.getCell(detailCol).value = "";
+      row.getCell(detailCol).alignment = { wrapText: true, vertical: "top" };
       unmatchedRows += 1;
+      unmatchedInvoiceKeys.push(invoiceKey);
     }
 
-    row.getCell(sourceCol).value = metadata?.source ?? "api";
-    row.getCell(crawledAtCol).value = metadata?.crawledAt ?? "";
-    row.getCell(pageCol).value = metadata?.page ?? "";
-    row.getCell(itemCountCol).value = metadata?.itemCount ?? 0;
-    row.getCell(statusCol).value = metadata?.status ?? (name ? "success" : "failed");
+    void metadata;
   }
 
   const output = await workbook.xlsx.writeBuffer();
@@ -196,5 +440,7 @@ export async function mergeNamesIntoWorkbookWithMetadata(
     output: Buffer.from(output),
     unmatchedRows,
     matchedRows,
+    matchedInvoiceKeys,
+    unmatchedInvoiceKeys,
   };
 }

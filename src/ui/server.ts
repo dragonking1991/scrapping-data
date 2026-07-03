@@ -1,16 +1,17 @@
 import "dotenv/config";
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { promises as fs } from "node:fs";
-import { join } from "node:path";
+import { basename, extname, join } from "node:path";
 import { spawn, type ChildProcess } from "node:child_process";
 import { URL } from "node:url";
+import { buildDetailMapFromExtractedInvoices, mergeNamesIntoWorkbookWithMetadata } from "../export/merge.js";
 interface UiDefaults {
   out: string;
   direction: "sold" | "purchase";
 }
 
 interface RunPayload {
-  out: string;
+  out?: string;
   direction: "sold" | "purchase";
   verifyOnly?: boolean;
   relogin?: boolean;
@@ -20,7 +21,7 @@ interface RunPayload {
 
 interface StartPayload {
   direction: "sold" | "purchase";
-  out: string;
+  out?: string;
   verifyOnly?: boolean;
   manualFirst?: boolean;
   autoExportXml?: boolean;
@@ -42,8 +43,363 @@ interface Job {
   stopped?: boolean;
 }
 
+type AggregateFileStatus = "pending" | "running" | "success" | "failed" | "skipped";
+type AggregateJobStatus = "running" | "success" | "failed";
+type RescanFileStatus = "pending" | "running" | "success" | "failed";
+type RescanJobStatus = "running" | "success" | "failed";
+
+interface AggregateFileProgress {
+  status: AggregateFileStatus;
+  message: string;
+  matchedRows: number;
+  unmatchedRows: number;
+  matchedInvoiceKeys: string[];
+  unmatchedInvoiceKeys: string[];
+  outputPath?: string;
+}
+
+interface AggregateJob {
+  id: string;
+  status: AggregateJobStatus;
+  startedAt: number;
+  finishedAt?: number;
+  files: {
+    sold: AggregateFileProgress;
+    purchased: AggregateFileProgress;
+  };
+}
+
+interface RescanFileProgress {
+  status: RescanFileStatus;
+  queued: number;
+  processing: number;
+  success: number;
+  failed: number;
+  skipped: number;
+  currentKey?: string;
+  message: string;
+}
+
+interface RescanJob {
+  id: string;
+  sourceJobId: string;
+  status: RescanJobStatus;
+  startedAt: number;
+  finishedAt?: number;
+  files: {
+    sold: RescanFileProgress;
+    purchased: RescanFileProgress;
+  };
+}
+
 const jobs = new Map<string, Job>();
 const activeSessions = new Map<string, { jobId: string; continueSignalFile: string }>();
+const aggregateJobs = new Map<string, AggregateJob>();
+const rescanJobs = new Map<string, RescanJob>();
+const CONTINUE_READY_MARKER =
+  "Da san sang. Vui long bam Lay thong tin trong UI de tiep tuc crawl tu cung browser session.";
+
+async function pathExists(path: string): Promise<boolean> {
+  try {
+    await fs.access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function createAggregateJob(): AggregateJob {
+  const id = randomId();
+  const blank: AggregateFileProgress = {
+    status: "pending",
+    message: "Dang cho",
+    matchedRows: 0,
+    unmatchedRows: 0,
+    matchedInvoiceKeys: [],
+    unmatchedInvoiceKeys: [],
+  };
+  const job: AggregateJob = {
+    id,
+    status: "running",
+    startedAt: Date.now(),
+    files: {
+      sold: { ...blank },
+      purchased: { ...blank },
+    },
+  };
+  aggregateJobs.set(id, job);
+  return job;
+}
+
+function trimAggregateJobs(limit = 20): void {
+  const all = Array.from(aggregateJobs.values()).sort((a, b) => b.startedAt - a.startedAt);
+  for (let i = limit; i < all.length; i += 1) {
+    const stale = all[i];
+    if (stale) {
+      aggregateJobs.delete(stale.id);
+    }
+  }
+}
+
+function createRescanJob(sourceJobId: string): RescanJob {
+  const id = randomId();
+  const blank: RescanFileProgress = {
+    status: "pending",
+    queued: 0,
+    processing: 0,
+    success: 0,
+    failed: 0,
+    skipped: 0,
+    message: "Dang cho",
+  };
+  const job: RescanJob = {
+    id,
+    sourceJobId,
+    status: "running",
+    startedAt: Date.now(),
+    files: {
+      sold: { ...blank },
+      purchased: { ...blank },
+    },
+  };
+  rescanJobs.set(id, job);
+  return job;
+}
+
+function trimRescanJobs(limit = 20): void {
+  const all = Array.from(rescanJobs.values()).sort((a, b) => b.startedAt - a.startedAt);
+  for (let i = limit; i < all.length; i += 1) {
+    const stale = all[i];
+    if (stale) {
+      rescanJobs.delete(stale.id);
+    }
+  }
+}
+
+function parseRescanStatusLines(chunk: string): Array<{
+  dataset: "sold" | "purchased";
+  status: RescanFileStatus;
+  queued: number;
+  processing: number;
+  success: number;
+  failed: number;
+  skipped: number;
+  currentKey?: string;
+  message?: string;
+}> {
+  const entries: Array<{
+    dataset: "sold" | "purchased";
+    status: RescanFileStatus;
+    queued: number;
+    processing: number;
+    success: number;
+    failed: number;
+    skipped: number;
+    currentKey?: string;
+    message?: string;
+  }> = [];
+
+  for (const line of chunk.split(/\r?\n/)) {
+    const marker = line.indexOf("[RESCAN-STATUS]");
+    if (marker < 0) {
+      continue;
+    }
+    const raw = line.slice(marker + "[RESCAN-STATUS]".length).trim();
+    if (!raw) {
+      continue;
+    }
+
+    try {
+      const parsed = JSON.parse(raw) as Record<string, unknown>;
+      const dataset = parsed.dataset === "purchased" ? "purchased" : parsed.dataset === "sold" ? "sold" : null;
+      const status =
+        parsed.status === "running" || parsed.status === "success" || parsed.status === "failed"
+          ? parsed.status
+          : null;
+      if (!dataset || !status) {
+        continue;
+      }
+
+      entries.push({
+        dataset,
+        status,
+        queued: Number(parsed.queued ?? 0) || 0,
+        processing: Number(parsed.processing ?? 0) || 0,
+        success: Number(parsed.success ?? 0) || 0,
+        failed: Number(parsed.failed ?? 0) || 0,
+        skipped: Number(parsed.skipped ?? 0) || 0,
+        currentKey: typeof parsed.currentKey === "string" ? parsed.currentKey : undefined,
+        message: typeof parsed.message === "string" ? parsed.message : undefined,
+      });
+    } catch {
+      // ignore malformed status lines
+    }
+  }
+
+  return entries;
+}
+
+function applyRescanProgress(
+  job: RescanJob,
+  entry: {
+    dataset: "sold" | "purchased";
+    status: RescanFileStatus;
+    queued: number;
+    processing: number;
+    success: number;
+    failed: number;
+    skipped: number;
+    currentKey?: string;
+    message?: string;
+  },
+): void {
+  const slot = job.files[entry.dataset];
+  slot.status = entry.status;
+  slot.queued = entry.queued;
+  slot.processing = entry.processing;
+  slot.success = entry.success;
+  slot.failed = entry.failed;
+  slot.skipped = entry.skipped;
+  slot.currentKey = entry.currentKey;
+  slot.message = entry.message ?? slot.message;
+}
+
+async function runRescanJob(job: RescanJob, session: { jobId: string; continueSignalFile: string }): Promise<void> {
+  const sourceJob = jobs.get(session.jobId);
+  if (!sourceJob || sourceJob.status !== "running") {
+    job.status = "failed";
+    job.finishedAt = Date.now();
+    job.files.sold.status = "failed";
+    job.files.purchased.status = "failed";
+    job.files.sold.message = "Session browser khong con hoat dong";
+    job.files.purchased.message = "Session browser khong con hoat dong";
+    trimRescanJobs();
+    return;
+  }
+
+  let cursor = sourceJob.output.length;
+  await fs.writeFile(session.continueSignalFile, "rescan-empty-line-items", "utf8");
+
+  const timeoutMs = Number(process.env.GDT_RESCAN_TIMEOUT_MS ?? 7200000);
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeoutMs) {
+    const current = jobs.get(session.jobId);
+    if (!current) {
+      break;
+    }
+
+    if (current.output.length > cursor) {
+      const chunk = current.output.slice(cursor);
+      cursor = current.output.length;
+      const entries = parseRescanStatusLines(chunk);
+      for (const entry of entries) {
+        applyRescanProgress(job, entry);
+      }
+    }
+
+    if (current.status !== "running") {
+      break;
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 350));
+  }
+
+  const sold = job.files.sold;
+  const purchased = job.files.purchased;
+  const receivedAnyStatus =
+    sold.status !== "pending" ||
+    purchased.status !== "pending" ||
+    sold.message !== "Dang cho" ||
+    purchased.message !== "Dang cho";
+
+  if (!receivedAnyStatus) {
+    sold.status = "failed";
+    purchased.status = "failed";
+    sold.message = sold.message || "Khong nhan duoc tien do ra lai tu session";
+    purchased.message = purchased.message || "Khong nhan duoc tien do ra lai tu session";
+    job.status = "failed";
+  } else {
+    const anyFailed = sold.failed > 0 || purchased.failed > 0 || sold.status === "failed" || purchased.status === "failed";
+    job.status = anyFailed ? "failed" : "success";
+  }
+
+  job.finishedAt = Date.now();
+  trimRescanJobs();
+}
+
+async function processAggregateFile(
+  job: AggregateJob,
+  key: "sold" | "purchased",
+  jsonPath: string,
+  sourceXlsxPath: string,
+  outputDir: string,
+): Promise<void> {
+  const slot = job.files[key];
+  slot.status = "running";
+  slot.message = "Dang tong hop...";
+  slot.matchedRows = 0;
+  slot.unmatchedRows = 0;
+  slot.matchedInvoiceKeys = [];
+  slot.unmatchedInvoiceKeys = [];
+  slot.outputPath = undefined;
+
+  const hasJson = await pathExists(jsonPath);
+  const hasXlsx = await pathExists(sourceXlsxPath);
+  if (!hasJson || !hasXlsx) {
+    slot.status = "skipped";
+    slot.message = !hasJson && !hasXlsx ? "Khong tim thay JSON va XLSX" : !hasJson ? "Khong tim thay file JSON" : "Khong tim thay file XLSX";
+    return;
+  }
+
+  try {
+    const rawJson = await fs.readFile(jsonPath, "utf8");
+    const parsed = JSON.parse(rawJson);
+    if (!Array.isArray(parsed)) {
+      throw new Error("File JSON khong phai array");
+    }
+
+    const detailMap = buildDetailMapFromExtractedInvoices(parsed as Array<Record<string, unknown>>, {
+      mode: key === "purchased" ? "purchased" : "sold",
+    });
+    const xlsxBuffer = await fs.readFile(sourceXlsxPath);
+    const merged = await mergeNamesIntoWorkbookWithMetadata(xlsxBuffer, detailMap);
+    await fs.mkdir(outputDir, { recursive: true });
+    const outputFileName = `${basename(sourceXlsxPath, extname(sourceXlsxPath))}_merged${extname(sourceXlsxPath)}`;
+    const outputPath = join(outputDir, outputFileName);
+    await fs.writeFile(outputPath, merged.output);
+
+    slot.status = "success";
+    slot.message = `Da xuat file moi: ${outputPath} (${merged.matchedRows} khop, ${merged.unmatchedRows} khong khop)`;
+    slot.matchedRows = merged.matchedRows;
+    slot.unmatchedRows = merged.unmatchedRows;
+    slot.matchedInvoiceKeys = merged.matchedInvoiceKeys;
+    slot.unmatchedInvoiceKeys = merged.unmatchedInvoiceKeys;
+    slot.outputPath = outputPath;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    slot.status = "failed";
+    slot.message = message.slice(0, 200);
+  }
+}
+
+async function runAggregateJob(job: AggregateJob): Promise<void> {
+  const soldJson = join(process.cwd(), ".gdt-xml-export", "hd_sold.json");
+  const purchasedJson = join(process.cwd(), ".gdt-xml-export", "hd_purchased.json");
+  const soldXlsx = join(process.cwd(), "src", "xlsx", "hd_sold.xlsx");
+  const purchasedXlsx = join(process.cwd(), "src", "xlsx", "hd_purchased.xlsx");
+  const outputDir = join(process.cwd(), "gdt-aggregated-xlsx");
+
+  await processAggregateFile(job, "sold", soldJson, soldXlsx, outputDir);
+  await processAggregateFile(job, "purchased", purchasedJson, purchasedXlsx, outputDir);
+
+  const statuses = [job.files.sold.status, job.files.purchased.status];
+  const hasFailed = statuses.includes("failed");
+  const hasSuccess = statuses.includes("success");
+  job.status = hasFailed ? "failed" : hasSuccess ? "success" : "failed";
+  job.finishedAt = Date.now();
+  trimAggregateJobs();
+}
 
 function parseArgValue(flag: string): string | undefined {
   const args = process.argv.slice(2);
@@ -58,6 +414,10 @@ function parseArgValue(flag: string): string | undefined {
   }
 
   return undefined;
+}
+
+function getDefaultOutPath(): string {
+  return parseArgValue("--out") ?? "./DANH-SACH-HOA-DON.xlsx";
 }
 
 function readBody(req: IncomingMessage): Promise<string> {
@@ -112,20 +472,12 @@ function validatePayload(payload: RunPayload): string | null {
     return "Loai hoa don khong hop le.";
   }
 
-  if (!payload.verifyOnly && !payload.out.trim()) {
-    return "Duong dan out khong duoc de trong khi chay pipeline.";
-  }
-
   return null;
 }
 
 function validateStartPayload(payload: StartPayload): string | null {
   if (!["sold", "purchase"].includes(payload.direction)) {
     return "Loai hoa don khong hop le.";
-  }
-
-  if (!payload.verifyOnly && !payload.out.trim()) {
-    return "Duong dan out khong duoc de trong khi chay pipeline.";
   }
 
   return null;
@@ -167,24 +519,8 @@ function html(defaults: UiDefaults): string {
             </div>
 
             <div>
-              <label for="out" class="mb-1 block text-sm font-semibold text-slate-700">File đầu ra (.xlsx)</label>
-              <input id="out" name="out" value="${defaults.out}" class="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-base outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-200" placeholder="./DANH-SACH-HOA-DON.xlsx" />
+              <p class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">Dùng cấu hình mặc định của UI. File xuất sẽ ghi ra <span class="font-semibold text-slate-800">${defaults.out}</span> và chạy ở chế độ manual-first.</p>
             </div>
-
-            <label class="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium">
-              <input id="verifyOnly" name="verifyOnly" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500" />
-              Chỉ verify endpoint (không ghi file)
-            </label>
-
-            <label class="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium">
-              <input id="manualFirst" name="manualFirst" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500" />
-              Manual-first (mo browser, doi ban thao tac xong roi moi crawl)
-            </label>
-
-            <label class="flex items-center gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-medium">
-              <input id="autoExportXml" name="autoExportXml" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" />
-              Xem từng hóa đơn &amp; ghi lại Tên hàng hóa, dịch vụ (tất cả trang)
-            </label>
 
             <div class="grid gap-3 sm:grid-cols-2">
               <button type="button" id="startBtn" class="min-h-12 rounded-xl border border-amber-600 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800 transition hover:bg-amber-100">Bắt đầu</button>
@@ -192,7 +528,39 @@ function html(defaults: UiDefaults): string {
             </div>
 
             <div class="grid gap-3">
+              <button type="button" id="rescanBtn" class="min-h-12 rounded-xl border border-teal-500 bg-teal-50 px-4 py-3 text-sm font-bold text-teal-800 transition hover:bg-teal-100">Rà lại lineItems rỗng (hd_sold + hd_purchased)</button>
+              <div class="rounded-xl border border-teal-200 bg-teal-50/60 p-3 text-xs text-slate-700">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold">Rescan hd_sold.json</span>
+                  <span id="rescanSoldStatus" class="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700">Chưa chạy</span>
+                </div>
+                <p id="rescanSoldMsg" class="mt-1 text-slate-600">Chưa có trạng thái.</p>
+                <div class="mt-2 flex items-center justify-between">
+                  <span class="font-semibold">Rescan hd_purchased.json</span>
+                  <span id="rescanPurchasedStatus" class="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700">Chưa chạy</span>
+                </div>
+                <p id="rescanPurchasedMsg" class="mt-1 text-slate-600">Chưa có trạng thái.</p>
+              </div>
+            </div>
+
+            <div class="grid gap-3">
               <button type="button" id="stopBtn" class="min-h-12 rounded-xl border border-rose-500 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 transition hover:bg-rose-100">⏹ Dừng</button>
+            </div>
+
+            <div class="grid gap-3">
+              <button type="button" id="aggregateBtn" class="min-h-12 rounded-xl border border-indigo-500 bg-indigo-50 px-4 py-3 text-sm font-bold text-indigo-800 transition hover:bg-indigo-100">Tổng hợp hoá đơn (hd_sold + hd_purchased)</button>
+              <div class="rounded-xl border border-indigo-200 bg-indigo-50/60 p-3 text-xs text-slate-700">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold">hd_sold.xlsx</span>
+                  <span id="aggSoldStatus" class="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700">Chưa chạy</span>
+                </div>
+                <p id="aggSoldMsg" class="mt-1 text-slate-600">Chưa có trạng thái.</p>
+                <div class="mt-2 flex items-center justify-between">
+                  <span class="font-semibold">hd_purchased.xlsx</span>
+                  <span id="aggPurchasedStatus" class="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700">Chưa chạy</span>
+                </div>
+                <p id="aggPurchasedMsg" class="mt-1 text-slate-600">Chưa có trạng thái.</p>
+              </div>
             </div>
 
             <div class="grid gap-3 sm:grid-cols-2">
@@ -234,11 +602,17 @@ function html(defaults: UiDefaults): string {
       const startBtn = document.getElementById('startBtn');
       const runBtn = document.getElementById('runBtn');
       const stopBtn = document.getElementById('stopBtn');
+      const aggregateBtn = document.getElementById('aggregateBtn');
+      const rescanBtn = document.getElementById('rescanBtn');
       const sessionSelect = document.getElementById('sessionSelect');
-      const outField = document.getElementById('out');
-      const verifyOnlyField = document.getElementById('verifyOnly');
-      const manualFirstField = document.getElementById('manualFirst');
-      const autoExportXmlField = document.getElementById('autoExportXml');
+      const aggSoldStatus = document.getElementById('aggSoldStatus');
+      const aggSoldMsg = document.getElementById('aggSoldMsg');
+      const aggPurchasedStatus = document.getElementById('aggPurchasedStatus');
+      const aggPurchasedMsg = document.getElementById('aggPurchasedMsg');
+      const rescanSoldStatus = document.getElementById('rescanSoldStatus');
+      const rescanSoldMsg = document.getElementById('rescanSoldMsg');
+      const rescanPurchasedStatus = document.getElementById('rescanPurchasedStatus');
+      const rescanPurchasedMsg = document.getElementById('rescanPurchasedMsg');
 
       const eventTimeline = document.getElementById('eventTimeline');
       const clearEventsBtn = document.getElementById('clearEvents');
@@ -334,20 +708,23 @@ function html(defaults: UiDefaults): string {
 
       const startBtnDefaultText = startBtn.textContent;
       const runBtnDefaultText = runBtn.textContent;
+      const aggregateBtnDefaultText = aggregateBtn ? aggregateBtn.textContent : 'Tổng hợp hoá đơn';
+      const rescanBtnDefaultText = rescanBtn ? rescanBtn.textContent : 'Rà lại';
       const ACTIVE_JOB_STORAGE_KEY = 'gdt-active-job-id';
+      const DEFAULT_OUT = ${JSON.stringify(defaults.out)};
       let isBusy = false;
       let hasSession = false;
+      let aggregateRunning = false;
+      let rescanRunning = false;
 
       function applyControlState() {
         startBtn.disabled = isBusy;
         runBtn.disabled = isBusy || !hasSession;
         reloginBtn.disabled = isBusy || !hasSession;
+        if (aggregateBtn) aggregateBtn.disabled = isBusy || aggregateRunning;
+        if (rescanBtn) rescanBtn.disabled = isBusy || !hasSession || rescanRunning;
         if (stopBtn) stopBtn.disabled = !isBusy;
         if (sessionSelect) sessionSelect.disabled = isBusy;
-        outField.disabled = isBusy;
-        verifyOnlyField.disabled = isBusy;
-        manualFirstField.disabled = isBusy;
-        if (autoExportXmlField) autoExportXmlField.disabled = isBusy;
 
         const toggle = (el, off) => {
           if (off) {
@@ -360,6 +737,8 @@ function html(defaults: UiDefaults): string {
         toggle(startBtn, startBtn.disabled);
         toggle(runBtn, runBtn.disabled);
         toggle(reloginBtn, reloginBtn.disabled);
+        if (aggregateBtn) toggle(aggregateBtn, aggregateBtn.disabled);
+        if (rescanBtn) toggle(rescanBtn, rescanBtn.disabled);
         if (stopBtn) toggle(stopBtn, stopBtn.disabled);
       }
 
@@ -436,6 +815,153 @@ function html(defaults: UiDefaults): string {
       function setLog(text) {
         log.textContent = text;
         log.scrollTop = log.scrollHeight;
+      }
+
+      function statusBadgeClass(kind) {
+        if (kind === 'running') return 'rounded-full bg-amber-500/20 px-2 py-0.5 font-bold text-amber-700';
+        if (kind === 'success') return 'rounded-full bg-emerald-500/20 px-2 py-0.5 font-bold text-emerald-700';
+        if (kind === 'failed') return 'rounded-full bg-rose-500/20 px-2 py-0.5 font-bold text-rose-700';
+        if (kind === 'skipped') return 'rounded-full bg-slate-400/20 px-2 py-0.5 font-bold text-slate-700';
+        return 'rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700';
+      }
+
+      function setAggregateFileStatus(target, status, message) {
+        const badge = target === 'sold' ? aggSoldStatus : aggPurchasedStatus;
+        const msg = target === 'sold' ? aggSoldMsg : aggPurchasedMsg;
+        if (!badge || !msg) return;
+        const labelMap = {
+          pending: 'Chưa chạy',
+          running: 'Đang chạy',
+          success: 'Thành công',
+          failed: 'Thất bại',
+          skipped: 'Bỏ qua',
+        };
+        badge.textContent = labelMap[status] || 'Chưa chạy';
+        badge.className = statusBadgeClass(status);
+        msg.textContent = message || 'Không có thông tin.';
+      }
+
+      function setAggregateRunning(running) {
+        aggregateRunning = running;
+        if (aggregateBtn) {
+          aggregateBtn.textContent = running ? 'Đang tổng hợp...' : aggregateBtnDefaultText;
+        }
+        applyControlState();
+      }
+
+      function setRescanFileStatus(target, status, message, counters) {
+        const badge = target === 'sold' ? rescanSoldStatus : rescanPurchasedStatus;
+        const msg = target === 'sold' ? rescanSoldMsg : rescanPurchasedMsg;
+        if (!badge || !msg) return;
+        const labelMap = {
+          pending: 'Chưa chạy',
+          running: 'Đang chạy',
+          success: 'Thành công',
+          failed: 'Thất bại',
+        };
+        badge.textContent = labelMap[status] || 'Chưa chạy';
+        badge.className = statusBadgeClass(status);
+
+        const detail = counters
+          ? ' | queued=' + (counters.queued || 0) +
+            ', processing=' + (counters.processing || 0) +
+            ', success=' + (counters.success || 0) +
+            ', failed=' + (counters.failed || 0) +
+            ', skipped=' + (counters.skipped || 0)
+          : '';
+        msg.textContent = (message || 'Không có thông tin.') + detail;
+      }
+
+      function setRescanRunning(running) {
+        rescanRunning = running;
+        if (rescanBtn) {
+          rescanBtn.textContent = running ? 'Đang rà lại...' : rescanBtnDefaultText;
+        }
+        applyControlState();
+      }
+
+      async function pollRescanStatus(jobId) {
+        try {
+          const res = await fetch('/rescan-status?jobId=' + encodeURIComponent(jobId));
+          const data = await res.json();
+          if (!data.ok || !data.job) {
+            setRescanRunning(false);
+            return;
+          }
+
+          const files = data.job.files || {};
+          setRescanFileStatus('sold', files.sold?.status || 'pending', files.sold?.message || 'Chưa có trạng thái.', files.sold);
+          setRescanFileStatus(
+            'purchased',
+            files.purchased?.status || 'pending',
+            files.purchased?.message || 'Chưa có trạng thái.',
+            files.purchased,
+          );
+
+          if (data.job.status === 'running') {
+            setTimeout(() => pollRescanStatus(jobId), 700);
+            return;
+          }
+
+          setRescanRunning(false);
+          const summary = data.job.status === 'success' ? 'Ra lai lineItems hoan tat thanh cong.\\n' : 'Ra lai lineItems hoan tat, co loi.\\n';
+          log.textContent += '[RESCAN] ' + summary;
+          log.scrollTop = log.scrollHeight;
+        } catch (error) {
+          setRescanRunning(false);
+          log.textContent += '[RESCAN] Loi khi lay trang thai ra lai: ' + String(error) + '\\n';
+          log.scrollTop = log.scrollHeight;
+        }
+      }
+
+      async function pollAggregateStatus(jobId) {
+        try {
+          const res = await fetch('/aggregate-status?jobId=' + encodeURIComponent(jobId));
+          const data = await res.json();
+          if (!data.ok || !data.job) {
+            setAggregateRunning(false);
+            return;
+          }
+
+          const files = data.job.files || {};
+          setAggregateFileStatus('sold', files.sold?.status || 'pending', files.sold?.message || 'Chưa có trạng thái.');
+          setAggregateFileStatus(
+            'purchased',
+            files.purchased?.status || 'pending',
+            files.purchased?.message || 'Chưa có trạng thái.',
+          );
+
+          if (data.job.status === 'running') {
+            setTimeout(() => pollAggregateStatus(jobId), 700);
+            return;
+          }
+
+          setAggregateRunning(false);
+          const summary = data.job.status === 'success' ? 'Tong hop hoa don thanh cong.\\n' : 'Tong hop hoa don hoan tat, co file loi.\\n';
+          log.textContent += '[AGG] ' + summary;
+          const fileNames = ['sold', 'purchased'];
+          fileNames.forEach((name) => {
+            const fileData = files[name] || {};
+            const matched = Array.isArray(fileData.matchedInvoiceKeys) ? fileData.matchedInvoiceKeys : [];
+            const unmatched = Array.isArray(fileData.unmatchedInvoiceKeys) ? fileData.unmatchedInvoiceKeys : [];
+            const lineHeader = '[AGG][' + name + '] matched=' + matched.length + ', unmatched=' + unmatched.length + '\\n';
+            log.textContent += lineHeader;
+            if (fileData.outputPath) {
+              log.textContent += '[AGG][' + name + '] file moi: ' + fileData.outputPath + '\\n';
+            }
+            if (matched.length) {
+              log.textContent += '[AGG][' + name + '] khop: ' + matched.join(', ') + '\\n';
+            }
+            if (unmatched.length) {
+              log.textContent += '[AGG][' + name + '] khong khop: ' + unmatched.join(', ') + '\\n';
+            }
+          });
+          log.scrollTop = log.scrollHeight;
+        } catch (error) {
+          setAggregateRunning(false);
+          log.textContent += '[AGG] Loi khi lay trang thai tong hop: ' + String(error) + '\\n';
+          log.scrollTop = log.scrollHeight;
+        }
       }
 
       let eventSource = null;
@@ -517,9 +1043,9 @@ function html(defaults: UiDefaults): string {
       document.getElementById('exportLogs')?.addEventListener('click', () => {
         const link = document.createElement('a');
         link.href = '/export-logs';
-        link.download = 'gdt-session-' + Date.now() + '.jsonl';
+        link.download = 'invoice-items-' + Date.now() + '.json';
         link.click();
-        setLog('Log hien tai da duoc tai xuong.\\n');
+        setLog('Da xuat du lieu hien tai theo dinh dang invoice-items.json.\\n');
       });
 
       document.getElementById('viewLogFiles')?.addEventListener('click', async () => {
@@ -559,10 +1085,10 @@ function html(defaults: UiDefaults): string {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               direction,
-              out: String(document.getElementById('out').value || ''),
-              verifyOnly: document.getElementById('verifyOnly').checked,
-              manualFirst: document.getElementById('manualFirst').checked,
-              autoExportXml: document.getElementById('autoExportXml').checked,
+              out: DEFAULT_OUT,
+              verifyOnly: false,
+              manualFirst: true,
+              autoExportXml: true,
             }),
           });
           const data = await res.json();
@@ -636,6 +1162,86 @@ function html(defaults: UiDefaults): string {
         await continueJob();
       });
 
+      if (aggregateBtn) {
+        aggregateBtn.addEventListener('click', async () => {
+          if (isBusy || aggregateRunning) {
+            return;
+          }
+
+          setAggregateRunning(true);
+          setAggregateFileStatus('sold', 'running', 'Dang cho xu ly...');
+          setAggregateFileStatus('purchased', 'running', 'Dang cho xu ly...');
+          try {
+            const res = await fetch('/aggregate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+            });
+            const data = await res.json();
+            if (!data.ok || !data.jobId) {
+              setAggregateRunning(false);
+              setAggregateFileStatus('sold', 'failed', data.output || 'Khong tao duoc job tong hop');
+              setAggregateFileStatus('purchased', 'failed', data.output || 'Khong tao duoc job tong hop');
+              return;
+            }
+            pollAggregateStatus(data.jobId);
+          } catch (error) {
+            setAggregateRunning(false);
+            setAggregateFileStatus('sold', 'failed', String(error));
+            setAggregateFileStatus('purchased', 'failed', String(error));
+          }
+        });
+      }
+
+      if (rescanBtn) {
+        rescanBtn.addEventListener('click', async () => {
+          if (isBusy || rescanRunning || !hasSession) {
+            return;
+          }
+
+          resetEventTimeline();
+          setRescanRunning(true);
+          setBusy('run', true);
+          setStatus('Đang rà lại', 'rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300');
+          setRescanFileStatus('sold', 'running', 'Dang cho xu ly...', null);
+          setRescanFileStatus('purchased', 'running', 'Dang cho xu ly...', null);
+
+          try {
+            const activeJobId = currentJobId || (sessionSelect ? sessionSelect.value : '');
+            if (!activeJobId) {
+              setRescanRunning(false);
+              setBusy(null, false);
+              setRescanFileStatus('sold', 'failed', 'Khong co session browser dang mo.', null);
+              setRescanFileStatus('purchased', 'failed', 'Khong co session browser dang mo.', null);
+              return;
+            }
+
+            attachJobEvents(activeJobId);
+            const res = await fetch('/rescan', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ jobId: activeJobId }),
+            });
+            const data = await res.json();
+            if (!data.ok || !data.jobId) {
+              setRescanRunning(false);
+              setBusy(null, false);
+              setStatus('Thất bại', 'rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300');
+              setRescanFileStatus('sold', 'failed', data.output || 'Khong tao duoc job ra lai', null);
+              setRescanFileStatus('purchased', 'failed', data.output || 'Khong tao duoc job ra lai', null);
+              return;
+            }
+
+            pollRescanStatus(data.jobId);
+          } catch (error) {
+            setRescanRunning(false);
+            setBusy(null, false);
+            setStatus('Lỗi', 'rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300');
+            setRescanFileStatus('sold', 'failed', String(error), null);
+            setRescanFileStatus('purchased', 'failed', String(error), null);
+          }
+        });
+      }
+
       if (stopBtn) {
         stopBtn.addEventListener('click', async () => {
           if (!isBusy) {
@@ -708,11 +1314,12 @@ function startJob(payload: RunPayload): Job {
 
   const continueSignalFile = join(process.cwd(), `.gdt-continue-${id}.signal`);
   const args = ["run", "dev:cli", "--", "--direction", payload.direction, "--manual-first", "--continue-signal-file", continueSignalFile];
+  const outPath = payload.out?.trim() || getDefaultOutPath();
 
   if (payload.verifyOnly) {
     args.push("--verify-only");
   } else {
-    args.push("--out", payload.out);
+    args.push("--out", outPath);
   }
 
   if (payload.autoExportXml) {
@@ -755,7 +1362,7 @@ function startJob(payload: RunPayload): Job {
 }
 
 const defaults: UiDefaults = {
-  out: parseArgValue("--out") ?? "./DANH-SACH-HOA-DON.xlsx",
+  out: getDefaultOutPath(),
   direction: (parseArgValue("--direction") as "sold" | "purchase" | undefined) ?? "sold",
 };
 
@@ -933,6 +1540,129 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  if (req.method === "POST" && url.pathname === "/aggregate") {
+    const running = Array.from(aggregateJobs.values()).find((job) => job.status === "running");
+    if (running) {
+      writeJson(res, 200, { ok: true, jobId: running.id });
+      return;
+    }
+
+    const job = createAggregateJob();
+    void runAggregateJob(job);
+    writeJson(res, 200, { ok: true, jobId: job.id });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/rescan") {
+    const raw = await readBody(req);
+    let payload: ContinuePayload = {};
+
+    if (raw.trim()) {
+      try {
+        payload = JSON.parse(raw) as ContinuePayload;
+      } catch {
+        writeJson(res, 400, { ok: false, output: "JSON khong hop le" });
+        return;
+      }
+    }
+
+    const session =
+      (payload.jobId ? activeSessions.get(payload.jobId) : undefined) ??
+      Array.from(activeSessions.values()).at(-1);
+
+    if (!session) {
+      writeJson(res, 400, {
+        ok: false,
+        output: "Khong tim thay session browser dang mo. Vui long bam Bat dau truoc.",
+      });
+      return;
+    }
+
+    const soldJson = join(process.cwd(), ".gdt-xml-export", "hd_sold.json");
+    const purchasedJson = join(process.cwd(), ".gdt-xml-export", "hd_purchased.json");
+    const hasSold = await pathExists(soldJson);
+    const hasPurchased = await pathExists(purchasedJson);
+    if (!hasSold || !hasPurchased) {
+      writeJson(res, 400, {
+        ok: false,
+        output: "Thieu file nguon .gdt-xml-export/hd_sold.json hoac hd_purchased.json",
+      });
+      return;
+    }
+
+    const running = Array.from(rescanJobs.values()).find((job) => job.status === "running" && job.sourceJobId === session.jobId);
+    if (running) {
+      writeJson(res, 200, { ok: true, jobId: running.id, sourceJobId: running.sourceJobId });
+      return;
+    }
+
+    const sourceJob = jobs.get(session.jobId);
+    if (!sourceJob || sourceJob.status !== "running") {
+      writeJson(res, 400, {
+        ok: false,
+        output: "Session browser khong con hoat dong. Vui long bam Bat dau de mo session moi.",
+      });
+      return;
+    }
+
+    if (!sourceJob.output.includes(CONTINUE_READY_MARKER)) {
+      writeJson(res, 409, {
+        ok: false,
+        output:
+          "Session chua san sang de ra lai. Vui long dang nhap GDT, chon ngay, bam Tim kiem den khi co bang ket qua roi thu lai.",
+      });
+      return;
+    }
+
+    const rescanJob = createRescanJob(session.jobId);
+    void runRescanJob(rescanJob, session);
+    writeJson(res, 200, { ok: true, jobId: rescanJob.id, sourceJobId: rescanJob.sourceJobId });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/aggregate-status") {
+    const jobId = url.searchParams.get("jobId") ?? "";
+    const job = aggregateJobs.get(jobId);
+    if (!job) {
+      writeJson(res, 404, { ok: false, output: "Khong tim thay job tong hop" });
+      return;
+    }
+
+    writeJson(res, 200, {
+      ok: true,
+      job: {
+        id: job.id,
+        status: job.status,
+        startedAt: job.startedAt,
+        finishedAt: job.finishedAt,
+        files: job.files,
+      },
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/rescan-status") {
+    const jobId = url.searchParams.get("jobId") ?? "";
+    const job = rescanJobs.get(jobId);
+    if (!job) {
+      writeJson(res, 404, { ok: false, output: "Khong tim thay job ra lai" });
+      return;
+    }
+
+    writeJson(res, 200, {
+      ok: true,
+      job: {
+        id: job.id,
+        sourceJobId: job.sourceJobId,
+        status: job.status,
+        startedAt: job.startedAt,
+        finishedAt: job.finishedAt,
+        files: job.files,
+      },
+    });
+    return;
+  }
+
   if (req.method === "GET" && url.pathname === "/events") {
     const jobId = url.searchParams.get("jobId") ?? "";
     const job = jobs.get(jobId);
@@ -992,11 +1722,21 @@ const server = createServer(async (req, res) => {
   }
 
   if (req.method === "GET" && url.pathname === "/export-logs") {
-    // Download current session logs as JSONL file
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json; charset=utf-8");
-    res.setHeader("Content-Disposition", `attachment; filename="gdt-session-${sessionId}.jsonl"`);
-    res.end(sessionLogs.join("\n"));
+    // Download current extracted invoices in the same schema as invoice-items.json.
+    const invoiceItemsPath = join(process.cwd(), ".gdt-xml-export", "invoice-items.json");
+    try {
+      const content = await fs.readFile(invoiceItemsPath, "utf8");
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Content-Disposition", "attachment; filename=\"invoice-items.json\"");
+      res.end(content);
+    } catch {
+      // Keep response schema stable even when file is not generated yet.
+      res.statusCode = 200;
+      res.setHeader("Content-Type", "application/json; charset=utf-8");
+      res.setHeader("Content-Disposition", "attachment; filename=\"invoice-items.json\"");
+      res.end("[]");
+    }
     return;
   }
 

@@ -121,12 +121,14 @@ async function buildTokenProvider(
   getLastLoginMeta: () => LoginResult["captchaMethod"] | "cache" | null;
   getLastManualFilter: () => ManualFilterContext | null;
   getLastXmlDir: () => string | null;
+  getLastContinueAction: () => LoginResult["continueAction"] | null;
 }> {
   let inMemoryToken: string | null = null;
   let inMemoryExpiry = 0;
   let lastMethod: LoginResult["captchaMethod"] | "cache" | null = null;
   let lastManualFilter: ManualFilterContext | null = null;
   let lastXmlDir: string | null = null;
+  let lastContinueAction: LoginResult["continueAction"] | null = null;
 
   const doLogin = async (manualFirst = false): Promise<string> => {
     const login = await loginAndGetToken(config, undefined, {
@@ -142,6 +144,7 @@ async function buildTokenProvider(
     lastMethod = login.captchaMethod;
     lastManualFilter = login.manualFilter ?? null;
     lastXmlDir = login.xmlDir ?? null;
+    lastContinueAction = login.continueAction ?? "continue";
 
     if (config.useTokenCache) {
       await writeTokenCache(config.tokenCachePath, login.token, login.expiresAt);
@@ -178,6 +181,7 @@ async function buildTokenProvider(
     getLastLoginMeta: () => lastMethod,
     getLastManualFilter: () => lastManualFilter,
     getLastXmlDir: () => lastXmlDir,
+    getLastContinueAction: () => lastContinueAction,
   };
 }
 
@@ -271,6 +275,10 @@ async function main(): Promise<void> {
 
   if (config.manualFirst && (!effectiveFrom || !effectiveTo)) {
     await tokenProvider.getToken();
+    if (tokenProvider.getLastContinueAction() === "rescan-empty-line-items") {
+      logger.info("Manual-first rescan da hoan tat. Ket thuc tien trinh theo yeu cau.");
+      return;
+    }
     const filter = tokenProvider.getLastManualFilter();
     effectiveFrom = effectiveFrom ?? filter?.from;
     effectiveTo = effectiveTo ?? filter?.to;
