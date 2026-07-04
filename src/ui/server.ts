@@ -498,11 +498,6 @@ function html(defaults: UiDefaults): string {
   </head>
   <body class="min-h-screen bg-[radial-gradient(circle_at_top_left,_#fef9c3,_#fef2f2_45%,_#eff6ff)] text-slate-900">
     <div class="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 py-8 md:px-10">
-      <header class="mb-8 rounded-3xl border border-amber-200/70 bg-white/80 p-6 shadow-xl backdrop-blur">
-        <p class="text-xs font-bold uppercase tracking-[0.25em] text-amber-700">Scrape GDT Invoices</p>
-        <h1 class="mt-2 text-3xl font-extrabold leading-tight md:text-4xl">Manual-first collector cho hóa đơn GDT</h1>
-        <p class="mt-3 max-w-3xl text-sm text-slate-600">Bam Bat dau de mo Cloakbrowser va dien san user/pass. Ban nhap captcha, dang nhap va bam Tim kiem tren GDT. Sau do bam Lay thong tin de xem tung hoa don va ghi lai ten hang hoa/dich vu.</p>
-      </header>
 
       <main class="grid gap-6 lg:grid-cols-[360px,minmax(0,1fr)] items-start">
         <section class="w-full min-w-0 rounded-3xl border border-slate-200 bg-white p-6 shadow-lg lg:sticky lg:top-8">
@@ -518,13 +513,13 @@ function html(defaults: UiDefaults): string {
               <p class="mt-1 text-xs text-slate-500">Chọn một session để switch qua và bấm "Lấy thông tin" tiếp tục.</p>
             </div>
 
-            <div>
-              <p class="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">Dùng cấu hình mặc định của UI. File xuất sẽ ghi ra <span class="font-semibold text-slate-800">${defaults.out}</span> và chạy ở chế độ manual-first.</p>
-            </div>
-
             <div class="grid gap-3 sm:grid-cols-2">
               <button type="button" id="startBtn" class="min-h-12 rounded-xl border border-amber-600 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800 transition hover:bg-amber-100">Bắt đầu</button>
               <button type="submit" id="runBtn" class="min-h-12 rounded-xl bg-amber-700 px-4 py-3 text-sm font-bold text-white transition hover:bg-amber-800">Lấy thông tin</button>
+            </div>
+
+            <div class="grid gap-3">
+              <button type="button" id="stopBtn" class="min-h-12 rounded-xl border border-rose-500 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 transition hover:bg-rose-100">⏹ Dừng</button>
             </div>
 
             <div class="grid gap-3">
@@ -543,9 +538,6 @@ function html(defaults: UiDefaults): string {
               </div>
             </div>
 
-            <div class="grid gap-3">
-              <button type="button" id="stopBtn" class="min-h-12 rounded-xl border border-rose-500 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 transition hover:bg-rose-100">⏹ Dừng</button>
-            </div>
 
             <div class="grid gap-3">
               <button type="button" id="aggregateBtn" class="min-h-12 rounded-xl border border-indigo-500 bg-indigo-50 px-4 py-3 text-sm font-bold text-indigo-800 transition hover:bg-indigo-100">Tổng hợp hoá đơn (hd_sold + hd_purchased)</button>
@@ -565,12 +557,7 @@ function html(defaults: UiDefaults): string {
 
             <div class="grid gap-3 sm:grid-cols-2">
               <button type="button" id="clearLog" class="min-h-12 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50">Xóa log</button>
-              <button type="button" id="runRelogin" class="min-h-12 rounded-xl border border-amber-600 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-800 transition hover:bg-amber-100">Re-login ngay rồi chạy</button>
-            </div>
-
-            <div class="grid gap-3 sm:grid-cols-2">
               <button type="button" id="exportLogs" class="min-h-12 rounded-xl border border-blue-500 bg-blue-50 px-4 py-3 text-sm font-bold text-blue-800 transition hover:bg-blue-100">⬇️ Xuất log hiện tại</button>
-              <button type="button" id="viewLogFiles" class="min-h-12 rounded-xl border border-blue-500 bg-blue-50 px-4 py-3 text-sm font-bold text-blue-800 transition hover:bg-blue-100">📋 Xem tất cả log</button>
             </div>
           </form>
         </section>
