@@ -350,8 +350,13 @@ async function main(): Promise<void> {
         byComposite: new Map<string, InvoiceCrawlMetadata>(),
         byNumberOnly: new Map<string, InvoiceCrawlMetadata>(),
       };
+      const emptyBuyerNames = {
+        byComposite: new Map<string, string>(),
+        byNumberOnly: new Map<string, string>(),
+      };
       const merged = await mergeNamesIntoWorkbookWithMetadata(workbookBuffer, emptyMap, {
         metadata: emptyMetadata,
+        buyerNames: emptyBuyerNames,
       });
       await fs.writeFile(options.out, merged.output);
 
@@ -503,7 +508,7 @@ async function main(): Promise<void> {
       logger.info(`RESUME: tiep tuc tu invoice index ${resumeIndex}/${invoices.length}`);
     }
 
-    const { map, metadata, failed, stopped, nextIndex } = await collectInvoiceNameMap(client, invoices, {
+    const { map, buyerNames, metadata, failed, stopped, nextIndex } = await collectInvoiceNameMap(client, invoices, {
       concurrency: config.requestConcurrency,
       delayMs: config.requestDelayMs,
       detailEndpoint: activeDetailEndpoint,
@@ -604,7 +609,7 @@ async function main(): Promise<void> {
       config.username,
     );
 
-    const merged = await mergeNamesIntoWorkbookWithMetadata(workbookBuffer, map, { metadata });
+    const merged = await mergeNamesIntoWorkbookWithMetadata(workbookBuffer, map, { metadata, buyerNames });
     await fs.writeFile(options.out, merged.output);
 
     await clearCheckpoint(config.checkpointPath);

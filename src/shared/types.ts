@@ -25,6 +25,11 @@ export interface InvoiceNameMap {
   byNumberOnly: Map<string, string>;
 }
 
+export interface InvoiceBuyerNameMap {
+  byComposite: Map<string, string>;
+  byNumberOnly: Map<string, string>;
+}
+
 export interface InvoiceCrawlMetadata {
   source: "api" | "dom" | "fallback";
   crawledAt: string;
@@ -41,6 +46,7 @@ export interface InvoiceCrawlMetadataMap {
 export interface InvoiceNameCollectionProgress {
   nextIndex: number;
   map: InvoiceNameMap;
+  buyerNames: InvoiceBuyerNameMap;
   metadata: InvoiceCrawlMetadataMap;
   failed: Array<{ key: string; shdon: string }>;
 }

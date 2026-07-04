@@ -1,6 +1,7 @@
 import { toApiDateExclusiveEnd, toApiDateStart } from "../shared/date.js";
 import { logger } from "../shared/logger.js";
 import {
+  type InvoiceBuyerNameMap,
   type InvoiceCrawlMetadata,
   type InvoiceCrawlMetadataMap,
   type InvoiceHeader,
@@ -23,6 +24,85 @@ function normalize(input: unknown): string {
     return "";
   }
   return String(input).trim();
+}
+
+function detailCellText(value: unknown): string {
+  if (value == null) {
+    return "";
+  }
+
+  if (typeof value === "object") {
+    const obj = value as { text?: unknown; richText?: Array<{ text?: unknown }> };
+    if (typeof obj.text === "string") {
+      return obj.text.trim();
+    }
+
+    if (Array.isArray(obj.richText)) {
+      return obj.richText.map((part) => String(part.text ?? "")).join("").trim();
+    }
+  }
+
+  return String(value).trim();
+}
+
+function extractBuyerFullName(payload: unknown): string {
+  if (!payload || typeof payload !== "object") {
+    return "";
+  }
+
+  const raw = payload as Record<string, unknown>;
+  const nested = raw.data && typeof raw.data === "object" ? (raw.data as Record<string, unknown>) : null;
+  const sources = nested ? [raw, nested] : [raw];
+
+  for (const source of sources) {
+    const direct = detailCellText(source.nmtnmua);
+    if (direct) {
+      return direct;
+    }
+
+    for (const [key, value] of Object.entries(source)) {
+      const normalizedKey = normalize(key).toLowerCase();
+      if (normalizedKey.includes("ho ten nguoi mua hang")) {
+        const text = detailCellText(value);
+        if (text) {
+          return text;
+        }
+      }
+    }
+  }
+
+  return "";
+}
+
+function extractInvoiceDetail(payload: unknown): { itemNames: string[]; buyerFullName: string } {
+  if (!payload || typeof payload !== "object") {
+    return { itemNames: [], buyerFullName: "" };
+  }
+
+  const raw = payload as Record<string, unknown>;
+  const nested = raw.data && typeof raw.data === "object" ? (raw.data as Record<string, unknown>) : null;
+  const source = nested ?? raw;
+  const rows = Array.isArray(source.hdhhdvu)
+    ? source.hdhhdvu
+    : nested && Array.isArray(nested.hdhhdvu)
+      ? nested.hdhhdvu
+      : [];
+
+  const itemNames = rows
+    .map((row) => {
+      if (!row || typeof row !== "object") {
+        return "";
+      }
+
+      const obj = row as Record<string, unknown>;
+      return normalize(obj.ten);
+    })
+    .filter(Boolean);
+
+  return {
+    itemNames,
+    buyerFullName: extractBuyerFullName(payload),
+  };
 }
 
 function parseInvoiceHeader(raw: unknown): InvoiceHeader | null {
@@ -235,7 +315,7 @@ export async function getInvoiceItemNames(
   mst: string,
   from: string,
   to: string,
-): Promise<string[]> {
+): Promise<{ itemNames: string[]; buyerFullName: string }> {
   const data = await withRetry(
     () =>
       client.get<unknown>(detailEndpoint, {
@@ -261,7 +341,7 @@ export async function getInvoiceItemNames(
     500,
   );
 
-  return detailRows(data);
+  return extractInvoiceDetail(data);
 }
 
 export async function collectInvoiceNameMap(
@@ -277,14 +357,24 @@ export async function collectInvoiceNameMap(
     to: string;
     resumeFromIndex?: number;
     seedMap?: InvoiceNameMap;
+    seedBuyerNames?: InvoiceBuyerNameMap;
     seedMetadata?: InvoiceCrawlMetadataMap;
     seedFailed?: Array<{ key: string; shdon: string }>;
     onProgress?: (progress: InvoiceNameCollectionProgress) => Promise<void> | void;
     shouldStop?: () => Promise<boolean> | boolean;
   },
-): Promise<{ map: InvoiceNameMap; metadata: InvoiceCrawlMetadataMap; failed: InvoiceHeader[]; stopped: boolean; nextIndex: number }> {
+): Promise<{
+  map: InvoiceNameMap;
+  buyerNames: InvoiceBuyerNameMap;
+  metadata: InvoiceCrawlMetadataMap;
+  failed: InvoiceHeader[];
+  stopped: boolean;
+  nextIndex: number;
+}> {
   const byComposite = new Map(options.seedMap?.byComposite ?? []);
   const byNumberOnly = new Map(options.seedMap?.byNumberOnly ?? []);
+  const buyerByComposite = new Map(options.seedBuyerNames?.byComposite ?? []);
+  const buyerByNumberOnly = new Map(options.seedBuyerNames?.byNumberOnly ?? []);
   const metadataByComposite = new Map(options.seedMetadata?.byComposite ?? []);
   const metadataByNumber = new Map(options.seedMetadata?.byNumberOnly ?? []);
   const failedKeys = new Map<string, { key: string; shdon: string }>();
@@ -303,6 +393,7 @@ export async function collectInvoiceNameMap(
 
       return {
         map: { byComposite, byNumberOnly },
+        buyerNames: { byComposite: buyerByComposite, byNumberOnly: buyerByNumberOnly },
         metadata: { byComposite: metadataByComposite, byNumberOnly: metadataByNumber },
         failed: failedInvoices,
         stopped: true,
@@ -330,7 +421,7 @@ export async function collectInvoiceNameMap(
     };
 
     try {
-      const detailLines = await getInvoiceItemNames(
+      const detail = await getInvoiceItemNames(
         client,
         invoice,
         options.detailEndpoint,
@@ -340,6 +431,8 @@ export async function collectInvoiceNameMap(
         options.to,
       );
 
+      const detailLines = detail.itemNames;
+
       if (detailLines.length === 0) {
         metadataByComposite.set(key, baseMetadata);
         metadataByNumber.set(invoice.shdon, baseMetadata);
@@ -348,6 +441,10 @@ export async function collectInvoiceNameMap(
         const joined = detailLines.join("\n");
         byComposite.set(key, joined);
         byNumberOnly.set(invoice.shdon, joined);
+        if (detail.buyerFullName) {
+          buyerByComposite.set(key, detail.buyerFullName);
+          buyerByNumberOnly.set(invoice.shdon, detail.buyerFullName);
+        }
 
         const metadata: InvoiceCrawlMetadata = {
           ...baseMetadata,
@@ -370,6 +467,10 @@ export async function collectInvoiceNameMap(
         byComposite,
         byNumberOnly,
       },
+      buyerNames: {
+        byComposite: buyerByComposite,
+        byNumberOnly: buyerByNumberOnly,
+      },
       metadata: {
         byComposite: metadataByComposite,
         byNumberOnly: metadataByNumber,
@@ -384,6 +485,7 @@ export async function collectInvoiceNameMap(
 
   return {
     map: { byComposite, byNumberOnly },
+    buyerNames: { byComposite: buyerByComposite, byNumberOnly: buyerByNumberOnly },
     metadata: { byComposite: metadataByComposite, byNumberOnly: metadataByNumber },
     failed: failedInvoices,
     stopped: false,

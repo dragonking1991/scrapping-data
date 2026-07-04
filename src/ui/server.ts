@@ -4,7 +4,11 @@ import { promises as fs } from "node:fs";
 import { basename, extname, join } from "node:path";
 import { spawn, type ChildProcess } from "node:child_process";
 import { URL } from "node:url";
-import { buildDetailMapFromExtractedInvoices, mergeNamesIntoWorkbookWithMetadata } from "../export/merge.js";
+import {
+  buildBuyerNameMapFromExtractedInvoices,
+  buildDetailMapFromExtractedInvoices,
+  mergeNamesIntoWorkbookWithMetadata,
+} from "../export/merge.js";
 interface UiDefaults {
   out: string;
   direction: "sold" | "purchase";
@@ -359,11 +363,13 @@ async function processAggregateFile(
       throw new Error("File JSON khong phai array");
     }
 
-    const detailMap = buildDetailMapFromExtractedInvoices(parsed as Array<Record<string, unknown>>, {
+    const records = parsed as Array<Record<string, unknown>>;
+    const detailMap = buildDetailMapFromExtractedInvoices(records, {
       mode: key === "purchased" ? "purchased" : "sold",
     });
+    const buyerNames = buildBuyerNameMapFromExtractedInvoices(records);
     const xlsxBuffer = await fs.readFile(sourceXlsxPath);
-    const merged = await mergeNamesIntoWorkbookWithMetadata(xlsxBuffer, detailMap);
+    const merged = await mergeNamesIntoWorkbookWithMetadata(xlsxBuffer, detailMap, { buyerNames });
     await fs.mkdir(outputDir, { recursive: true });
     const outputFileName = `${basename(sourceXlsxPath, extname(sourceXlsxPath))}_merged${extname(sourceXlsxPath)}`;
     const outputPath = join(outputDir, outputFileName);
@@ -707,7 +713,7 @@ function html(defaults: UiDefaults): string {
       function applyControlState() {
         startBtn.disabled = isBusy;
         runBtn.disabled = isBusy || !hasSession;
-        reloginBtn.disabled = isBusy || !hasSession;
+        if (reloginBtn) reloginBtn.disabled = isBusy || !hasSession;
         if (aggregateBtn) aggregateBtn.disabled = isBusy || aggregateRunning;
         if (rescanBtn) rescanBtn.disabled = isBusy || !hasSession || rescanRunning;
         if (stopBtn) stopBtn.disabled = !isBusy;
@@ -723,7 +729,7 @@ function html(defaults: UiDefaults): string {
 
         toggle(startBtn, startBtn.disabled);
         toggle(runBtn, runBtn.disabled);
-        toggle(reloginBtn, reloginBtn.disabled);
+        if (reloginBtn) toggle(reloginBtn, reloginBtn.disabled);
         if (aggregateBtn) toggle(aggregateBtn, aggregateBtn.disabled);
         if (rescanBtn) toggle(rescanBtn, rescanBtn.disabled);
         if (stopBtn) toggle(stopBtn, stopBtn.disabled);
@@ -787,10 +793,10 @@ function html(defaults: UiDefaults): string {
 
         if (mode === 'run') {
           runBtn.textContent = busy ? 'Đang chạy...' : runBtnDefaultText;
-          reloginBtn.textContent = busy ? 'Đang chạy...' : 'Re-login ngay rồi chạy';
+          if (reloginBtn) reloginBtn.textContent = busy ? 'Đang chạy...' : 'Re-login ngay rồi chạy';
         } else {
           runBtn.textContent = runBtnDefaultText;
-          reloginBtn.textContent = 'Re-login ngay rồi chạy';
+          if (reloginBtn) reloginBtn.textContent = 'Re-login ngay rồi chạy';
         }
       }
 
@@ -1151,9 +1157,11 @@ function html(defaults: UiDefaults): string {
         await continueJob();
       });
 
-      reloginBtn.addEventListener('click', async () => {
-        await continueJob();
-      });
+      if (reloginBtn) {
+        reloginBtn.addEventListener('click', async () => {
+          await continueJob();
+        });
+      }
 
       if (aggregateBtn) {
         aggregateBtn.addEventListener('click', async () => {

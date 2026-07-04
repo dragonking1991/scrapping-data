@@ -1,6 +1,10 @@
 import ExcelJS from "exceljs";
 import { PassThrough } from "node:stream";
-import { type InvoiceCrawlMetadataMap, type InvoiceNameMap } from "../shared/types.js";
+import {
+  type InvoiceBuyerNameMap,
+  type InvoiceCrawlMetadataMap,
+  type InvoiceNameMap,
+} from "../shared/types.js";
 
 interface MergeResult {
   output: Buffer;
@@ -24,7 +28,13 @@ interface BuildDetailMapOptions {
   mode?: ExtractedInvoiceMode;
 }
 
+interface MergeOptions {
+  metadata?: InvoiceCrawlMetadataMap;
+  buyerNames?: InvoiceBuyerNameMap;
+}
+
 const DETAIL_HEADER = "Chi tiết hoá đơn";
+const BUYER_NAME_HEADER = "Họ tên người mua hàng";
 
 function normalize(value: unknown): string {
   if (value == null) {
@@ -184,17 +194,13 @@ function formatLineItemRecord(item: Record<string, unknown>): string {
   const thtien = normalizeMoney(
     firstNonEmpty(item, ["thtien", "Thành tiền chưa có thuế GTGT", "Thanh tien chua co thue GTGT"]),
   );
-  const ltsuat =
-    firstNonEmpty(item, ["ltsuat", "Thuế suất", "Thue suat"]) ||
-    toPercentText(firstNonEmpty(item, ["tsuat"]));
+  const ltsuat = firstNonEmpty(item, ["ltsuat", "Thuế suất", "Thue suat"]) || toPercentText(firstNonEmpty(item, ["tsuat"]));
 
   return joinDetailFields([ten, sluong, dvtinh, dgia, thtien, ltsuat]);
 }
 
 function formatPurchasedLineItemRecord(item: Record<string, unknown>): string {
-  const tinhChat = normalizeTinhChat(
-    firstNonEmpty(item, ["Tính chất", "Tinh chat", "tinhchat", "tchat"]),
-  );
+  const tinhChat = normalizeTinhChat(firstNonEmpty(item, ["Tính chất", "Tinh chat", "tinhchat", "tchat"]));
   const ten = firstNonEmpty(item, ["Tên hàng hóa, dịch vụ", "Ten hang hoa, dich vu", "ten"]);
   const soLuong = normalizeQuantity(firstNonEmpty(item, ["Số lượng", "So luong", "sluong"]));
   const donViTinh = firstNonEmpty(item, ["Đơn vị tính", "Don vi tinh", "dvtinh"]);
@@ -202,9 +208,7 @@ function formatPurchasedLineItemRecord(item: Record<string, unknown>): string {
   const thanhTien = normalizeMoney(
     firstNonEmpty(item, ["Thành tiền chưa có thuế GTGT", "Thanh tien chua co thue GTGT", "thtien"]),
   );
-  const thueSuat =
-    firstNonEmpty(item, ["Thuế suất", "Thue suat", "ltsuat"]) ||
-    toPercentText(firstNonEmpty(item, ["tsuat"]));
+  const thueSuat = firstNonEmpty(item, ["Thuế suất", "Thue suat", "ltsuat"]) || toPercentText(firstNonEmpty(item, ["tsuat"]));
 
   return joinDetailFields([tinhChat, ten, soLuong, donViTinh, donGia, thanhTien, thueSuat]);
 }
@@ -212,6 +216,19 @@ function formatPurchasedLineItemRecord(item: Record<string, unknown>): string {
 function buildDetailTextFromLineItems(lineItems: Array<Record<string, unknown>>, mode: ExtractedInvoiceMode): string {
   const formatter = mode === "purchased" ? formatPurchasedLineItemRecord : formatLineItemRecord;
   return lineItems.map(formatter).filter(Boolean).join("\n");
+}
+
+function numberDetailLines(detail: string): string {
+  const lines = detail
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length <= 1) {
+    return lines[0] ?? "";
+  }
+
+  return lines.map((line, index) => `${index + 1}. ${line}`).join("\n");
 }
 
 function formatItemNameAsDetailLine(name: string, mode: ExtractedInvoiceMode): string {
@@ -250,6 +267,17 @@ function extractBuyerFullName(info?: Record<string, unknown>): string {
   return "";
 }
 
+function storeBuyerName(map: InvoiceBuyerNameMap, shdon: string, khhdon: string, buyerFullName: string): void {
+  if (!buyerFullName) {
+    return;
+  }
+
+  map.byNumberOnly.set(shdon, buyerFullName);
+  if (khhdon) {
+    map.byComposite.set(`${khhdon}|${shdon}`, buyerFullName);
+  }
+}
+
 function detectOrCreateDetailColumn(headerRow: ExcelJS.Row): number {
   let detailCol: number | null = null;
   let legacyResultCol: number | null = null;
@@ -267,42 +295,6 @@ function detectOrCreateDetailColumn(headerRow: ExcelJS.Row): number {
   const targetCol = detailCol ?? legacyResultCol ?? (headerRow.cellCount + 1);
   headerRow.getCell(targetCol).value = DETAIL_HEADER;
   return targetCol;
-}
-
-export function buildDetailMapFromExtractedInvoices(
-  records: ExtractedInvoiceLike[],
-  options: BuildDetailMapOptions = {},
-): InvoiceNameMap {
-  const mode = options.mode ?? "sold";
-  const byComposite = new Map<string, string>();
-  const byNumberOnly = new Map<string, string>();
-
-  for (const record of records) {
-    const shdon = detailCellText(record.shdon);
-    if (!shdon) {
-      continue;
-    }
-
-    const khhdon = detailCellText(record.khhdon).toUpperCase();
-    const buyerFullName = extractBuyerFullName(record.info);
-    const fromLines = buildDetailTextFromLineItems((record.lineItems ?? []).filter(Boolean), mode);
-    const fromNames = (record.itemNames ?? []).map((name) => formatItemNameAsDetailLine(name, mode)).filter(Boolean).join("\n");
-    const detailBody = fromLines || fromNames;
-    const detail = buyerFullName
-      ? [joinDetailFields([`Họ tên người mua hàng: ${buyerFullName}`]), detailBody].filter(Boolean).join("\n")
-      : detailBody;
-
-    if (!detail) {
-      continue;
-    }
-
-    byNumberOnly.set(shdon, detail);
-    if (khhdon) {
-      byComposite.set(`${khhdon}|${shdon}`, detail);
-    }
-  }
-
-  return { byComposite, byNumberOnly };
 }
 
 function detectColumns(headerRow: ExcelJS.Row): { numberCol: number; symbolCol: number | null } {
@@ -341,7 +333,88 @@ function findHeaderRow(sheet: ExcelJS.Worksheet): number {
   throw new Error("Khong xac dinh duoc dong header cua file xlsx");
 }
 
-export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceNameMap): Promise<MergeResult> {
+function ensureBuyerNameColumn(headerRow: ExcelJS.Row): number {
+  let buyerNameCol: number | null = null;
+  let detailCol: number | null = null;
+
+  headerRow.eachCell((cell, col) => {
+    const normalized = normalize(cell.value);
+    if (normalized.includes("ho ten nguoi mua hang") && buyerNameCol == null) {
+      buyerNameCol = col;
+    }
+    if (normalized.includes("chi tiet hoa don") && detailCol == null) {
+      detailCol = col;
+    }
+  });
+
+  if (buyerNameCol != null) {
+    headerRow.getCell(buyerNameCol).value = BUYER_NAME_HEADER;
+    return buyerNameCol;
+  }
+
+  const insertAt = detailCol ?? headerRow.cellCount + 1;
+  headerRow.worksheet.spliceColumns(insertAt, 0, []);
+  headerRow.getCell(insertAt).value = BUYER_NAME_HEADER;
+  return insertAt;
+}
+
+export function buildDetailMapFromExtractedInvoices(
+  records: ExtractedInvoiceLike[],
+  options: BuildDetailMapOptions = {},
+): InvoiceNameMap {
+  const mode = options.mode ?? "sold";
+  const byComposite = new Map<string, string>();
+  const byNumberOnly = new Map<string, string>();
+
+  for (const record of records) {
+    const shdon = detailCellText(record.shdon);
+    if (!shdon) {
+      continue;
+    }
+
+    const khhdon = detailCellText(record.khhdon).toUpperCase();
+    const fromLines = buildDetailTextFromLineItems((record.lineItems ?? []).filter(Boolean), mode);
+    const fromNames = (record.itemNames ?? []).map((name) => formatItemNameAsDetailLine(name, mode)).filter(Boolean).join("\n");
+    const detail = numberDetailLines(fromLines || fromNames);
+
+    if (!detail) {
+      continue;
+    }
+
+    byNumberOnly.set(shdon, detail);
+    if (khhdon) {
+      byComposite.set(`${khhdon}|${shdon}`, detail);
+    }
+  }
+
+  return { byComposite, byNumberOnly };
+}
+
+export function buildBuyerNameMapFromExtractedInvoices(records: ExtractedInvoiceLike[]): InvoiceBuyerNameMap {
+  const map: InvoiceBuyerNameMap = {
+    byComposite: new Map<string, string>(),
+    byNumberOnly: new Map<string, string>(),
+  };
+
+  for (const record of records) {
+    const shdon = detailCellText(record.shdon);
+    if (!shdon) {
+      continue;
+    }
+
+    const khhdon = detailCellText(record.khhdon).toUpperCase();
+    const buyerFullName = extractBuyerFullName(record.info);
+    storeBuyerName(map, shdon, khhdon, buyerFullName);
+  }
+
+  return map;
+}
+
+export async function mergeNamesIntoWorkbook(
+  input: Uint8Array,
+  map: InvoiceNameMap,
+  buyerNames?: InvoiceBuyerNameMap,
+): Promise<MergeResult> {
   const workbook = new ExcelJS.Workbook();
   const stream = new PassThrough();
   stream.end(Buffer.from(input));
@@ -356,6 +429,7 @@ export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceName
   const headerRow = sheet.getRow(headerRowIndex);
   const { numberCol, symbolCol } = detectColumns(headerRow);
 
+  const buyerNameCol = ensureBuyerNameColumn(headerRow);
   const targetCol = detectOrCreateDetailColumn(headerRow);
 
   let unmatchedRows = 0;
@@ -371,10 +445,16 @@ export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceName
     }
 
     const symbol = symbolCol ? cellText(row.getCell(symbolCol).value).trim().toUpperCase() : "";
+    const compositeKey = symbol ? `${symbol}|${shdon}` : "";
     const invoiceKey = symbol ? `${symbol}|${shdon}` : shdon;
-    const byComposite = symbol ? map.byComposite.get(`${symbol}|${shdon}`) : undefined;
+    const byComposite = compositeKey ? map.byComposite.get(compositeKey) : undefined;
     const byNumber = map.byNumberOnly.get(shdon);
     const name = byComposite ?? byNumber;
+    const buyerName =
+      (compositeKey ? buyerNames?.byComposite.get(compositeKey) : undefined) ?? buyerNames?.byNumberOnly.get(shdon);
+
+    row.getCell(buyerNameCol).value = buyerName ?? "";
+    row.getCell(buyerNameCol).alignment = { wrapText: true, vertical: "top" };
 
     if (name) {
       row.getCell(targetCol).value = name;
@@ -399,10 +479,6 @@ export async function mergeNamesIntoWorkbook(input: Uint8Array, map: InvoiceName
   };
 }
 
-interface MergeOptions {
-  metadata?: InvoiceCrawlMetadataMap;
-}
-
 export async function mergeNamesIntoWorkbookWithMetadata(
   input: Uint8Array,
   map: InvoiceNameMap,
@@ -422,6 +498,7 @@ export async function mergeNamesIntoWorkbookWithMetadata(
   const headerRow = sheet.getRow(headerRowIndex);
   const { numberCol, symbolCol } = detectColumns(headerRow);
 
+  const buyerNameCol = ensureBuyerNameColumn(headerRow);
   const detailCol = detectOrCreateDetailColumn(headerRow);
 
   let unmatchedRows = 0;
@@ -439,13 +516,15 @@ export async function mergeNamesIntoWorkbookWithMetadata(
     const symbol = symbolCol ? cellText(row.getCell(symbolCol).value).trim().toUpperCase() : "";
     const compositeKey = symbol ? `${symbol}|${shdon}` : "";
     const invoiceKey = symbol ? `${symbol}|${shdon}` : shdon;
-    const byComposite = symbol ? map.byComposite.get(compositeKey) : undefined;
+    const byComposite = compositeKey ? map.byComposite.get(compositeKey) : undefined;
     const byNumber = map.byNumberOnly.get(shdon);
     const name = byComposite ?? byNumber;
+    const buyerName =
+      (compositeKey ? options.buyerNames?.byComposite.get(compositeKey) : undefined) ??
+      options.buyerNames?.byNumberOnly.get(shdon);
 
-    const metadata =
-      (compositeKey ? options.metadata?.byComposite.get(compositeKey) : undefined) ??
-      options.metadata?.byNumberOnly.get(shdon);
+    row.getCell(buyerNameCol).value = buyerName ?? "";
+    row.getCell(buyerNameCol).alignment = { wrapText: true, vertical: "top" };
 
     if (name) {
       row.getCell(detailCol).value = name;
@@ -458,8 +537,6 @@ export async function mergeNamesIntoWorkbookWithMetadata(
       unmatchedRows += 1;
       unmatchedInvoiceKeys.push(invoiceKey);
     }
-
-    void metadata;
   }
 
   const output = await workbook.xlsx.writeBuffer();
