@@ -526,6 +526,7 @@ function html(defaults: UiDefaults): string {
 
             <div class="grid gap-3">
               <button type="button" id="stopBtn" class="min-h-12 rounded-xl border border-rose-500 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 transition hover:bg-rose-100">⏹ Dừng</button>
+              <button type="button" id="closeSessionBtn" class="min-h-12 rounded-xl border border-slate-500 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-800 transition hover:bg-slate-100">Tắt session</button>
             </div>
 
             <div class="grid gap-3">
@@ -578,6 +579,7 @@ function html(defaults: UiDefaults): string {
       const startBtn = document.getElementById('startBtn');
       const runBtn = document.getElementById('runBtn');
       const stopBtn = document.getElementById('stopBtn');
+      const closeSessionBtn = document.getElementById('closeSessionBtn');
       const aggregateBtn = document.getElementById('aggregateBtn');
       const rescanBtn = document.getElementById('rescanBtn');
       const sessionSelect = document.getElementById('sessionSelect');
@@ -606,6 +608,8 @@ function html(defaults: UiDefaults): string {
       const EVENT_LABELS = {
         'rows-found': ['🧾', 'text-emerald-300'],
         'no-rows': ['⚠️', 'text-amber-300'],
+        'stopped': ['⏸️', 'text-amber-300'],
+        'resumed': ['▶️', 'text-emerald-300'],
         'select-checkbox': ['☑️', 'text-sky-300'],
         'click-row': ['👆', 'text-sky-300'],
         'find-icon': ['🔍', 'text-slate-300'],
@@ -690,6 +694,7 @@ function html(defaults: UiDefaults): string {
       const DEFAULT_OUT = ${JSON.stringify(defaults.out)};
       let isBusy = false;
       let hasSession = false;
+      let closingSession = false;
       let aggregateRunning = false;
       let rescanRunning = false;
 
@@ -700,6 +705,7 @@ function html(defaults: UiDefaults): string {
         if (aggregateBtn) aggregateBtn.disabled = isBusy || aggregateRunning;
         if (rescanBtn) rescanBtn.disabled = isBusy || !hasSession || rescanRunning;
         if (stopBtn) stopBtn.disabled = !isBusy;
+        if (closeSessionBtn) closeSessionBtn.disabled = !hasSession || closingSession;
         if (sessionSelect) sessionSelect.disabled = isBusy;
 
         const toggle = (el, off) => {
@@ -716,6 +722,7 @@ function html(defaults: UiDefaults): string {
         if (aggregateBtn) toggle(aggregateBtn, aggregateBtn.disabled);
         if (rescanBtn) toggle(rescanBtn, rescanBtn.disabled);
         if (stopBtn) toggle(stopBtn, stopBtn.disabled);
+        if (closeSessionBtn) toggle(closeSessionBtn, closeSessionBtn.disabled);
       }
 
       function setSessionJobId(jobId) {
@@ -1253,6 +1260,52 @@ function html(defaults: UiDefaults): string {
           }
         });
       }
+
+      if (closeSessionBtn) {
+        closeSessionBtn.addEventListener('click', async () => {
+          if (closingSession || !hasSession) {
+            return;
+          }
+
+          const targetJobId = currentJobId || (sessionSelect ? sessionSelect.value : '');
+          if (!targetJobId) {
+            log.textContent += '[UI] Khong co session de tat.\\n';
+            return;
+          }
+
+          closingSession = true;
+          closeSessionBtn.textContent = 'Đang tắt session...';
+          applyControlState();
+          try {
+            const res = await fetch('/close-session', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ jobId: targetJobId }),
+            });
+            const data = await res.json();
+            if (!data.ok) {
+              log.textContent += '[UI] Khong tat duoc session: ' + (data.output || '') + '\\n';
+              return;
+            }
+
+            if (eventSource) {
+              eventSource.close();
+              eventSource = null;
+            }
+            setSessionJobId(null);
+            setBusy(null, false);
+            setStatus('Đã tắt session', 'rounded-full bg-slate-500/20 px-3 py-1 text-xs font-bold text-slate-300');
+            log.textContent += '[UI] Da tat session ' + targetJobId + '.\\n';
+            refreshSessions();
+          } catch (err) {
+            log.textContent += '[UI] Loi khi tat session: ' + String(err) + '\\n';
+          } finally {
+            closingSession = false;
+            closeSessionBtn.textContent = 'Tắt session';
+            applyControlState();
+          }
+        });
+      }
     </script>
   </body>
 </html>`;
@@ -1480,6 +1533,72 @@ const server = createServer(async (req, res) => {
     }
 
     writeJson(res, 200, { ok: true, jobId: job.id });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/close-session") {
+    const raw = await readBody(req);
+    let payload: ContinuePayload = {};
+
+    if (raw.trim()) {
+      try {
+        payload = JSON.parse(raw) as ContinuePayload;
+      } catch {
+        writeJson(res, 400, { ok: false, output: "JSON khong hop le" });
+        return;
+      }
+    }
+
+    const session =
+      (payload.jobId ? activeSessions.get(payload.jobId) : undefined) ??
+      Array.from(activeSessions.values()).at(-1);
+
+    if (!session) {
+      writeJson(res, 400, { ok: false, output: "Khong tim thay session dang mo de tat." });
+      return;
+    }
+
+    const job = jobs.get(session.jobId);
+    if (!job) {
+      activeSessions.delete(session.jobId);
+      await fs.unlink(session.continueSignalFile).catch(() => undefined);
+      writeJson(res, 200, { ok: true, jobId: session.jobId });
+      return;
+    }
+
+    addLog("ui-api", "/close-session requested", { jobId: job.id });
+    job.stopped = true;
+    job.output += "\n[UI] Session da bi tat theo yeu cau nguoi dung.\n";
+
+    // Notify in-flight flows to stop cooperatively first.
+    await fs.writeFile(session.continueSignalFile, "stop-current-flow", "utf8").catch(() => undefined);
+
+    const pid = job.child?.pid;
+    if (pid) {
+      try {
+        process.kill(-pid, "SIGTERM");
+      } catch {
+        try {
+          job.child?.kill("SIGTERM");
+        } catch {
+          // ignore kill errors
+        }
+      }
+
+      setTimeout(() => {
+        try {
+          process.kill(-pid, "SIGKILL");
+        } catch {
+          // process group may already be closed
+        }
+      }, 1500);
+    }
+
+    job.status = "failed";
+    job.finishedAt = Date.now();
+    activeSessions.delete(session.jobId);
+    await fs.unlink(session.continueSignalFile).catch(() => undefined);
+    writeJson(res, 200, { ok: true, jobId: session.jobId });
     return;
   }
 

@@ -3,7 +3,7 @@ import { join } from "node:path";
 import type { Locator, Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
 import type { RescanDataset, RescanDatasetCounters } from "./shared.js";
-import { emitRescanStatus, buildRescanCandidates, writeJsonAtomic } from "./rescan-common.js";
+import { emitRescanStatus, buildRescanCandidates, writeJsonAtomic, readContinueAction } from "./rescan-common.js";
 import { clickLookupTab } from "./lookup-tab.js";
 import {
   fillInvoiceNumberFilter,
@@ -69,6 +69,7 @@ async function rescanDataset(
   page: Page,
   dataset: RescanDataset,
   jsonPath: string,
+  continueSignalFile?: string,
 ): Promise<void> {
   const raw = await fs.readFile(jsonPath, "utf8");
   const parsed = JSON.parse(raw);
@@ -110,7 +111,36 @@ async function rescanDataset(
     return;
   }
 
+  const consumeStopSignal = async (): Promise<boolean> => {
+    if (!continueSignalFile) {
+      return false;
+    }
+
+    try {
+      await fs.access(continueSignalFile);
+      const action = await readContinueAction(continueSignalFile);
+      await fs.unlink(continueSignalFile).catch(() => undefined);
+      if (action === "stop-current-flow") {
+        return true;
+      }
+
+      await fs.writeFile(continueSignalFile, action, "utf8").catch(() => undefined);
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
+  let interrupted = false;
+
   for (const candidate of candidates) {
+    if (await consumeStopSignal()) {
+      interrupted = true;
+      counters.currentKey = undefined;
+      counters.message = "Da nhan yeu cau dung. Tam dung ra lai theo yeu cau.";
+      break;
+    }
+
     counters.processing += 1;
     counters.currentKey = `${candidate.khhdon}|${candidate.khmshdon}|${candidate.shdon}`;
     counters.message = `Dang xu ly so hoa don ${candidate.shdon}`;
@@ -275,23 +305,25 @@ async function rescanDataset(
     }
   }
 
-  emitDatasetProgress(dataset, counters.failed > 0 ? "failed" : "success", {
+  emitDatasetProgress(dataset, interrupted || counters.failed > 0 ? "failed" : "success", {
     ...counters,
     processing: 0,
     currentKey: undefined,
     message:
-      counters.failed > 0
+      interrupted
+        ? `Da dung theo yeu cau (${counters.success}/${counters.queued} da cap nhat)`
+        : counters.failed > 0
         ? `Hoan tat voi loi (${counters.success} thanh cong, ${counters.failed} that bai)`
         : `Hoan tat (${counters.success}/${counters.queued} thanh cong)`,
   });
 }
 
-async function rescanEmptyLineItemsFromJson(page: Page, baseDir: string): Promise<void> {
+async function rescanEmptyLineItemsFromJson(page: Page, baseDir: string, continueSignalFile?: string): Promise<void> {
   const soldPath = join(baseDir, "hd_sold.json");
   const purchasedPath = join(baseDir, "hd_purchased.json");
 
-  await rescanDataset(page, "sold", soldPath);
-  await rescanDataset(page, "purchased", purchasedPath);
+  await rescanDataset(page, "sold", soldPath, continueSignalFile);
+  await rescanDataset(page, "purchased", purchasedPath, continueSignalFile);
 }
 
 export { emitDatasetProgress, rescanDataset, rescanEmptyLineItemsFromJson };

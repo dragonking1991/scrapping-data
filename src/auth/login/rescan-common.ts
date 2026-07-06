@@ -106,6 +106,9 @@ async function readContinueAction(filePath: string): Promise<ContinueAction> {
   if (content === "rescan-empty-line-items") {
     return "rescan-empty-line-items";
   }
+  if (content === "stop-current-flow") {
+    return "stop-current-flow";
+  }
   return "continue";
 }
 

@@ -71,7 +71,7 @@ const MANUAL_READY_SELECTORS = [
   "[class*='result'] table tbody tr",
 ];
 
-type ContinueAction = "continue" | "rescan-empty-line-items";
+type ContinueAction = "continue" | "rescan-empty-line-items" | "stop-current-flow";
 
 type RescanDataset = "sold" | "purchased";
 

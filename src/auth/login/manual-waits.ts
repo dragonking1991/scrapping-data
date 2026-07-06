@@ -52,6 +52,10 @@ async function waitForContinueSignal(
       await fs.access(continueSignalFile);
       const action = await readContinueAction(continueSignalFile);
       await fs.unlink(continueSignalFile).catch(() => undefined);
+      if (action === "stop-current-flow") {
+        logger.warn("Da nhan yeu cau dung flow hien tai trong luc cho tiep tuc. Van tiep tuc cho den khi bam Lay thong tin.");
+        continue;
+      }
       return action;
     } catch {
       await page.waitForTimeout(1000);

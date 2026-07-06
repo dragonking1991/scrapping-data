@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import type { Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
-import { captureHtml, dumpToolbarButtons, emitEvent } from "./rescan-common.js";
+import { captureHtml, dumpToolbarButtons, emitEvent, readContinueAction } from "./rescan-common.js";
 import { findAndMarkViewInvoiceButton } from "./toolbar-view.js";
 import {
   tryExtractDetailFromNetwork,
@@ -30,7 +30,7 @@ interface ScrapedInvoice {
  * then close the modal and continue. Paginates across all result pages.
  * Results are written to `${outDir}/invoice-items.json`. Returns the count scraped.
  */
-async function scrapeInvoiceItemsAllPages(page: Page, outDir: string): Promise<number> {
+async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSignalFile?: string): Promise<number> {
   await fs.mkdir(outDir, { recursive: true });
 
   const perRowDelayMs = Number(process.env.GDT_XML_ROW_DELAY_MS ?? 500);
@@ -41,8 +41,86 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string): Promise<n
 
   // Safety cap on pages to avoid infinite loops.
   const maxPages = Number(process.env.GDT_MAX_PAGES ?? 200);
+  const continueTimeoutMs = Number(process.env.GDT_CONTINUE_TIMEOUT_MS ?? 7200000);
+  let stopRequested = false;
+
+  const consumeStopSignal = async (): Promise<boolean> => {
+    if (!continueSignalFile) {
+      return false;
+    }
+
+    try {
+      await fs.access(continueSignalFile);
+      const action = await readContinueAction(continueSignalFile);
+      await fs.unlink(continueSignalFile).catch(() => undefined);
+      if (action === "stop-current-flow") {
+        return true;
+      }
+
+      // If continue arrives slightly before we enter paused wait mode,
+      // preserve it so waitForResumeSignal can consume it.
+      await fs.writeFile(continueSignalFile, action, "utf8").catch(() => undefined);
+      return false;
+    } catch {
+      return false;
+    }
+  };
+
+  const waitForResumeSignal = async (): Promise<boolean> => {
+    if (!continueSignalFile) {
+      return false;
+    }
+
+    logger.info("[VIEW] Da tam dung. Vui long bam Lay thong tin de tiep tuc voi list hien tai.");
+    emitEvent("stopped", "Dang cho tin hieu tiep tuc tu UI");
+
+    const startedAt = Date.now();
+    while (Date.now() - startedAt < continueTimeoutMs) {
+      try {
+        await fs.access(continueSignalFile);
+        const action = await readContinueAction(continueSignalFile);
+        await fs.unlink(continueSignalFile).catch(() => undefined);
+
+        if (action === "continue") {
+          logger.info("[VIEW] resume from current visible list");
+          emitEvent("resumed", "resume from current visible list");
+          return true;
+        }
+
+        if (action === "stop-current-flow") {
+          // Already paused; keep waiting for explicit continue.
+          continue;
+        }
+
+        // Preserve non-related command for the proper consumer.
+        await fs.writeFile(continueSignalFile, action, "utf8").catch(() => undefined);
+      } catch {
+        await page.waitForTimeout(1000);
+      }
+    }
+
+    logger.warn("[VIEW] Het thoi gian cho tin hieu tiep tuc, dung luong lay thong tin.");
+    emitEvent("stopped", "Het thoi gian cho tiep tuc, ket thuc luong Lay thong tin");
+    return false;
+  };
 
   for (;;) {
+    if (await consumeStopSignal()) {
+      logger.warn("[VIEW] Da nhan yeu cau dung. Tam dung luong Lay thong tin va giu nguyen session.");
+      emitEvent("stopped", "Da nhan yeu cau dung. Tam dung Lay thong tin tai trang hien tai.");
+      stopRequested = true;
+    }
+
+    if (stopRequested) {
+      const resumed = await waitForResumeSignal();
+      if (resumed) {
+        stopRequested = false;
+        pageIndex = 0;
+        continue;
+      }
+      break;
+    }
+
     pageIndex += 1;
 
     let rows = page.locator(".ant-table-tbody tr.ant-table-row");
@@ -77,6 +155,13 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string): Promise<n
     }
 
     for (let r = 0; r < rowCount; r += 1) {
+      if (await consumeStopSignal()) {
+        logger.warn("[VIEW] Da nhan yeu cau dung. Tam dung truoc khi xu ly hoa don tiep theo.");
+        emitEvent("stopped", `Tam dung truoc hoa don #${r + 1} trang ${pageIndex}`);
+        stopRequested = true;
+        break;
+      }
+
       const row = rows.nth(r);
 
       try {
@@ -198,6 +283,8 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string): Promise<n
       }
     }
 
+    // Continue waiting/resuming at loop start so both page-boundary and row-boundary stop behave the same.
+
     if (pageIndex >= maxPages) {
       logger.warn(`[VIEW] Da dat gioi han ${maxPages} trang, dung.`);
       break;
@@ -227,8 +314,13 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string): Promise<n
   // Persist results.
   const outFile = `${outDir}/invoice-items.json`;
   await fs.writeFile(outFile, JSON.stringify(results, null, 2), "utf8");
-  logger.info(`[VIEW] Da ghi ${results.length} hoa don vao ${outFile}`);
-  emitEvent("saved", `Da ghi ${results.length} hoa don vao invoice-items.json`);
+  if (stopRequested) {
+    logger.warn(`[VIEW] Da tam dung theo yeu cau. Da ghi tam ${results.length} hoa don vao ${outFile}`);
+    emitEvent("saved", `Da tam dung. Da ghi tam ${results.length} hoa don vao invoice-items.json`);
+  } else {
+    logger.info(`[VIEW] Da ghi ${results.length} hoa don vao ${outFile}`);
+    emitEvent("saved", `Da ghi ${results.length} hoa don vao invoice-items.json`);
+  }
 
   return results.length;
 }

@@ -228,7 +228,7 @@ export async function loginAndGetToken(
         try {
           const jsonDir = options?.xmlDir ?? join(process.cwd(), ".gdt-xml-export");
           logger.info(`[RESCAN] Bat dau ra lai hoa don thieu lineItems tai ${jsonDir}`);
-          await rescanEmptyLineItemsFromJson(page, jsonDir);
+          await rescanEmptyLineItemsFromJson(page, jsonDir, options?.continueSignalFile);
           logger.info("[RESCAN] Hoan tat ra lai hd_sold + hd_purchased");
         } catch (error) {
           const msg = error instanceof Error ? error.message : String(error);
@@ -248,7 +248,7 @@ export async function loginAndGetToken(
       if (options?.autoExportXml && options?.xmlDir) {
         try {
           logger.info("[VIEW] Bat dau xem tung hoa don va ghi lai ten hang hoa/dich vu...");
-          const count = await scrapeInvoiceItemsAllPages(page, options.xmlDir);
+          const count = await scrapeInvoiceItemsAllPages(page, options.xmlDir, options?.continueSignalFile);
           if (count > 0) {
             exportedXmlDir = options.xmlDir;
             logger.info(`[VIEW] Da xu ly ${count} hoa don, ket qua tai ${options.xmlDir}/invoice-items.json`);
