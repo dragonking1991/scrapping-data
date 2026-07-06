@@ -529,23 +529,6 @@ function html(defaults: UiDefaults): string {
             </div>
 
             <div class="grid gap-3">
-              <button type="button" id="rescanBtn" class="min-h-12 rounded-xl border border-teal-500 bg-teal-50 px-4 py-3 text-sm font-bold text-teal-800 transition hover:bg-teal-100">Rà lại lineItems rỗng (hd_sold + hd_purchased)</button>
-              <div class="rounded-xl border border-teal-200 bg-teal-50/60 p-3 text-xs text-slate-700">
-                <div class="flex items-center justify-between">
-                  <span class="font-semibold">Rescan hd_sold.json</span>
-                  <span id="rescanSoldStatus" class="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700">Chưa chạy</span>
-                </div>
-                <p id="rescanSoldMsg" class="mt-1 text-slate-600">Chưa có trạng thái.</p>
-                <div class="mt-2 flex items-center justify-between">
-                  <span class="font-semibold">Rescan hd_purchased.json</span>
-                  <span id="rescanPurchasedStatus" class="rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700">Chưa chạy</span>
-                </div>
-                <p id="rescanPurchasedMsg" class="mt-1 text-slate-600">Chưa có trạng thái.</p>
-              </div>
-            </div>
-
-
-            <div class="grid gap-3">
               <button type="button" id="aggregateBtn" class="min-h-12 rounded-xl border border-indigo-500 bg-indigo-50 px-4 py-3 text-sm font-bold text-indigo-800 transition hover:bg-indigo-100">Tổng hợp hoá đơn (hd_sold + hd_purchased)</button>
               <div class="rounded-xl border border-indigo-200 bg-indigo-50/60 p-3 text-xs text-slate-700">
                 <div class="flex items-center justify-between">
