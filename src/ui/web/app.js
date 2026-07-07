@@ -9,6 +9,10 @@ const closeSessionBtn = document.getElementById("closeSessionBtn");
 const clearBtn = document.getElementById("clearLog");
 
 const aggregateBtn = document.getElementById("aggregateBtn");
+const aggSoldStatus = document.getElementById("aggSoldStatus");
+const aggSoldMsg = document.getElementById("aggSoldMsg");
+const aggPurchasedStatus = document.getElementById("aggPurchasedStatus");
+const aggPurchasedMsg = document.getElementById("aggPurchasedMsg");
 const sessionSelect = document.getElementById("sessionSelect");
 
 const testNextPageBtn = document.getElementById("testNextPageBtn");
@@ -31,6 +35,9 @@ let continueInFlight = false;
 let closingSession = false;
 let currentJobId = null;
 let eventSource = null;
+let aggregateJobId = null;
+let aggregatePollTimer = null;
+let isAggregating = false;
 
 let eventCount = 0;
 let eventLineBuffer = "";
@@ -86,6 +93,7 @@ function applyControlState() {
   if (runBtn) runBtn.disabled = isBusy || continueInFlight || !hasSession;
   if (stopBtn) stopBtn.disabled = !isRunningFlow;
   if (closeSessionBtn) closeSessionBtn.disabled = !hasSession || closingSession;
+  if (aggregateBtn) aggregateBtn.disabled = isAggregating;
   if (sessionSelect) sessionSelect.disabled = isBusy || continueInFlight;
 
   if (testNextPageBtn) testNextPageBtn.disabled = !hasSession;
@@ -93,6 +101,133 @@ function applyControlState() {
   if (testOpenInvoiceBtn) testOpenInvoiceBtn.disabled = !hasSession;
   if (testSelectRowBtn) testSelectRowBtn.disabled = !hasSession;
   if (testRowInput) testRowInput.disabled = !hasSession;
+}
+
+function getAggregateStatusPresentation(status) {
+  switch (status) {
+    case "running":
+      return {
+        label: "Đang chạy",
+        className:
+          "rounded-full bg-amber-200 px-2 py-0.5 font-bold text-amber-800",
+      };
+    case "success":
+      return {
+        label: "Thành công",
+        className:
+          "rounded-full bg-emerald-200 px-2 py-0.5 font-bold text-emerald-800",
+      };
+    case "failed":
+      return {
+        label: "Lỗi",
+        className: "rounded-full bg-rose-200 px-2 py-0.5 font-bold text-rose-800",
+      };
+    case "skipped":
+      return {
+        label: "Bỏ qua",
+        className:
+          "rounded-full bg-slate-300 px-2 py-0.5 font-bold text-slate-700",
+      };
+    default:
+      return {
+        label: "Chưa chạy",
+        className:
+          "rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700",
+      };
+  }
+}
+
+function renderAggregateFile(file, statusEl, msgEl) {
+  if (!statusEl || !msgEl) return;
+  const view = getAggregateStatusPresentation(file?.status || "pending");
+  statusEl.textContent = view.label;
+  statusEl.className = view.className;
+  msgEl.textContent =
+    file?.message ||
+    (file?.status === "pending" ? "Chưa có trạng thái." : "Không có thông tin.");
+}
+
+function clearAggregatePolling() {
+  if (aggregatePollTimer) {
+    clearInterval(aggregatePollTimer);
+    aggregatePollTimer = null;
+  }
+}
+
+function renderAggregateJob(job) {
+  if (!job) return;
+  renderAggregateFile(job.files?.sold, aggSoldStatus, aggSoldMsg);
+  renderAggregateFile(job.files?.purchased, aggPurchasedStatus, aggPurchasedMsg);
+  isAggregating = job.status === "running";
+  applyControlState();
+}
+
+function logAggregateFileResult(label, file) {
+  if (!file) {
+    appendLog(`[AGG] ${label}: Khong co du lieu.\n`);
+    return;
+  }
+
+  appendLog(
+    `[AGG] ${label}: status=${file.status}, matched=${file.matchedRows}, unmatched=${file.unmatchedRows}\n`,
+  );
+
+  const matchedIds = Array.isArray(file.matchedInvoiceKeys)
+    ? file.matchedInvoiceKeys
+    : [];
+  const unmatchedIds = Array.isArray(file.unmatchedInvoiceKeys)
+    ? file.unmatchedInvoiceKeys
+    : [];
+
+  appendLog(
+    `[AGG] ${label} | ID khop (${matchedIds.length}): ${matchedIds.length > 0 ? matchedIds.join(", ") : "(khong co)"}\n`,
+  );
+  appendLog(
+    `[AGG] ${label} | ID khong khop (${unmatchedIds.length}): ${unmatchedIds.length > 0 ? unmatchedIds.join(", ") : "(khong co)"}\n`,
+  );
+}
+
+async function fetchAggregateStatus(jobId) {
+  const res = await fetch(`/aggregate-status?jobId=${encodeURIComponent(jobId)}`);
+  const data = await res.json();
+  if (!data.ok || !data.job) {
+    throw new Error(data.output || "Khong doc duoc trang thai tong hop");
+  }
+  return data.job;
+}
+
+function trackAggregateJob(jobId) {
+  aggregateJobId = jobId;
+  isAggregating = true;
+  applyControlState();
+  clearAggregatePolling();
+
+  const refresh = async () => {
+    if (!aggregateJobId) return;
+    try {
+      const job = await fetchAggregateStatus(aggregateJobId);
+      renderAggregateJob(job);
+
+      if (job.status === "success" || job.status === "failed") {
+        clearAggregatePolling();
+        aggregateJobId = null;
+        appendLog(`[AGG] Hoan tat job tong hop: ${job.id} (${job.status}).\n`);
+        logAggregateFileResult("hd_sold.xlsx", job.files?.sold);
+        logAggregateFileResult("hd_purchased.xlsx", job.files?.purchased);
+      }
+    } catch (error) {
+      clearAggregatePolling();
+      aggregateJobId = null;
+      isAggregating = false;
+      applyControlState();
+      appendLog(`[AGG] Loi cap nhat trang thai: ${String(error)}\n`);
+    }
+  };
+
+  void refresh();
+  aggregatePollTimer = setInterval(() => {
+    void refresh();
+  }, 1200);
 }
 
 function setSessionJobId(jobId) {
@@ -524,17 +659,20 @@ sessionSelect?.addEventListener("change", () => {
 });
 
 aggregateBtn?.addEventListener("click", async () => {
+  if (isAggregating) return;
   try {
     const res = await fetch("/aggregate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
-    appendLog(
-      data.ok
-        ? `[AGG] Da gui job tong hop: ${data.jobId}\n`
-        : `[AGG] Loi: ${data.output || "Khong tao duoc job"}\n`,
-    );
+    if (!data.ok || !data.jobId) {
+      appendLog(`[AGG] Loi: ${data.output || "Khong tao duoc job"}\n`);
+      return;
+    }
+
+    appendLog(`[AGG] Da gui job tong hop: ${data.jobId}\n`);
+    trackAggregateJob(data.jobId);
   } catch (error) {
     appendLog(`[AGG] Loi: ${String(error)}\n`);
   }
