@@ -112,9 +112,40 @@ async function executeDebugAction(page: Page, action: ContinueAction): Promise<v
       emitEvent("icon-not-found", "UI-TEST: khong tim thay nut Xem hoa don");
       return;
     }
-    await page.locator('[data-gdt-view="1"]').first().click().catch(() => undefined);
-    logger.info("[UI-TEST] Da bam nut 'Xem hoa don'.");
-    emitEvent("click-view", "UI-TEST: da bam nut Xem hoa don");
+
+    let opened = false;
+    for (let clickTry = 1; clickTry <= 2; clickTry += 1) {
+      const viewBtn = page.locator('[data-gdt-view="1"]').first();
+      const clickable = viewBtn.locator(
+        "xpath=ancestor-or-self::*[self::button or self::a or @role='button'][1]",
+      );
+      if (await clickable.count()) {
+        await clickable.first().click().catch(() => undefined);
+      } else {
+        await viewBtn.click().catch(() => undefined);
+      }
+
+      emitEvent("click-view", `UI-TEST: bam nut Xem hoa don lan ${clickTry}`);
+      opened = await page
+        .waitForSelector(".ant-modal-body, .ant-modal", { timeout: 4000, state: "visible" })
+        .then(() => true)
+        .catch(() => false);
+      if (opened) {
+        break;
+      }
+
+      await ensureAnyRowSelected(page);
+      await page.waitForTimeout(180);
+    }
+
+    if (!opened) {
+      logger.warn("[UI-TEST] Bam Xem hoa don nhung modal chua mo.");
+      emitEvent("detail-modal", "UI-TEST: bam Xem hoa don nhung modal chua mo");
+      return;
+    }
+
+    logger.info("[UI-TEST] Da mo modal hoa don.");
+    emitEvent("detail-modal", "UI-TEST: da mo modal hoa don");
     return;
   }
 

@@ -270,7 +270,15 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
             emitEvent("click-row", `Retry select row so ${record.shdon} truoc khi bam icon`);
           }
 
-          await page.locator('[data-gdt-view="1"]').first().click().catch(() => undefined);
+          const viewBtn = page.locator('[data-gdt-view="1"]').first();
+          const clickable = viewBtn.locator(
+            "xpath=ancestor-or-self::*[self::button or self::a or @role='button'][1]",
+          );
+          if (await clickable.count()) {
+            await clickable.first().click().catch(() => undefined);
+          } else {
+            await viewBtn.click().catch(() => undefined);
+          }
           emitEvent("click-view", `Click icon lan ${clickTry} cho so ${record.shdon}`);
 
           modalOpened = await page

@@ -20,35 +20,79 @@ async function findAndMarkViewInvoiceButton(page: Page): Promise<boolean> {
   // still attached and visible; otherwise clear it and re-detect below.
   const existing = page.locator('[data-gdt-view="1"]').first();
   if (await existing.count()) {
-    if (await existing.isVisible().catch(() => false)) {
+    const existingReady = await existing
+      .evaluate((node) => {
+        const el = node as HTMLElement;
+        const style = window.getComputedStyle(el);
+        return !el.hasAttribute("disabled") && style.pointerEvents !== "none";
+      })
+      .catch(() => false);
+    if (existingReady && (await existing.isVisible().catch(() => false))) {
       return true;
     }
     await clearViewInvoiceMark(page);
   }
 
-  // Direct selector for the icon-only action button shown in the toolbar.
+  // Prefer icon in the selected row first; skip disabled icon buttons.
+  const selectedRowBtn = page
+    .locator("tr.ant-selected-row button.ant-btn.ant-btn-icon-only:not([disabled]):has([id*='xemchitiet'])")
+    .first();
+  if ((await selectedRowBtn.count()) && (await selectedRowBtn.isVisible().catch(() => false))) {
+    const html = await selectedRowBtn.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
+    await selectedRowBtn
+      .evaluate((node) => (node as HTMLElement).setAttribute("data-gdt-view", "1"))
+      .catch(() => undefined);
+    logger.info("[VIEW] Found 'Xem hoa don' in selected row");
+    emitEvent("found-view-icon", "selected-row xemchitiet", html);
+    return true;
+  }
+
+  // Strong selector from real GDT DOM: view-detail icon uses id/class token "xemchitiet".
   const directBtn = page
-    .locator("button.ant-btn.ant-btn-icon-only[class*='ButtonAnt__IconButton']")
+    .locator("button.ant-btn.ant-btn-icon-only:not([disabled]):has([id*='xemchitiet'])")
     .first();
   if ((await directBtn.count()) && (await directBtn.isVisible().catch(() => false))) {
     const html = await directBtn.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
     await directBtn.evaluate((node) => (node as HTMLElement).setAttribute("data-gdt-view", "1")).catch(() => undefined);
-    logger.info("[VIEW] Found 'Xem hoa don' via direct icon button selector");
-    emitEvent("found-view-icon", "direct icon button selector", html);
+    logger.info("[VIEW] Found 'Xem hoa don' via xemchitiet icon selector");
+    emitEvent("found-view-icon", "xemchitiet icon selector", html);
     return true;
   }
 
-  // Fallback kept short: look for a direct eye icon only, no long scan loop.
-  const eye = page.locator("button.ant-btn.ant-btn-icon-only .anticon-eye, button.ant-btn.ant-btn-icon-only [data-icon='eye']").first();
-  if ((await eye.count()) && (await eye.isVisible().catch(() => false))) {
-    await eye.evaluate((node) => {
-      const btn = (node as HTMLElement).closest("button");
-      if (btn) {
-        btn.setAttribute("data-gdt-view", "1");
+  // Fallback kept short: scan icon-only buttons and prefer those containing "xemchitiet" token.
+  const markedByToken = await page
+    .evaluate(() => {
+      const isVisible = (el: Element): boolean => {
+        const rect = (el as HTMLElement).getBoundingClientRect();
+        const style = window.getComputedStyle(el as HTMLElement);
+        return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
+      };
+
+      const buttons = Array.from(document.querySelectorAll("button.ant-btn.ant-btn-icon-only"));
+      for (const btn of buttons) {
+        if (!isVisible(btn)) {
+          continue;
+        }
+        const html = ((btn as HTMLElement).outerHTML || "").toLowerCase();
+        const style = window.getComputedStyle(btn as HTMLElement);
+        if (
+          (btn as HTMLButtonElement).disabled ||
+          btn.getAttribute("aria-disabled") === "true" ||
+          style.pointerEvents === "none"
+        ) {
+          continue;
+        }
+        if (html.includes("xemchitiet") || html.includes("chi tiet")) {
+          (btn as HTMLElement).setAttribute("data-gdt-view", "1");
+          return true;
+        }
       }
-    }).catch(() => undefined);
-    logger.info("[VIEW] Found 'Xem hoa don' via eye icon fallback selector");
-    emitEvent("found-view-icon", "eye icon fallback selector");
+      return false;
+    })
+    .catch(() => false);
+  if (markedByToken) {
+    logger.info("[VIEW] Found 'Xem hoa don' via token fallback selector");
+    emitEvent("found-view-icon", "token fallback selector");
     return true;
   }
 
