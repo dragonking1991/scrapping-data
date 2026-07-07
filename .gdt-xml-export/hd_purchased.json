@@ -1,5 +1,1889 @@
 [
   {
+    "stt": "2",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1033750",
+    "ngay": "10/05/2026",
+    "info": {
+      "nmtnmua": "NGUYỄN NGŨ PHÚC",
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1033750",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "62ebc4d2-23aa-4f10-8793-88dfb8fa847d",
+        "id": "94db82bc-fec7-475a-884b-632acc440d78",
+        "dgia": "25250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.802",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "3",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1035538",
+    "ngay": "10/05/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1035538",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "d2c6d1d1-8904-474c-b395-313194b6a915",
+        "id": "de4fb161-c17a-40d8-9e8f-3b2c0642d98a",
+        "dgia": "25250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.851",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "728488",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "4",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1035909",
+    "ngay": "10/05/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1035909",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1a70b39e-2270-4aed-83ee-94bc74747d74",
+        "id": "b9df4f23-306b-4279-b4ce-9daa47cc56cd",
+        "dgia": "25250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "15.841",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "400000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "5",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1036835",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "15,841",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "6",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "255821",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "15,841",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "7",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "17421",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "15,841",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "8",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TYE",
+    "shdon": "9291",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "15,841",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "9",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNH",
+    "shdon": "5395",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "15,841",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "10",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "166288",
+    "ngay": "10/05/2026",
+    "info": {
+      "nmtnmua": "Cao Đình Bắc",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "166288",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cf3a042c-856d-451a-a9cb-fd2c2c928791",
+        "id": "c004d302-75fa-4f87-be0e-1d3b759ed80a",
+        "dgia": "24350",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "608750",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "11",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "166291",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Cao Đình Bắc",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "25",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "608.750"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "12",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "166396",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Cao Đình Bắc",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "25",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "608.750"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "13",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "166435",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Cao Đình Bắc",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "25",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "608.750"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "14",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "166478",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Cao Đình Bắc",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "25",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "608.750"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "15",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "166499",
+    "ngay": "10/05/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "166499",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c5e240f1-192b-41be-b88c-89a915ed2d87",
+        "id": "8967784c-16a6-4556-9a2d-39df60bed6ea",
+        "dgia": "24350",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.586",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "550000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "16",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLD",
+    "shdon": "90174",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "22,586",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "550.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "17",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "313707",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "22,586",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "550.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "18",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "313737",
+    "ngay": "10/05/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "313737",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c7edcdfb-09f4-4545-9d70-169ba0a008be",
+        "id": "859fa8a3-8e1e-4122-93aa-9c5e5211f60e",
+        "dgia": "25250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "36.443",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "920186",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "19",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TTT",
+    "shdon": "109256",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX ĐỒNG NAI",
+      "Mã số thuế": "3600247325",
+      "Địa chỉ": "Số 104, đường Hà Huy Giáp, Phường Trấn Biên, Thành Phố Đồng Nai, Việt Nam",
+      "Điện thoại": "0977313525",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "36,443",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "920.186"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "20",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "65534",
+    "ngay": "10/05/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "65534",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "17dab8d7-f270-45b9-acaf-20b0e0f63481",
+        "id": "5285371e-fb71-4a63-88ba-4a75e55e5309",
+        "dgia": "28030",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.676",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "21",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "118116",
+    "ngay": "10/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI XUẤT NHẬP KHẨU THANH LỄ - CTCP TẠI TỈNH BÌNH PHƯỚC",
+      "Mã số thuế": "3700146458-009",
+      "Mã cửa hàng": "986017",
+      "Tên cửa hàng": "CỬA HÀNG BÁN LẺ XĂNG DẦU LỘC THỊNH",
+      "Địa chỉ": "Quốc lộ 14, Xã Nha Bích, Tỉnh Đồng Nai",
+      "Điện thoại": "02743829535",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Lê Văn Lộc",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "35,676",
+        "Đơn giá": "28.030",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "1.000.000"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "22",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1026807",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI XUẤT NHẬP KHẨU THANH LỄ - CTCP TẠI TỈNH BÌNH PHƯỚC",
+      "Mã số thuế": "3700146458-009",
+      "Mã cửa hàng": "986017",
+      "Tên cửa hàng": "CỬA HÀNG BÁN LẺ XĂNG DẦU LỘC THỊNH",
+      "Địa chỉ": "Quốc lộ 14, Xã Nha Bích, Tỉnh Đồng Nai",
+      "Điện thoại": "02743829535",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Lê Văn Lộc",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "35,676",
+        "Đơn giá": "28.030",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "1.000.000"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "23",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "25337",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI XUẤT NHẬP KHẨU THANH LỄ - CTCP TẠI TỈNH BÌNH PHƯỚC",
+      "Mã số thuế": "3700146458-009",
+      "Mã cửa hàng": "986017",
+      "Tên cửa hàng": "CỬA HÀNG BÁN LẺ XĂNG DẦU LỘC THỊNH",
+      "Địa chỉ": "Quốc lộ 14, Xã Nha Bích, Tỉnh Đồng Nai",
+      "Điện thoại": "02743829535",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Lê Văn Lộc",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "35,676",
+        "Đơn giá": "28.030",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "1.000.000"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "24",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "25338",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI XUẤT NHẬP KHẨU THANH LỄ - CTCP TẠI TỈNH BÌNH PHƯỚC",
+      "Mã số thuế": "3700146458-009",
+      "Mã cửa hàng": "986017",
+      "Tên cửa hàng": "CỬA HÀNG BÁN LẺ XĂNG DẦU LỘC THỊNH",
+      "Địa chỉ": "Quốc lộ 14, Xã Nha Bích, Tỉnh Đồng Nai",
+      "Điện thoại": "02743829535",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Lê Văn Lộc",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "35,676",
+        "Đơn giá": "28.030",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "1.000.000"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "25",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNH",
+    "shdon": "5357",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI XUẤT NHẬP KHẨU THANH LỄ - CTCP TẠI TỈNH BÌNH PHƯỚC",
+      "Mã số thuế": "3700146458-009",
+      "Mã cửa hàng": "986017",
+      "Tên cửa hàng": "CỬA HÀNG BÁN LẺ XĂNG DẦU LỘC THỊNH",
+      "Địa chỉ": "Quốc lộ 14, Xã Nha Bích, Tỉnh Đồng Nai",
+      "Điện thoại": "02743829535",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "Lê Văn Lộc",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "35,676",
+        "Đơn giá": "28.030",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "1.000.000"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "26",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "165055",
+    "ngay": "09/05/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "165055",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ec80d16c-d51b-4ec1-a0e6-2b21b4f83a35",
+        "id": "8287440d-4a45-46a6-b4e8-d1664bae6442",
+        "dgia": "24350",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.747",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "27",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "165327",
+    "ngay": "09/05/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "165327",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "93df1df9-5494-4719-bb3b-f4fb687dd3a9",
+        "id": "2cd5803e-26c7-4b29-b683-45dc0f9143b4",
+        "dgia": "24350",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "16.427",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "400000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "28",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "64796",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "16,427",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "29",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "65091",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "16,427",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "30",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNT",
+    "shdon": "108799",
+    "ngay": "09/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX BẮC TÂY NINH - CÔNG TY TNHH MTV PETROLIMEX TÂY NINH",
+      "Mã số thuế": "1100108351-105",
+      "Địa chỉ": "Số 405, đường 30/4, khu phố 22, Phường Tân Ninh, Tỉnh Tây Ninh, Việt Nam",
+      "Điện thoại": "0276 3824084",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "16,427",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "400.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "31",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNT",
+    "shdon": "108804",
+    "ngay": "09/05/2026",
+    "info": {
+      "nbmst": "4200240380-011",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "108804",
+      "khhdon": "K26TNT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "3bcd864c-609a-4211-82cd-87fb30171d04",
+        "id": "a7c9acc3-8d47-4f69-b6a4-ee952e7fdb41",
+        "dgia": "24080",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.989",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "650000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "32",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1018010",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH PETROLIMEX NINH THUẬN- CÔNG TY TNHH MTV PETROLIMEX KHÁNH HÒA",
+      "Mã số thuế": "4200240380-011",
+      "Địa chỉ": "Số 24 Quang Trung, Phường Phan Rang, Tỉnh Khánh Hoà, Việt Nam",
+      "Điện thoại": "0259.3824337",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng E10 RON 95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "26,989",
+        "Đơn giá": "24.080",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "650.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "33",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1022128",
+    "ngay": "08/05/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1022128",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "acd39363-7d15-4b20-9223-626852aabb07",
+        "id": "5aa6ad3c-33ba-490a-a665-a7d7f3fc9433",
+        "dgia": "25250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.802",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "34",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1024180",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "19,802",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "35",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1024492",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "19,802",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "36",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1024558",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "19,802",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "37",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TGT",
+    "shdon": "80207",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CÔNG TY TNHH MTV PETROLIMEX SÀI GÒN",
+      "Mã số thuế": "0300555450",
+      "Địa chỉ": "15 Lê Duẩn, Phường Sài Gòn, Thành phố Hồ Chí Minh, Việt Nam",
+      "Điện thoại": "(028) 3829 2081",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Hình thức thanh toán": "TM/CK/Thẻ",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON 95 Mức 5",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "19,802",
+        "Đơn giá": "25.250",
+        "Chiết khấu": "",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.000"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "38",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61518",
+    "ngay": "08/05/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "61518",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "631304f7-cbc7-4f16-a1a0-52b64bc70b0b",
+        "id": "677255a2-ab85-46ad-92e0-c01bc4b8c5b8",
+        "dgia": "27490",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "18.188",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "39",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61519",
+    "ngay": "08/05/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "61519",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "8ee32cf6-6670-4bec-9428-fb6e5940a171",
+        "id": "8b52e33f-ac35-4c23-8320-9e8fc901f6c4",
+        "dgia": "27490",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.211",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "830501",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "40",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61520",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51C-747.52",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "30,211",
+        "Đơn giá": "27.490",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "830.501"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "41",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61521",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51C-747.52",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "30,211",
+        "Đơn giá": "27.490",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "830.501"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "42",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61527",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51C-747.52",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "30,211",
+        "Đơn giá": "27.490",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "830.501"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "43",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61528",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51C-747.52",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Dầu Điêzen 0,05S Mức 2",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "30,211",
+        "Đơn giá": "27.490",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "830.501"
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "44",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61529",
+    "ngay": "08/05/2026",
+    "info": {
+      "nmtnmua": "51K-12636",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "61529",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1358d5ea-e039-4c99-95ed-6b770a7d85a5",
+        "id": "13d4484f-91dc-4265-97b4-6125eea5c12f",
+        "dgia": "24350",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.55",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500393",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "45",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "61530",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51K-12636",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "20,55",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.393"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "46",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "17210",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51K-12636",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "20,55",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.393"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "47",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "25101",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51K-12636",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "20,55",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.393"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "48",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "25102",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51K-12636",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "20,55",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.393"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "49",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNC",
+    "shdon": "15366",
+    "ngay": "08/05/2026",
+    "info": {
+      "Tên người bán": "CHI NHÁNH TỔNG CÔNG TY THƯƠNG MẠI KỸ THUẬT VÀ ĐẦU TƯ - CÔNG TY CỔ PHẦN TẠI TÂY NINH",
+      "Mã số thuế": "0300649476-026",
+      "Mã cửa hàng": "PE.CHXDPETE15",
+      "Địa chỉ": "Số 90, đường 30/4, Khu phố 4, phường Tân Ninh, tỉnh Tây Ninh",
+      "Tên người mua": "TRUNG TÂM GIÁO DỤC NGHỀ NGHIỆP BÁCH VIỆT",
+      "Họ tên người mua hàng": "51K-12636",
+      "Hình thức thanh toán": "TM/CK",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [
+      {
+        "STT": "1",
+        "Tính chất": "Hàng hóa, dịch vụ",
+        "Loại hàng hoá đặc trưng": "",
+        "Tên hàng hóa, dịch vụ": "Xăng RON95 Mức 3",
+        "Đơn vị tính": "Lít",
+        "Số lượng": "20,55",
+        "Đơn giá": "24.350",
+        "Chiết khấu": "0",
+        "Thuế suất": "KKKNT",
+        "Thành tiền chưa có thuế GTGT": "500.393"
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "50",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNH",
+    "shdon": "5305",
+    "ngay": "08/05/2026",
+    "info": {
+      "nbmst": "0310496966-039",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "5305",
+      "khhdon": "K26TNH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "148df309-83da-46c4-abdc-d461af00ede9",
+        "id": "4ee0e77c-650f-4416-8157-977b0cd07c27",
+        "dgia": "24350",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "12.32",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "300000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng RON95 Mức 3"
+    ]
+  },
+  {
     "stt": "1",
     "mst": "0310518384",
     "khmshdon": "1",

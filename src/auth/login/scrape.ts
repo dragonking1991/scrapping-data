@@ -36,6 +36,7 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
   const perRowDelayMs = Number(process.env.GDT_XML_ROW_DELAY_MS ?? 500);
   const modalTimeoutMs = Number(process.env.GDT_MODAL_TIMEOUT_MS ?? 15000);
   const results: ScrapedInvoice[] = [];
+  const outFile = `${outDir}/invoice-items.json`;
   let dumpedOnce = false;
   let pageIndex = 0;
 
@@ -43,6 +44,14 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
   const maxPages = Number(process.env.GDT_MAX_PAGES ?? 200);
   const continueTimeoutMs = Number(process.env.GDT_CONTINUE_TIMEOUT_MS ?? 7200000);
   let stopRequested = false;
+  let resumeRowIndex: number | null = null;
+
+  const persistResults = async (): Promise<void> => {
+    await fs.writeFile(outFile, JSON.stringify(results, null, 2), "utf8");
+  };
+
+  // Ensure output file exists immediately, then update it after each invoice.
+  await persistResults();
 
   const consumeStopSignal = async (): Promise<boolean> => {
     if (!continueSignalFile) {
@@ -82,8 +91,8 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
         await fs.unlink(continueSignalFile).catch(() => undefined);
 
         if (action === "continue") {
-          logger.info("[VIEW] resume from current visible list");
-          emitEvent("resumed", "resume from current visible list");
+          logger.info("[VIEW] Tiep tuc flow dang tam dung tu session hien tai.");
+          emitEvent("resumed", "Tiep tuc flow dang tam dung tu session hien tai.");
           return true;
         }
 
@@ -115,13 +124,15 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
       const resumed = await waitForResumeSignal();
       if (resumed) {
         stopRequested = false;
-        pageIndex = 0;
         continue;
       }
       break;
     }
 
-    pageIndex += 1;
+    const resumedInCurrentPage = resumeRowIndex != null;
+    if (!resumedInCurrentPage) {
+      pageIndex += 1;
+    }
 
     let rows = page.locator(".ant-table-tbody tr.ant-table-row");
     let rowCount = await rows.count();
@@ -154,11 +165,15 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
       emitEvent("rows-found", `Trang ${pageIndex}: ${rowCount} hoa don`, tableHtml);
     }
 
-    for (let r = 0; r < rowCount; r += 1) {
+    const startRowIndex: number = resumeRowIndex ?? 0;
+    resumeRowIndex = null;
+
+    for (let r: number = startRowIndex; r < rowCount; r += 1) {
       if (await consumeStopSignal()) {
         logger.warn("[VIEW] Da nhan yeu cau dung. Tam dung truoc khi xu ly hoa don tiep theo.");
         emitEvent("stopped", `Tam dung truoc hoa don #${r + 1} trang ${pageIndex}`);
         stopRequested = true;
+        resumeRowIndex = r;
         break;
       }
 
@@ -199,9 +214,9 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
             dumpedOnce = true;
           }
           const toolbarHtml = await captureHtml(page, ".ant-table-wrapper, .ant-table, header, [class*='toolbar']");
-          emitEvent("icon-not-found", "Khong tim thay icon 'Xem hoa don'", toolbarHtml);
-          logger.warn("[VIEW] Khong tim thay icon 'Xem hoa don'. Bo qua trang nay.");
-          break;
+          emitEvent("icon-not-found", `Khong tim thay icon 'Xem hoa don' tai row #${r + 1}, bo qua row nay`, toolbarHtml);
+          logger.warn(`[VIEW] Trang ${pageIndex} #${r + 1}: khong tim thay icon 'Xem hoa don', bo qua row nay.`);
+          continue;
         }
 
         // Step 3: click "Xem hóa đơn" to open the detail modal.
@@ -275,6 +290,7 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
         emitEvent("modal-closed", `Dong modal so ${record.shdon}`);
 
         results.push(record);
+        await persistResults();
       } catch (error) {
         const msg = error instanceof Error ? error.message : String(error);
         logger.warn(`[VIEW] Trang ${pageIndex} #${r + 1}: loi: ${msg.slice(0, 150)}`);
@@ -284,6 +300,10 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
     }
 
     // Continue waiting/resuming at loop start so both page-boundary and row-boundary stop behave the same.
+
+    if (stopRequested) {
+      continue;
+    }
 
     if (pageIndex >= maxPages) {
       logger.warn(`[VIEW] Da dat gioi han ${maxPages} trang, dung.`);
@@ -312,8 +332,7 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
   }
 
   // Persist results.
-  const outFile = `${outDir}/invoice-items.json`;
-  await fs.writeFile(outFile, JSON.stringify(results, null, 2), "utf8");
+  await persistResults();
   if (stopRequested) {
     logger.warn(`[VIEW] Da tam dung theo yeu cau. Da ghi tam ${results.length} hoa don vao ${outFile}`);
     emitEvent("saved", `Da tam dung. Da ghi tam ${results.length} hoa don vao invoice-items.json`);

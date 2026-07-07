@@ -5,6 +5,19 @@ interface PaginationState {
   current: number;
   total: number;
   pageSize: number | null;
+  isFallback?: boolean;
+}
+
+const DEFAULT_PAGINATION_CURRENT = 1;
+const DEFAULT_PAGINATION_TOTAL = 200;
+
+function buildFallbackPagination(pageSize: number | null = null): PaginationState {
+  return {
+    current: DEFAULT_PAGINATION_CURRENT,
+    total: DEFAULT_PAGINATION_TOTAL,
+    pageSize,
+    isFallback: true,
+  };
 }
 
 async function readPaginationState(page: Page): Promise<PaginationState | null> {
@@ -16,6 +29,36 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
         return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
       };
       const norm = (s: string): string => s.replace(/\s+/g, " ").trim();
+      const readVisiblePageIndex = (): { current: number; total: number } | null => {
+        const preferred = Array.from(
+          document.querySelectorAll("[class*='PageIndex'], [class*='pageIndex'], [class*='page-index']"),
+        );
+        const generic = Array.from(document.querySelectorAll("div, span"));
+        const candidates = preferred.length ? preferred.concat(generic) : generic;
+
+        for (const node of candidates) {
+          if (!isVisible(node)) {
+            continue;
+          }
+          const txt = norm(node.textContent || "");
+          if (!txt || txt.length > 20) {
+            continue;
+          }
+          const m = txt.match(/^(\d+)\s*\/\s*(\d+)$/);
+          if (!m) {
+            continue;
+          }
+          const currentNum = Number(m[1]);
+          const totalNum = Number(m[2]);
+          if (!Number.isFinite(currentNum) || !Number.isFinite(totalNum) || currentNum <= 0 || totalNum <= 0) {
+            continue;
+          }
+          return { current: currentNum, total: totalNum };
+        }
+
+        return null;
+      };
+
       const readPagerSnapshotFromDom = (): { current: number; total: number; pagerIndex: number } | null => {
         const pagers = Array.from(document.querySelectorAll(".ant-pagination, .pagination, [class*='pagination']"));
         for (let i = 0; i < pagers.length; i += 1) {
@@ -66,12 +109,28 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
           }
         }
 
+        const pageIndex = readVisiblePageIndex();
+        if (pageIndex) {
+          return { ...pageIndex, pagerIndex: -1 };
+        }
+
         return null;
       };
 
       const snapshot = readPagerSnapshotFromDom();
       if (!snapshot) {
-        return null;
+        const pageSizeFallbackEl = document.querySelector(
+          ".ant-select-selection-item, .ant-select-selection-selected-value, .ant-select-selector, select",
+        );
+        const pageSizeFallbackRaw = norm(
+          (pageSizeFallbackEl as HTMLElement | HTMLSelectElement | null)?.textContent ||
+            (pageSizeFallbackEl as HTMLSelectElement | null)?.value ||
+            "",
+        );
+        const pageSizeFallbackNum = Number(pageSizeFallbackRaw);
+        return buildFallbackPagination(
+          Number.isFinite(pageSizeFallbackNum) && pageSizeFallbackNum > 0 ? pageSizeFallbackNum : null,
+        );
       }
 
       const pagers = Array.from(document.querySelectorAll(".ant-pagination, .pagination, [class*='pagination']"));
@@ -88,9 +147,10 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
         current: snapshot.current,
         total: snapshot.total,
         pageSize: Number.isFinite(pageSizeNum) && pageSizeNum > 0 ? pageSizeNum : null,
+        isFallback: false,
       };
     })
-    .catch(() => null);
+    .catch(() => buildFallbackPagination(null));
 }
 
 async function clickNextPageByIndicator(page: Page): Promise<boolean> {
@@ -103,6 +163,124 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
       };
 
       const norm = (s: string): string => s.replace(/\s+/g, " ").trim();
+      const parsePageIndexText = (text: string): { current: number; total: number } | null => {
+        const m = norm(text).match(/^(\d+)\s*\/\s*(\d+)$/);
+        if (!m) {
+          return null;
+        }
+        const currentNum = Number(m[1]);
+        const totalNum = Number(m[2]);
+        if (!Number.isFinite(currentNum) || !Number.isFinite(totalNum) || currentNum <= 0 || totalNum <= 0) {
+          return null;
+        }
+        return { current: currentNum, total: totalNum };
+      };
+      const findVisiblePageIndexElement = (): HTMLElement | null => {
+        const preferred = Array.from(
+          document.querySelectorAll("[class*='PageIndex'], [class*='pageIndex'], [class*='page-index']"),
+        );
+        const generic = Array.from(document.querySelectorAll("div, span"));
+        const candidates = preferred.length ? preferred.concat(generic) : generic;
+
+        for (const node of candidates) {
+          if (!isVisible(node)) {
+            continue;
+          }
+          const txt = norm(node.textContent || "");
+          if (!txt || txt.length > 20) {
+            continue;
+          }
+          if (parsePageIndexText(txt)) {
+            return node as HTMLElement;
+          }
+        }
+
+        return null;
+      };
+      const readVisiblePageIndex = (): { current: number; total: number } | null => {
+        const el = findVisiblePageIndexElement();
+        if (!el) {
+          return null;
+        }
+        return parsePageIndexText(el.textContent || "");
+      };
+
+      const clickNextNearVisiblePageIndex = (): boolean => {
+        const pageIndexEl = findVisiblePageIndexElement();
+        if (!pageIndexEl) {
+          return false;
+        }
+        const indexState = parsePageIndexText(pageIndexEl.textContent || "");
+        if (!indexState || indexState.current >= indexState.total) {
+          return false;
+        }
+
+        const anchor = pageIndexEl.getBoundingClientRect();
+        const anchorCenterY = anchor.top + anchor.height / 2;
+        const candidates = Array.from(document.querySelectorAll("button, [role='button']"));
+        let best: HTMLElement | null = null;
+        let bestScore = Number.POSITIVE_INFINITY;
+
+        for (const node of candidates) {
+          const el = node as HTMLElement;
+          if (!isVisible(el)) {
+            continue;
+          }
+          if (el === pageIndexEl || pageIndexEl.contains(el)) {
+            continue;
+          }
+          const rect = el.getBoundingClientRect();
+          const dx = rect.left - anchor.right;
+          if (dx < 4 || dx > 140) {
+            continue;
+          }
+          const centerY = rect.top + rect.height / 2;
+          if (Math.abs(centerY - anchorCenterY) > 44) {
+            continue;
+          }
+
+          const disabled =
+            (el as HTMLButtonElement).disabled ||
+            el.getAttribute("aria-disabled") === "true" ||
+            el.classList.contains("ant-pagination-disabled") ||
+            /disabled/.test(el.className);
+          if (disabled) {
+            continue;
+          }
+
+          const txt = norm(el.textContent || "").toLowerCase();
+          const cls = (el.className || "").toLowerCase();
+          const aria = (el.getAttribute("aria-label") || "").toLowerCase();
+          const title = (el.getAttribute("title") || "").toLowerCase();
+          if (txt === "<" || /previous|prev|trang truoc/.test(aria) || /previous|prev|trang truoc/.test(title)) {
+            continue;
+          }
+
+          let score = dx;
+          if (/next|trang sau/.test(aria) || /next|trang sau/.test(title)) {
+            score -= 30;
+          }
+          if (/icon-only/.test(cls)) {
+            score -= 10;
+          }
+          if (/anticon-right|arrow-right|chevron-right/.test(cls)) {
+            score -= 20;
+          }
+
+          if (score < bestScore) {
+            bestScore = score;
+            best = el;
+          }
+        }
+
+        if (!best) {
+          return false;
+        }
+
+        best.click();
+        return true;
+      };
+
       const readPagerSnapshotFromDom = (): { current: number; total: number; pagerIndex: number } | null => {
         const pagers = Array.from(document.querySelectorAll(".ant-pagination, .pagination, [class*='pagination']"));
         for (let i = 0; i < pagers.length; i += 1) {
@@ -151,6 +329,11 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
           }
         }
 
+        const pageIndex = readVisiblePageIndex();
+        if (pageIndex) {
+          return { ...pageIndex, pagerIndex: -1 };
+        }
+
         return null;
       };
 
@@ -162,7 +345,7 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
       const pagers = Array.from(document.querySelectorAll(".ant-pagination, .pagination, [class*='pagination']"));
       const pager = pagers[snapshot.pagerIndex] as HTMLElement | undefined;
       if (!pager) {
-        return false;
+        return clickNextNearVisiblePageIndex();
       }
 
       const buttons = Array.from(pager.querySelectorAll("button"));
@@ -197,6 +380,9 @@ async function goToNextPage(page: Page): Promise<boolean> {
   const before = await readPaginationState(page);
 
   const moved = await clickFirstAvailable(page, [
+    "button.ant-btn.ant-btn-primary.ant-btn-icon-only:has(.anticon-right)",
+    "button.ant-btn.ant-btn-primary.ant-btn-icon-only:has(i.anticon-right)",
+    "button.ant-btn-primary.ant-btn-icon-only:has(svg[data-icon='right'])",
     ".ant-pagination-next:not(.ant-pagination-disabled) button",
     ".ant-pagination-next:not(.ant-pagination-disabled)",
     "button[aria-label='Trang sau']",
@@ -226,6 +412,9 @@ async function goToNextPage(page: Page): Promise<boolean> {
 
   const after = await readPaginationState(page);
   if (before && after) {
+    if (before.isFallback || after.isFallback) {
+      return attempted;
+    }
     return after.current > before.current;
   }
 

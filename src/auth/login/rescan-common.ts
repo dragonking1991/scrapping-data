@@ -109,6 +109,19 @@ async function readContinueAction(filePath: string): Promise<ContinueAction> {
   if (content === "stop-current-flow") {
     return "stop-current-flow";
   }
+  if (content === "debug-read-pagination") {
+    return "debug-read-pagination";
+  }
+  if (content === "debug-next-page") {
+    return "debug-next-page";
+  }
+  if (content === "debug-open-invoice") {
+    return "debug-open-invoice";
+  }
+  const rowMatch = content.match(/^debug-select-row:(\d+)$/);
+  if (rowMatch) {
+    return `debug-select-row:${Number(rowMatch[1])}` as ContinueAction;
+  }
   return "continue";
 }
 

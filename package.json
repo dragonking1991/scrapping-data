@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/cli.js",
-    "dev": "tsx src/ui/server.ts",
+    "dev": "node scripts/clean-dev-ports.mjs && tsx src/ui/server.ts",
     "dev:cli": "tsx src/cli.ts",
-    "dev:ui": "tsx src/ui/server.ts",
+    "dev:ui": "node scripts/clean-dev-ports.mjs && tsx src/ui/server.ts",
     "start:ui": "node dist/ui/server.js",
     "check": "tsc -p tsconfig.json --noEmit"
   },

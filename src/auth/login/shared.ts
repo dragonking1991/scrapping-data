@@ -71,7 +71,14 @@ const MANUAL_READY_SELECTORS = [
   "[class*='result'] table tbody tr",
 ];
 
-type ContinueAction = "continue" | "rescan-empty-line-items" | "stop-current-flow";
+type ContinueAction =
+  | "continue"
+  | "rescan-empty-line-items"
+  | "stop-current-flow"
+  | "debug-read-pagination"
+  | "debug-next-page"
+  | "debug-open-invoice"
+  | `debug-select-row:${number}`;
 
 type RescanDataset = "sold" | "purchased";
 

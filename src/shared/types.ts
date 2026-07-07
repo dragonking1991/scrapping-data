@@ -62,7 +62,14 @@ export interface LoginResult {
   captchaMethod: "svg-text" | "ocr" | "unknown";
   manualFilter?: ManualFilterContext;
   xmlDir?: string;
-  continueAction?: "continue" | "rescan-empty-line-items" | "stop-current-flow";
+  continueAction?:
+    | "continue"
+    | "rescan-empty-line-items"
+    | "stop-current-flow"
+    | "debug-read-pagination"
+    | "debug-next-page"
+    | "debug-open-invoice"
+    | `debug-select-row:${number}`;
 }
 
 export interface PipelineSummary {

@@ -1,11 +1,6 @@
 import type { Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
-import { emitEvent, normalizeText, readVisibleTooltip } from "./rescan-common.js";
-
-let cachedInvoiceButtonIndex: number | null = null;
-
-// Tooltip text (accent-insensitive) that identifies the invoice view/export action.
-const VIEW_TOOLTIP_RE = /(xem\s*hoa\s*don|xuat\s*hoa\s*don|xuat\s*xml|export)/;
+import { emitEvent } from "./rescan-common.js";
 
 /**
  * Remove any stale `data-gdt-view` marks. Needed when the results table/toolbar
@@ -31,58 +26,30 @@ async function findAndMarkViewInvoiceButton(page: Page): Promise<boolean> {
     await clearViewInvoiceMark(page);
   }
 
-  // Fast path: a visible eye icon is almost always "Xem hóa đơn".
-  const eye = page.locator(".anticon-eye, [class*='eye'], span.anticon:has(svg[data-icon='eye'])").first();
-  if ((await eye.count()) && (await eye.isVisible().catch(() => false))) {
-    const html = await eye.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
-    await eye.evaluate((node) => (node as HTMLElement).setAttribute("data-gdt-view", "1")).catch(() => undefined);
-    logger.info("[VIEW] Found 'Xem hoa don' via eye icon selector");
-    emitEvent("found-view-icon", "eye icon selector", html);
+  // Direct selector for the icon-only action button shown in the toolbar.
+  const directBtn = page
+    .locator("button.ant-btn.ant-btn-icon-only[class*='ButtonAnt__IconButton']")
+    .first();
+  if ((await directBtn.count()) && (await directBtn.isVisible().catch(() => false))) {
+    const html = await directBtn.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
+    await directBtn.evaluate((node) => (node as HTMLElement).setAttribute("data-gdt-view", "1")).catch(() => undefined);
+    logger.info("[VIEW] Found 'Xem hoa don' via direct icon button selector");
+    emitEvent("found-view-icon", "direct icon button selector", html);
     return true;
   }
 
-  const candidates = page.locator("button, a[role='button'], [role='button'], img, span.anticon");
-  const total = await candidates.count();
-  const limit = Math.min(total, 100);
-
-  // Fast path from cache: reuse last successful candidate index if DOM is similar.
-  if (cachedInvoiceButtonIndex != null && cachedInvoiceButtonIndex >= 0 && cachedInvoiceButtonIndex < limit) {
-    const cached = candidates.nth(cachedInvoiceButtonIndex);
-    if (await cached.isVisible().catch(() => false)) {
-      await cached.hover().catch(() => undefined);
-      await page.waitForTimeout(100);
-      const tip = await readVisibleTooltip(page);
-      if (tip && VIEW_TOOLTIP_RE.test(normalizeText(tip))) {
-        const html = await cached.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
-        await cached.evaluate((node) => (node as HTMLElement).setAttribute("data-gdt-view", "1")).catch(() => undefined);
-        logger.info(`[VIEW] Reused cached toolbar button idx=${cachedInvoiceButtonIndex} tooltip="${tip.slice(0, 30)}"`);
-        emitEvent("found-view-icon", `cached idx=${cachedInvoiceButtonIndex} tooltip="${tip.slice(0, 40)}"`, html);
-        return true;
+  // Fallback kept short: look for a direct eye icon only, no long scan loop.
+  const eye = page.locator("button.ant-btn.ant-btn-icon-only .anticon-eye, button.ant-btn.ant-btn-icon-only [data-icon='eye']").first();
+  if ((await eye.count()) && (await eye.isVisible().catch(() => false))) {
+    await eye.evaluate((node) => {
+      const btn = (node as HTMLElement).closest("button");
+      if (btn) {
+        btn.setAttribute("data-gdt-view", "1");
       }
-    }
-  }
-
-  for (let i = 0; i < limit; i += 1) {
-    const el = candidates.nth(i);
-    if (!(await el.isVisible().catch(() => false))) {
-      continue;
-    }
-
-    await el.hover().catch(() => undefined);
-    await page.waitForTimeout(120);
-    const tip = await readVisibleTooltip(page);
-    if (tip) {
-      emitEvent("hover", `icon #${i} → tooltip: "${tip.slice(0, 40)}"`);
-    }
-    // Accept both "Xem hóa đơn" and export actions used by some GDT screens.
-    if (tip && VIEW_TOOLTIP_RE.test(normalizeText(tip))) {
-      const html = await el.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
-      await el.evaluate((node) => (node as HTMLElement).setAttribute("data-gdt-view", "1")).catch(() => undefined);
-      cachedInvoiceButtonIndex = i;
-      logger.info(`[VIEW] Found 'Xem hoa don' icon via tooltip: "${tip.slice(0, 30)}"`);
-      emitEvent("found-view-icon", `tooltip="${tip.slice(0, 40)}"`, html);
-      return true;
-    }
+    }).catch(() => undefined);
+    logger.info("[VIEW] Found 'Xem hoa don' via eye icon fallback selector");
+    emitEvent("found-view-icon", "eye icon fallback selector");
+    return true;
   }
 
   return false;

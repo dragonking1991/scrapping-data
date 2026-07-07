@@ -163,10 +163,38 @@ async function extractManualFilterContext(page: Page, desiredDirection?: Invoice
 
 async function clickFirstAvailable(page: Page, selectors: string[]): Promise<boolean> {
   for (const selector of selectors) {
-    const locator = page.locator(selector).first();
-    if ((await locator.count()) && (await locator.isVisible().catch(() => false))) {
-      await locator.click().catch(() => undefined);
-      return true;
+    const candidates = page.locator(selector);
+    const count = await candidates.count();
+    for (let i = 0; i < count; i += 1) {
+      const locator = candidates.nth(i);
+      if (!(await locator.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      const disabled = await locator
+        .evaluate((el) => {
+          const node = el as HTMLElement;
+          const asBtn = node as HTMLButtonElement;
+          if (asBtn.disabled) {
+            return true;
+          }
+          if (node.getAttribute("aria-disabled") === "true") {
+            return true;
+          }
+          const cls = (node.className || "").toString().toLowerCase();
+          return cls.includes("disabled");
+        })
+        .catch(() => true);
+      if (disabled) {
+        continue;
+      }
+
+      try {
+        await locator.click({ timeout: 1500 });
+        return true;
+      } catch {
+        continue;
+      }
     }
   }
   return false;

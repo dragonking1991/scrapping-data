@@ -3,7 +3,182 @@ import type { Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
 import type { ContinueAction } from "./shared.js";
 import { hasManualSearchResults } from "./ui-manual.js";
-import { readContinueAction } from "./rescan-common.js";
+import { findAndMarkViewInvoiceButton } from "./toolbar-view.js";
+import { goToNextPage, readPaginationState } from "./pagination.js";
+import { emitEvent, readContinueAction } from "./rescan-common.js";
+
+function parseDebugRowAction(action: ContinueAction): number | null {
+  const match = String(action).match(/^debug-select-row:(\d+)$/);
+  if (!match) {
+    return null;
+  }
+  const value = Number(match[1]);
+  if (!Number.isFinite(value) || value <= 0) {
+    return null;
+  }
+  return value;
+}
+
+async function executeDebugAction(page: Page, action: ContinueAction): Promise<void> {
+  if (action === "debug-read-pagination") {
+    const state = await readPaginationState(page);
+    if (!state) {
+      logger.warn("[UI-TEST] Khong doc duoc phan trang hien tai.");
+      emitEvent("pagination-state", "UI-TEST: khong doc duoc phan trang");
+      return;
+    }
+    const where = `${state.current}/${state.total}`;
+    logger.info(`[UI-TEST] Phan trang hien tai: ${where}`);
+    emitEvent("pagination-state", `UI-TEST: trang ${where}`);
+    return;
+  }
+
+  if (action === "debug-next-page") {
+    const moved = await goToNextPage(page);
+    const state = await readPaginationState(page);
+    if (moved) {
+      const where = state ? `${state.current}/${state.total}` : "unknown";
+      logger.info(`[UI-TEST] Chuyen trang thanh cong. Vi tri moi: ${where}`);
+      emitEvent("next-page", `UI-TEST: chuyen trang thanh cong (${where})`);
+      emitEvent("pagination-state", `UI-TEST: trang ${where}`);
+    } else {
+      const where = state ? `${state.current}/${state.total}` : "unknown";
+      logger.warn(`[UI-TEST] Khong chuyen duoc trang. Vi tri hien tai: ${where}`);
+      emitEvent("pagination-end", `UI-TEST: khong chuyen duoc trang (${where})`);
+      emitEvent("pagination-state", `UI-TEST: trang ${where}`);
+    }
+    return;
+  }
+
+  if (action === "debug-open-invoice") {
+    const found = await findAndMarkViewInvoiceButton(page);
+    if (!found) {
+      logger.warn("[UI-TEST] Khong tim thay nut 'Xem hoa don'.");
+      emitEvent("icon-not-found", "UI-TEST: khong tim thay nut Xem hoa don");
+      return;
+    }
+    await page.locator('[data-gdt-view="1"]').first().click().catch(() => undefined);
+    logger.info("[UI-TEST] Da bam nut 'Xem hoa don'.");
+    emitEvent("click-view", "UI-TEST: da bam nut Xem hoa don");
+    return;
+  }
+
+  const rowIndex = parseDebugRowAction(action);
+  if (rowIndex == null) {
+    return;
+  }
+
+  let rows = page.locator(".ant-table-tbody tr.ant-table-row");
+  let rowCount = await rows.count();
+  if (rowCount === 0) {
+    rows = page.locator(".ant-table-tbody tr");
+    rowCount = await rows.count();
+  }
+
+  if (rowCount === 0) {
+    logger.warn("[UI-TEST] Khong tim thay row nao de chon.");
+    emitEvent("no-rows", "UI-TEST: khong tim thay row nao de chon");
+    return;
+  }
+
+  if (rowIndex > rowCount) {
+    logger.warn(`[UI-TEST] Row ${rowIndex} vuot qua tong so row hien tai (${rowCount}).`);
+    emitEvent("row-error", `UI-TEST: row ${rowIndex} > ${rowCount}`);
+    return;
+  }
+
+  await page
+    .evaluate(() => {
+      document.querySelectorAll('[data-gdt-target-row="1"]').forEach((el) => el.removeAttribute("data-gdt-target-row"));
+    })
+    .catch(() => undefined);
+
+  const marked = await page
+    .evaluate((wantedStt) => {
+      const isVisible = (el: Element): boolean => {
+        const rect = (el as HTMLElement).getBoundingClientRect();
+        const style = window.getComputedStyle(el as HTMLElement);
+        return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
+      };
+      const norm = (s: string): string => s.replace(/\s+/g, " ").trim();
+
+      const allRows = Array.from(document.querySelectorAll(".ant-table-tbody tr.ant-table-row"));
+      const expected = String(wantedStt);
+      const matches: HTMLElement[] = [];
+
+      for (const row of allRows) {
+        if (!isVisible(row)) {
+          continue;
+        }
+        const firstCell = row.querySelector("td");
+        const sttText = norm(firstCell?.textContent || "");
+        if (sttText === expected) {
+          matches.push(row as HTMLElement);
+        }
+      }
+
+      if (!matches.length) {
+        return false;
+      }
+
+      // Ant table may render duplicate rows (fixed columns). Prefer the fullest row.
+      matches.sort((a, b) => b.querySelectorAll("td").length - a.querySelectorAll("td").length);
+      const target = matches[0];
+      if (!target) {
+        return false;
+      }
+      target.setAttribute("data-gdt-target-row", "1");
+      return true;
+    }, rowIndex)
+    .catch(() => false);
+
+  if (!marked) {
+    logger.warn(`[UI-TEST] Khong tim thay row co STT=${rowIndex}.`);
+    emitEvent("row-error", `UI-TEST: khong tim thay row STT=${rowIndex}`);
+    return;
+  }
+
+  const row = page.locator('[data-gdt-target-row="1"]').first();
+  const isSelected = async () =>
+    row
+      .evaluate((el) => (el as HTMLElement).classList.contains("ant-selected-row"))
+      .catch(() => false);
+
+  if (!(await isSelected())) {
+    await row.click().catch(() => undefined);
+    await page.waitForTimeout(120);
+  }
+
+  if (!(await isSelected())) {
+    const firstCell = row.locator("td").first();
+    if (await firstCell.count()) {
+      await firstCell.click().catch(() => undefined);
+      await page.waitForTimeout(120);
+    }
+
+    if (!(await isSelected())) {
+      const checkboxWrap = row.locator(".ant-checkbox-wrapper, .ant-checkbox").first();
+      if (await checkboxWrap.count()) {
+        await checkboxWrap.click().catch(() => undefined);
+        await page.waitForTimeout(150);
+      }
+    }
+  }
+
+  if (!(await isSelected())) {
+    logger.warn(`[UI-TEST] Chon row STT=${rowIndex} that bai (khong thay class ant-selected-row tren row do).`);
+    emitEvent("row-error", `UI-TEST: row STT=${rowIndex} khong co class ant-selected-row`);
+    return;
+  }
+
+  await row.evaluate((el) => {
+    const node = el as HTMLElement;
+    node.style.fontWeight = "700";
+    node.style.outline = "2px solid #f59e0b";
+  }).catch(() => undefined);
+  logger.info(`[UI-TEST] Da chon row #${rowIndex} (co class ant-selected-row) va highlight dam.`);
+  emitEvent("click-row", `UI-TEST: da chon row #${rowIndex} (ant-selected-row)`);
+}
 
 async function waitForManualLoginToken(
   page: Page,
@@ -52,6 +227,17 @@ async function waitForContinueSignal(
       await fs.access(continueSignalFile);
       const action = await readContinueAction(continueSignalFile);
       await fs.unlink(continueSignalFile).catch(() => undefined);
+
+      if (
+        action === "debug-read-pagination" ||
+        action === "debug-next-page" ||
+        action === "debug-open-invoice" ||
+        String(action).startsWith("debug-select-row:")
+      ) {
+        await executeDebugAction(page, action);
+        continue;
+      }
+
       if (action === "stop-current-flow") {
         logger.warn("Da nhan yeu cau dung flow hien tai trong luc cho tiep tuc. Van tiep tuc cho den khi bam Lay thong tin.");
         continue;
