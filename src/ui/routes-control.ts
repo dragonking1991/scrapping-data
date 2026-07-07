@@ -4,8 +4,12 @@ import type { URL } from "node:url";
 import { readBody, validateStartPayload, writeJson } from "./helpers.js";
 import { addLog } from "./logging.js";
 import { startJob } from "./jobs-core.js";
-import { activeSessions, jobs } from "./state.js";
+import { activeSessions, CONTINUE_READY_MARKER, jobs } from "./state.js";
 import type { ContinuePayload, DebugActionPayload, StartPayload } from "./types.js";
+
+function isWaitingForContinueSignal(output: string): boolean {
+  return output.includes(CONTINUE_READY_MARKER) || output.includes("Dang cho tin hieu tiep tuc");
+}
 
 export async function handleControlRoutes(req: IncomingMessage, res: ServerResponse, url: URL): Promise<boolean> {
   if (req.method === "POST" && url.pathname === "/start") {
@@ -78,7 +82,7 @@ export async function handleControlRoutes(req: IncomingMessage, res: ServerRespo
       return true;
     }
 
-    if (activeJob.status === "running") {
+    if (activeJob.status === "running" && !isWaitingForContinueSignal(activeJob.output)) {
       addLog("ui-api", "/run ignored already running", { jobId: active.jobId });
       writeJson(res, 200, {
         ok: true,
@@ -94,7 +98,11 @@ export async function handleControlRoutes(req: IncomingMessage, res: ServerRespo
       activeJob.output += "\n[UI] Tiep tuc flow dang tam dung tu session hien tai.\n";
     }
 
-    addLog("ui-api", "/run signal sent", { jobId: active.jobId, signalFile: active.continueSignalFile });
+    addLog("ui-api", "/run signal sent", {
+      jobId: active.jobId,
+      signalFile: active.continueSignalFile,
+      waitingForContinue: isWaitingForContinueSignal(activeJob.output),
+    });
     await fs.writeFile(active.continueSignalFile, "continue", "utf8");
     writeJson(res, 200, {
       ok: true,

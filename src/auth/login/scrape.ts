@@ -113,6 +113,43 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
     return false;
   };
 
+  const selectRowForDetail = async (row: ReturnType<Page["locator"]>, rowNumber: number, invoiceNo: string): Promise<boolean> => {
+    const isSelected = async (): Promise<boolean> =>
+      row
+        .evaluate((el) => (el as HTMLElement).classList.contains("ant-selected-row"))
+        .catch(() => false);
+
+    if (!(await isSelected())) {
+      await row.click().catch(() => undefined);
+      await page.waitForTimeout(120);
+    }
+
+    if (!(await isSelected())) {
+      const firstCell = row.locator("td").first();
+      if (await firstCell.count()) {
+        await firstCell.click().catch(() => undefined);
+        await page.waitForTimeout(120);
+      }
+    }
+
+    if (!(await isSelected())) {
+      const checkboxWrap = row.locator(".ant-checkbox-wrapper, .ant-checkbox").first();
+      if (await checkboxWrap.count()) {
+        await checkboxWrap.click().catch(() => undefined);
+        await page.waitForTimeout(150);
+      }
+    }
+
+    const selected = await isSelected();
+    if (!selected) {
+      emitEvent("row-error", `Trang ${pageIndex} #${rowNumber}: khong chon duoc row ${invoiceNo || "(unknown)"}`);
+      logger.warn(
+        `[VIEW] Trang ${pageIndex} #${rowNumber}: khong chon duoc row ${invoiceNo || "(unknown)"} (thieu ant-selected-row)`,
+      );
+    }
+    return selected;
+  };
+
   for (;;) {
     if (await consumeStopSignal()) {
       logger.warn("[VIEW] Da nhan yeu cau dung. Tam dung luong Lay thong tin va giu nguyen session.");
@@ -202,9 +239,12 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
 
         // Step 1: click the row to enable the toolbar icons.
         const rowHtml = await row.evaluate((node) => (node as HTMLElement).outerHTML).catch(() => "");
-        await row.click().catch(() => undefined);
+        const selected = await selectRowForDetail(row, r + 1, record.shdon);
+        if (!selected) {
+          continue;
+        }
         await page.waitForTimeout(perRowDelayMs);
-        emitEvent("click-row", `Trang ${pageIndex} #${r + 1}: click hoa don so ${record.shdon}`, rowHtml);
+        emitEvent("click-row", `Trang ${pageIndex} #${r + 1}: chon hoa don so ${record.shdon}`, rowHtml);
 
         // Step 2: locate the "Xem hóa đơn" icon (enabled after row click).
         const found = await findAndMarkViewInvoiceButton(page);

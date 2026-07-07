@@ -7,6 +7,52 @@ import { findAndMarkViewInvoiceButton } from "./toolbar-view.js";
 import { goToNextPage, readPaginationState } from "./pagination.js";
 import { emitEvent, readContinueAction } from "./rescan-common.js";
 
+async function ensureAnyRowSelected(page: Page): Promise<boolean> {
+  const row = page
+    .locator(".ant-table-tbody tr.ant-selected-row")
+    .first();
+  if (await row.count()) {
+    return true;
+  }
+
+  let rows = page.locator(".ant-table-tbody tr.ant-table-row");
+  let rowCount = await rows.count();
+  if (rowCount === 0) {
+    rows = page.locator(".ant-table-tbody tr");
+    rowCount = await rows.count();
+  }
+  if (rowCount === 0) {
+    return false;
+  }
+
+  const first = rows.first();
+  await first.click().catch(() => undefined);
+  await page.waitForTimeout(160);
+
+  const selected = page.locator(".ant-table-tbody tr.ant-selected-row").first();
+  if (await selected.count()) {
+    return true;
+  }
+
+  const firstCell = first.locator("td").first();
+  if (await firstCell.count()) {
+    await firstCell.click().catch(() => undefined);
+    await page.waitForTimeout(160);
+  }
+
+  if (await selected.count()) {
+    return true;
+  }
+
+  const checkboxWrap = first.locator(".ant-checkbox-wrapper, .ant-checkbox").first();
+  if (await checkboxWrap.count()) {
+    await checkboxWrap.click().catch(() => undefined);
+    await page.waitForTimeout(180);
+  }
+
+  return (await selected.count()) > 0;
+}
+
 function parseDebugRowAction(action: ContinueAction): number | null {
   const match = String(action).match(/^debug-select-row:(\d+)$/);
   if (!match) {
@@ -28,8 +74,10 @@ async function executeDebugAction(page: Page, action: ContinueAction): Promise<v
       return;
     }
     const where = `${state.current}/${state.total}`;
-    logger.info(`[UI-TEST] Phan trang hien tai: ${where}`);
-    emitEvent("pagination-state", `UI-TEST: trang ${where}`);
+    const sourceTag = state.source ? ` source=${state.source}` : "";
+    const fallbackTag = state.isFallback ? " (fallback)" : "";
+    logger.info(`[UI-TEST] Phan trang hien tai: ${where}${fallbackTag}${sourceTag}`);
+    emitEvent("pagination-state", `UI-TEST: trang ${where}${fallbackTag}${sourceTag}`);
     return;
   }
 
@@ -51,6 +99,13 @@ async function executeDebugAction(page: Page, action: ContinueAction): Promise<v
   }
 
   if (action === "debug-open-invoice") {
+    const selected = await ensureAnyRowSelected(page);
+    if (!selected) {
+      logger.warn("[UI-TEST] Chua co row nao duoc chon de mo hoa don.");
+      emitEvent("row-error", "UI-TEST: chua chon duoc row nao truoc khi bam Xem hoa don");
+      return;
+    }
+
     const found = await findAndMarkViewInvoiceButton(page);
     if (!found) {
       logger.warn("[UI-TEST] Khong tim thay nut 'Xem hoa don'.");
@@ -81,12 +136,6 @@ async function executeDebugAction(page: Page, action: ContinueAction): Promise<v
     return;
   }
 
-  if (rowIndex > rowCount) {
-    logger.warn(`[UI-TEST] Row ${rowIndex} vuot qua tong so row hien tai (${rowCount}).`);
-    emitEvent("row-error", `UI-TEST: row ${rowIndex} > ${rowCount}`);
-    return;
-  }
-
   await page
     .evaluate(() => {
       document.querySelectorAll('[data-gdt-target-row="1"]').forEach((el) => el.removeAttribute("data-gdt-target-row"));
@@ -101,6 +150,7 @@ async function executeDebugAction(page: Page, action: ContinueAction): Promise<v
         return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
       };
       const norm = (s: string): string => s.replace(/\s+/g, " ").trim();
+      const toStt = (s: string): string => norm(s).replace(/\./g, "");
 
       const allRows = Array.from(document.querySelectorAll(".ant-table-tbody tr.ant-table-row"));
       const expected = String(wantedStt);
@@ -110,25 +160,35 @@ async function executeDebugAction(page: Page, action: ContinueAction): Promise<v
         if (!isVisible(row)) {
           continue;
         }
-        const firstCell = row.querySelector("td");
-        const sttText = norm(firstCell?.textContent || "");
-        if (sttText === expected) {
+
+        const cells = Array.from(row.querySelectorAll("td"));
+        const hasWantedStt = cells.some((cell) => toStt(cell.textContent || "") === expected);
+        if (hasWantedStt) {
           matches.push(row as HTMLElement);
         }
       }
 
-      if (!matches.length) {
-        return false;
+      if (matches.length) {
+        // Ant table may render duplicate rows (fixed columns). Prefer the fullest row.
+        matches.sort((a, b) => b.querySelectorAll("td").length - a.querySelectorAll("td").length);
+        const target = matches[0];
+        if (!target) {
+          return false;
+        }
+        target.setAttribute("data-gdt-target-row", "1");
+        return true;
       }
 
-      // Ant table may render duplicate rows (fixed columns). Prefer the fullest row.
-      matches.sort((a, b) => b.querySelectorAll("td").length - a.querySelectorAll("td").length);
-      const target = matches[0];
-      if (!target) {
-        return false;
+      // Fallback: if STT is not rendered on this page/viewport, treat input as
+      // 1-based row position within current page so UI test still works.
+      const visibleRows = allRows.filter((row) => isVisible(row));
+      const fallback = visibleRows[wantedStt - 1];
+      if (fallback) {
+        (fallback as HTMLElement).setAttribute("data-gdt-target-row", "1");
+        return true;
       }
-      target.setAttribute("data-gdt-target-row", "1");
-      return true;
+
+      return false;
     }, rowIndex)
     .catch(() => false);
 

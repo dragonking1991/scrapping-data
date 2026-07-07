@@ -6,6 +6,7 @@ interface PaginationState {
   total: number;
   pageSize: number | null;
   isFallback?: boolean;
+  source?: string;
 }
 
 const DEFAULT_PAGINATION_CURRENT = 1;
@@ -17,6 +18,7 @@ function buildFallbackPagination(pageSize: number | null = null): PaginationStat
     total: DEFAULT_PAGINATION_TOTAL,
     pageSize,
     isFallback: true,
+    source: "fallback" as const,
   };
 }
 
@@ -29,12 +31,26 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
         return rect.width > 0 && rect.height > 0 && style.visibility !== "hidden" && style.display !== "none";
       };
       const norm = (s: string): string => s.replace(/\s+/g, " ").trim();
+      const parsePageIndexText = (text: string): { current: number; total: number } | null => {
+        const m = norm(text).match(/^(\d+)\s*\/\s*(\d+)$/);
+        if (!m) {
+          return null;
+        }
+        const currentNum = Number(m[1]);
+        const totalNum = Number(m[2]);
+        if (!Number.isFinite(currentNum) || !Number.isFinite(totalNum) || currentNum <= 0 || totalNum <= 0) {
+          return null;
+        }
+        return { current: currentNum, total: totalNum };
+      };
       const readVisiblePageIndex = (): { current: number; total: number } | null => {
-        const preferred = Array.from(
+        const hasRealPager =
+          document.querySelector(".ant-pagination, .pagination, [class*='pagination']") != null;
+        const candidates = Array.from(
           document.querySelectorAll("[class*='PageIndex'], [class*='pageIndex'], [class*='page-index']"),
         );
-        const generic = Array.from(document.querySelectorAll("div, span"));
-        const candidates = preferred.length ? preferred.concat(generic) : generic;
+
+        const parsed: Array<{ current: number; total: number }> = [];
 
         for (const node of candidates) {
           if (!isVisible(node)) {
@@ -44,16 +60,27 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
           if (!txt || txt.length > 20) {
             continue;
           }
-          const m = txt.match(/^(\d+)\s*\/\s*(\d+)$/);
-          if (!m) {
+          const pageIndex = parsePageIndexText(txt);
+          if (!pageIndex) {
             continue;
           }
-          const currentNum = Number(m[1]);
-          const totalNum = Number(m[2]);
-          if (!Number.isFinite(currentNum) || !Number.isFinite(totalNum) || currentNum <= 0 || totalNum <= 0) {
+
+          // Some custom labels can show 1/1 even when table pager is elsewhere.
+          // If a real pager exists, ignore this ambiguous loose value.
+          if (hasRealPager && pageIndex.current === 1 && pageIndex.total === 1) {
             continue;
           }
-          return { current: currentNum, total: totalNum };
+
+          parsed.push(pageIndex);
+        }
+
+        if (parsed.length) {
+          parsed.sort((a, b) => {
+            const score = (x: { current: number; total: number }): number =>
+              (x.total > 1 ? 10000 : 0) + x.total * 10 + (x.current > 1 ? 1 : 0);
+            return score(b) - score(a);
+          });
+          return parsed[0] ?? null;
         }
 
         return null;
@@ -61,6 +88,7 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
 
       const readPagerSnapshotFromDom = (): { current: number; total: number; pagerIndex: number } | null => {
         const pagers = Array.from(document.querySelectorAll(".ant-pagination, .pagination, [class*='pagination']"));
+        const snapshots: Array<{ current: number; total: number; pagerIndex: number }> = [];
         for (let i = 0; i < pagers.length; i += 1) {
           const pager = pagers[i] as HTMLElement;
           if (!isVisible(pager)) {
@@ -104,9 +132,41 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
             }
           }
 
-          if (current != null && total != null) {
-            return { current, total, pagerIndex: i };
+          if (current == null || total == null) {
+            const activeItem = pager.querySelector(
+              ".ant-pagination-item-active a, .ant-pagination-item-active",
+            ) as HTMLElement | null;
+            const activeNum = Number(norm(activeItem?.textContent || ""));
+            const pageNums = Array.from(
+              pager.querySelectorAll(".ant-pagination-item a, .ant-pagination-item"),
+            )
+              .map((el) => Number(norm((el as HTMLElement).textContent || "")))
+              .filter((n) => Number.isFinite(n) && n > 0);
+
+            const maxNum = pageNums.length ? Math.max(...pageNums) : NaN;
+            if (Number.isFinite(activeNum) && activeNum > 0 && Number.isFinite(maxNum) && maxNum > 0) {
+              current = activeNum;
+              total = maxNum;
+            }
           }
+
+          if (current != null && total != null) {
+            snapshots.push({ current, total, pagerIndex: i });
+          }
+        }
+
+        if (snapshots.length) {
+          snapshots.sort((a, b) => {
+            const score = (x: { current: number; total: number }): number =>
+              (x.total > 1 ? 10000 : 0) + x.total * 10 + (x.current > 1 ? 1 : 0);
+            return score(b) - score(a);
+          });
+          const bestPager = snapshots[0] ?? null;
+          const pageIndex = readVisiblePageIndex();
+          if (bestPager && pageIndex && pageIndex.total > bestPager.total) {
+            return { ...pageIndex, pagerIndex: -1 };
+          }
+          return bestPager;
         }
 
         const pageIndex = readVisiblePageIndex();
@@ -148,6 +208,7 @@ async function readPaginationState(page: Page): Promise<PaginationState | null> 
         total: snapshot.total,
         pageSize: Number.isFinite(pageSizeNum) && pageSizeNum > 0 ? pageSizeNum : null,
         isFallback: false,
+        source: snapshot.pagerIndex >= 0 ? "pager" : "page-index",
       };
     })
     .catch(() => buildFallbackPagination(null));
@@ -176,11 +237,11 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
         return { current: currentNum, total: totalNum };
       };
       const findVisiblePageIndexElement = (): HTMLElement | null => {
-        const preferred = Array.from(
+        const candidates = Array.from(
           document.querySelectorAll("[class*='PageIndex'], [class*='pageIndex'], [class*='page-index']"),
         );
-        const generic = Array.from(document.querySelectorAll("div, span"));
-        const candidates = preferred.length ? preferred.concat(generic) : generic;
+
+        const parsed: Array<{ el: HTMLElement; current: number; total: number }> = [];
 
         for (const node of candidates) {
           if (!isVisible(node)) {
@@ -190,9 +251,19 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
           if (!txt || txt.length > 20) {
             continue;
           }
-          if (parsePageIndexText(txt)) {
-            return node as HTMLElement;
+          const pageIndex = parsePageIndexText(txt);
+          if (pageIndex) {
+            parsed.push({ el: node as HTMLElement, ...pageIndex });
           }
+        }
+
+        if (parsed.length) {
+          parsed.sort((a, b) => {
+            const score = (x: { current: number; total: number }): number =>
+              (x.total > 1 ? 10000 : 0) + x.total * 10 + (x.current > 1 ? 1 : 0);
+            return score(b) - score(a);
+          });
+          return parsed[0]?.el ?? null;
         }
 
         return null;
@@ -283,6 +354,7 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
 
       const readPagerSnapshotFromDom = (): { current: number; total: number; pagerIndex: number } | null => {
         const pagers = Array.from(document.querySelectorAll(".ant-pagination, .pagination, [class*='pagination']"));
+        const snapshots: Array<{ current: number; total: number; pagerIndex: number }> = [];
         for (let i = 0; i < pagers.length; i += 1) {
           const pager = pagers[i] as HTMLElement;
           if (!isVisible(pager)) {
@@ -324,9 +396,41 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
             }
           }
 
-          if (current != null && total != null) {
-            return { current, total, pagerIndex: i };
+          if (current == null || total == null) {
+            const activeItem = pager.querySelector(
+              ".ant-pagination-item-active a, .ant-pagination-item-active",
+            ) as HTMLElement | null;
+            const activeNum = Number(norm(activeItem?.textContent || ""));
+            const pageNums = Array.from(
+              pager.querySelectorAll(".ant-pagination-item a, .ant-pagination-item"),
+            )
+              .map((el) => Number(norm((el as HTMLElement).textContent || "")))
+              .filter((n) => Number.isFinite(n) && n > 0);
+
+            const maxNum = pageNums.length ? Math.max(...pageNums) : NaN;
+            if (Number.isFinite(activeNum) && activeNum > 0 && Number.isFinite(maxNum) && maxNum > 0) {
+              current = activeNum;
+              total = maxNum;
+            }
           }
+
+          if (current != null && total != null) {
+            snapshots.push({ current, total, pagerIndex: i });
+          }
+        }
+
+        if (snapshots.length) {
+          snapshots.sort((a, b) => {
+            const score = (x: { current: number; total: number }): number =>
+              (x.total > 1 ? 10000 : 0) + x.total * 10 + (x.current > 1 ? 1 : 0);
+            return score(b) - score(a);
+          });
+          const bestPager = snapshots[0] ?? null;
+          const pageIndex = readVisiblePageIndex();
+          if (bestPager && pageIndex && pageIndex.total > bestPager.total) {
+            return { ...pageIndex, pagerIndex: -1 };
+          }
+          return bestPager;
         }
 
         const pageIndex = readVisiblePageIndex();
@@ -338,7 +442,13 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
       };
 
       const snapshot = readPagerSnapshotFromDom();
-      if (!snapshot || snapshot.current >= snapshot.total) {
+      if (!snapshot) {
+        return false;
+      }
+
+      // If we only detected a loose page-index label (not a real pager),
+      // do not early-stop on x/x because it can be unrelated (e.g. 1/1 text elsewhere).
+      if (snapshot.pagerIndex >= 0 && snapshot.current >= snapshot.total) {
         return false;
       }
 
@@ -348,7 +458,11 @@ async function clickNextPageByIndicator(page: Page): Promise<boolean> {
         return clickNextNearVisiblePageIndex();
       }
 
-      const buttons = Array.from(pager.querySelectorAll("button"));
+      const buttons = Array.from(
+        pager.querySelectorAll(
+          "button, .ant-pagination-next a, .ant-pagination-next [role='button'], .ant-pagination-next",
+        ),
+      );
       for (const btn of buttons) {
         if (!isVisible(btn)) {
           continue;
