@@ -3,7 +3,7 @@ import { launch } from "cloakbrowser";
 import type { Browser, Response } from "playwright-core";
 import { logger } from "../../shared/logger.js";
 import { solveCaptcha } from "../captcha.js";
-import type { InvoiceDirection, LoginResult, ManualFilterContext } from "../../shared/types.js";
+import type { ContinueRunMode, InvoiceDirection, LoginResult, ManualFilterContext } from "../../shared/types.js";
 import type { AppConfig } from "../../shared/config.js";
 import { sanitizeBaseUrl } from "../../shared/config.js";
 import {
@@ -185,6 +185,39 @@ export async function loginAndGetToken(
     await page.goto(sanitizeBaseUrl(config.baseUrl, LOGIN_URL), { waitUntil: "networkidle" });
 
     if (manualFirst) {
+      const readCurrentManualFilter = async (): Promise<ManualFilterContext> => {
+        const domFilter = await extractManualFilterContext(page, options?.desiredDirection);
+        return {
+          from: latestManualFilterFromRequest.from ?? domFilter.from,
+          to: latestManualFilterFromRequest.to ?? domFilter.to,
+          direction: latestManualFilterFromRequest.direction ?? domFilter.direction ?? options?.desiredDirection,
+        };
+      };
+
+      const waitForCurrentManualSearchReady = async (): Promise<ManualFilterContext> => {
+        await waitForManualSearchReady(page, manualReadyTimeoutMs);
+        return readCurrentManualFilter();
+      };
+
+      const runManualViewScrape = async (selectedRunMode: ContinueRunMode): Promise<number> => {
+        if (!options?.autoExportXml || !options?.xmlDir) {
+          return 0;
+        }
+
+        logger.info("[VIEW] Bat dau xem tung hoa don va ghi lai ten hang hoa/dich vu...");
+        logger.info(`[VIEW] Run mode duoc chon: ${selectedRunMode}`);
+        const count = await scrapeInvoiceItemsAllPages(page, options.xmlDir, {
+          continueSignalFile: options?.continueSignalFile,
+          initialRunMode: selectedRunMode,
+        });
+        if (count > 0) {
+          logger.info(`[VIEW] Da xu ly ${count} hoa don, ket qua tai ${options.xmlDir}/invoice-items.json`);
+        } else {
+          logger.warn("[VIEW] Khong ghi duoc hoa don nao.");
+        }
+        return count;
+      };
+
       if (options?.prefillCredentials !== false && config.username && config.password) {
         try {
           await ensureLoginFormVisible(page);
@@ -210,13 +243,7 @@ export async function loginAndGetToken(
       const continueAction = await waitForContinueSignal(page, options?.continueSignalFile);
       const runMode = getRunModeFromContinueAction(continueAction);
 
-      let manualFilter: ManualFilterContext = {};
-      const domFilter = await extractManualFilterContext(page, options?.desiredDirection);
-      manualFilter = {
-        from: latestManualFilterFromRequest.from ?? domFilter.from,
-        to: latestManualFilterFromRequest.to ?? domFilter.to,
-        direction: latestManualFilterFromRequest.direction ?? domFilter.direction ?? options?.desiredDirection,
-      };
+      const manualFilter = await readCurrentManualFilter();
 
       if (continueAction !== "rescan-empty-line-items") {
         await waitForManualSearchReady(page, manualReadyTimeoutMs);
@@ -228,7 +255,7 @@ export async function loginAndGetToken(
 
       if (continueAction === "rescan-empty-line-items") {
         try {
-          const jsonDir = options?.xmlDir ?? join(process.cwd(), ".gdt-xml-export");
+          const jsonDir = options?.xmlDir ?? join(process.cwd(), "gdt-xml-export");
           logger.info(`[RESCAN] Bat dau ra lai hoa don thieu lineItems tai ${jsonDir}`);
           await rescanEmptyLineItemsFromJson(page, jsonDir, options?.continueSignalFile);
           logger.info("[RESCAN] Hoan tat ra lai hd_sold + hd_purchased");
@@ -242,25 +269,16 @@ export async function loginAndGetToken(
           expiresAt: readJwtExp(manualToken),
           captchaMethod: "unknown",
           manualFilter,
+          readManualFilter: readCurrentManualFilter,
+          waitForManualSearchReady: waitForCurrentManualSearchReady,
+          runManualViewScrape,
           continueAction,
         };
       }
 
-      let exportedXmlDir: string | undefined;
       if (options?.autoExportXml && options?.xmlDir) {
         try {
-          logger.info("[VIEW] Bat dau xem tung hoa don va ghi lai ten hang hoa/dich vu...");
-          logger.info(`[VIEW] Run mode duoc chon: ${runMode}`);
-          const count = await scrapeInvoiceItemsAllPages(page, options.xmlDir, {
-            continueSignalFile: options?.continueSignalFile,
-            initialRunMode: runMode,
-          });
-          if (count > 0) {
-            exportedXmlDir = options.xmlDir;
-            logger.info(`[VIEW] Da xu ly ${count} hoa don, ket qua tai ${options.xmlDir}/invoice-items.json`);
-          } else {
-            logger.warn("[VIEW] Khong ghi duoc hoa don nao.");
-          }
+          await runManualViewScrape(runMode);
         } catch (error) {
           const msg = error instanceof Error ? error.message : String(error);
           logger.warn(`[VIEW] Xem hoa don that bai: ${msg.slice(0, 150)}.`);
@@ -272,7 +290,9 @@ export async function loginAndGetToken(
         expiresAt: readJwtExp(manualToken),
         captchaMethod: "unknown",
         manualFilter,
-        xmlDir: exportedXmlDir,
+        readManualFilter: readCurrentManualFilter,
+        waitForManualSearchReady: waitForCurrentManualSearchReady,
+        runManualViewScrape,
         continueAction,
       };
     }

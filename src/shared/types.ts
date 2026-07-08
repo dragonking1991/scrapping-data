@@ -62,6 +62,9 @@ export interface LoginResult {
   expiresAt: number;
   captchaMethod: "svg-text" | "ocr" | "unknown";
   manualFilter?: ManualFilterContext;
+  readManualFilter?: () => Promise<ManualFilterContext>;
+  waitForManualSearchReady?: () => Promise<ManualFilterContext>;
+  runManualViewScrape?: (runMode: ContinueRunMode) => Promise<number>;
   xmlDir?: string;
   continueAction?:
     | "continue"

@@ -155,7 +155,7 @@ async function buildPurchasedWorkbook(
 }
 
 export async function runAggregateJob(job: AggregateJob): Promise<void> {
-  const soldJson = join(process.cwd(), ".gdt-xml-export", "hd_sold.json");
+  const soldJson = join(process.cwd(), "gdt-xml-export", "hd_sold.json");
   const soldXlsx = join(process.cwd(), "src", "xlsx", "hd_sold.xlsx");
   const outputDir = join(process.cwd(), "gdt-aggregated-xlsx");
   await fs.mkdir(outputDir, { recursive: true });
@@ -176,7 +176,7 @@ export async function runAggregateJob(job: AggregateJob): Promise<void> {
   };
 
   for (const type of PURCHASED_TYPES) {
-    const jsonPath = join(process.cwd(), ".gdt-xml-export", `hd_purchased_${type}.json`);
+    const jsonPath = join(process.cwd(), "gdt-xml-export", `hd_purchased_${type}.json`);
     const xlsxPath = join(process.cwd(), "src", "xlsx", `hd_purchased_${type}.xlsx`);
     const result = await processAggregateFile(`hd_purchased_${type}`, jsonPath, xlsxPath, "purchased");
     if (job.files.purchasedTypes) {

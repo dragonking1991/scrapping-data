@@ -31,6 +31,14 @@ npm run dev
 
 Sau do mo `http://localhost:4173`.
 
+Neu terminal local hay bi kill khi giu server chay foreground, dung che do nen:
+
+```bash
+npm run dev:bg
+```
+
+Lenh nay se don port 4173-4175, chay UI server trong background va ghi log vao `.ui-dev.log`.
+
 Neu muon chay truc tiep bang CLI (khong qua UI):
 
 ```bash

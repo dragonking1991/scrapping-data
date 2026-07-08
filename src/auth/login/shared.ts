@@ -83,13 +83,25 @@ type ContinueAction =
   | "debug-open-invoice"
   | `debug-select-row:${number}`;
 
+function normalizeContinueRunMode(value: string): ContinueRunMode | null {
+  const normalized = value.trim().toLowerCase();
+  if (normalized === "sold") {
+    return "sold";
+  }
+  if (normalized === "purchased-hascode") {
+    return "purchased-hasCode";
+  }
+  if (normalized === "purchased-nocode") {
+    return "purchased-noCode";
+  }
+  if (normalized === "purchased-initcode") {
+    return "purchased-initCode";
+  }
+  return null;
+}
+
 function isContinueRunMode(value: string): value is ContinueRunMode {
-  return (
-    value === "sold" ||
-    value === "purchased-hasCode" ||
-    value === "purchased-noCode" ||
-    value === "purchased-initCode"
-  );
+  return normalizeContinueRunMode(value) !== null;
 }
 
 function getRunModeFromContinueAction(action: ContinueAction): ContinueRunMode {
@@ -103,7 +115,7 @@ function getRunModeFromContinueAction(action: ContinueAction): ContinueRunMode {
   }
 
   const mode = raw.slice("continue:".length);
-  return isContinueRunMode(mode) ? mode : "sold";
+  return normalizeContinueRunMode(mode) ?? "sold";
 }
 
 type RescanDataset = "sold" | "purchased";
@@ -291,6 +303,7 @@ export {
   normalizeInvoiceDate,
   parseManualFilterFromRequestUrl,
   getRunModeFromContinueAction,
+  normalizeContinueRunMode,
   isContinueRunMode,
 };
 

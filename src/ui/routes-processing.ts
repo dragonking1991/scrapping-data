@@ -47,11 +47,11 @@ export async function handleProcessingRoutes(req: IncomingMessage, res: ServerRe
       return true;
     }
 
-    const soldJson = join(process.cwd(), ".gdt-xml-export", "hd_sold.json");
-    const purchasedJson = join(process.cwd(), ".gdt-xml-export", "hd_purchased.json");
-    const purchasedHasCodeJson = join(process.cwd(), ".gdt-xml-export", "hd_purchased_hasCode.json");
-    const purchasedNoCodeJson = join(process.cwd(), ".gdt-xml-export", "hd_purchased_noCode.json");
-    const purchasedInitCodeJson = join(process.cwd(), ".gdt-xml-export", "hd_purchased_initCode.json");
+    const soldJson = join(process.cwd(), "gdt-xml-export", "hd_sold.json");
+    const purchasedJson = join(process.cwd(), "gdt-xml-export", "hd_purchased.json");
+    const purchasedHasCodeJson = join(process.cwd(), "gdt-xml-export", "hd_purchased_hasCode.json");
+    const purchasedNoCodeJson = join(process.cwd(), "gdt-xml-export", "hd_purchased_noCode.json");
+    const purchasedInitCodeJson = join(process.cwd(), "gdt-xml-export", "hd_purchased_initCode.json");
     const hasSold = await pathExists(soldJson);
     const hasPurchasedLegacy = await pathExists(purchasedJson);
     const hasPurchasedHasCode = await pathExists(purchasedHasCodeJson);
@@ -63,7 +63,7 @@ export async function handleProcessingRoutes(req: IncomingMessage, res: ServerRe
       writeJson(res, 400, {
         ok: false,
         output:
-          "Thieu file nguon .gdt-xml-export/hd_sold.json hoac bo purchased (hd_purchased.json / hd_purchased_hasCode.json / hd_purchased_noCode.json / hd_purchased_initCode.json)",
+          "Thieu file nguon gdt-xml-export/hd_sold.json hoac bo purchased (hd_purchased.json / hd_purchased_hasCode.json / hd_purchased_noCode.json / hd_purchased_initCode.json)",
       });
       return true;
     }

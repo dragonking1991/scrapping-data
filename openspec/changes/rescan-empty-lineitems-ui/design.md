@@ -1,6 +1,6 @@
 ## Context
 
-The current scraping flow can collect invoice detail lines while crawling broad date ranges, but many records in `.gdt-xml-export/hd_sold.json` and `.gdt-xml-export/hd_purchased.json` still contain empty `lineItems`. Operators currently have to inspect and re-run broad jobs manually, even when only a subset of invoices is missing details. The requested change adds a targeted `Ra lai` action in the local UI server that reuses the already-open browser session and only rescans missing invoices by `So hoa don`.
+The current scraping flow can collect invoice detail lines while crawling broad date ranges, but many records in `gdt-xml-export/hd_sold.json` and `gdt-xml-export/hd_purchased.json` still contain empty `lineItems`. Operators currently have to inspect and re-run broad jobs manually, even when only a subset of invoices is missing details. The requested change adds a targeted `Ra lai` action in the local UI server that reuses the already-open browser session and only rescans missing invoices by `So hoa don`.
 
 ## Goals / Non-Goals
 

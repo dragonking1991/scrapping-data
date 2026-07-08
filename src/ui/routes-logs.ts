@@ -20,7 +20,7 @@ export async function handleLogRoutes(req: IncomingMessage, res: ServerResponse,
   }
 
   if (req.method === "GET" && url.pathname === "/export-logs") {
-    const invoiceItemsPath = join(process.cwd(), ".gdt-xml-export", "invoice-items.json");
+    const invoiceItemsPath = join(process.cwd(), "gdt-xml-export", "invoice-items.json");
     try {
       const content = await fs.readFile(invoiceItemsPath, "utf8");
       res.statusCode = 200;
