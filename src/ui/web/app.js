@@ -14,6 +14,9 @@ const aggSoldMsg = document.getElementById("aggSoldMsg");
 const aggPurchasedStatus = document.getElementById("aggPurchasedStatus");
 const aggPurchasedMsg = document.getElementById("aggPurchasedMsg");
 const sessionSelect = document.getElementById("sessionSelect");
+const purchasedModeCheckbox = document.getElementById("purchasedModeCheckbox");
+const purchasedTypeWrapper = document.getElementById("purchasedTypeWrapper");
+const purchasedTypeSelect = document.getElementById("purchasedTypeSelect");
 
 const testNextPageBtn = document.getElementById("testNextPageBtn");
 const testScanPageBtn = document.getElementById("testScanPageBtn");
@@ -27,6 +30,7 @@ const testPaginationValue = document.getElementById("testPaginationValue");
 
 const ACTIVE_JOB_STORAGE_KEY = "gdt-active-job-id";
 const DEFAULT_OUT = window.__DEFAULT_OUT__ || "./DANH-SACH-HOA-DON.xlsx";
+const DEFAULT_PURCHASED_TYPE = "hasCode";
 
 let isBusy = false;
 let hasSession = false;
@@ -95,12 +99,40 @@ function applyControlState() {
   if (closeSessionBtn) closeSessionBtn.disabled = !hasSession || closingSession;
   if (aggregateBtn) aggregateBtn.disabled = isAggregating;
   if (sessionSelect) sessionSelect.disabled = isBusy || continueInFlight;
+  if (purchasedModeCheckbox) purchasedModeCheckbox.disabled = isBusy || continueInFlight;
+  if (purchasedTypeSelect)
+    purchasedTypeSelect.disabled =
+      isBusy || continueInFlight || !(purchasedModeCheckbox && purchasedModeCheckbox.checked);
 
   if (testNextPageBtn) testNextPageBtn.disabled = !hasSession;
   if (testScanPageBtn) testScanPageBtn.disabled = !hasSession;
   if (testOpenInvoiceBtn) testOpenInvoiceBtn.disabled = !hasSession;
   if (testSelectRowBtn) testSelectRowBtn.disabled = !hasSession;
   if (testRowInput) testRowInput.disabled = !hasSession;
+}
+
+function syncPurchasedModeControls() {
+  const checked = Boolean(purchasedModeCheckbox && purchasedModeCheckbox.checked);
+  if (purchasedTypeWrapper) {
+    purchasedTypeWrapper.classList.toggle("hidden", !checked);
+  }
+
+  if (checked && purchasedTypeSelect && !purchasedTypeSelect.value) {
+    purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+  }
+
+  applyControlState();
+}
+
+function getSelectedRunMode() {
+  if (!purchasedModeCheckbox || !purchasedModeCheckbox.checked) {
+    return "sold";
+  }
+
+  const value = purchasedTypeSelect?.value || DEFAULT_PURCHASED_TYPE;
+  if (value === "noCode") return "purchased-noCode";
+  if (value === "initCode") return "purchased-initCode";
+  return "purchased-hasCode";
 }
 
 function getAggregateStatusPresentation(status) {
@@ -187,6 +219,16 @@ function logAggregateFileResult(label, file) {
   );
 }
 
+function logAggregatePurchasedTypeResults(job) {
+  const purchasedTypes = job?.files?.purchasedTypes;
+  if (!purchasedTypes) return;
+
+  ["hasCode", "noCode", "initCode"].forEach((type) => {
+    const file = purchasedTypes[type];
+    logAggregateFileResult(`hd_purchased_${type}.xlsx`, file);
+  });
+}
+
 async function fetchAggregateStatus(jobId) {
   const res = await fetch(`/aggregate-status?jobId=${encodeURIComponent(jobId)}`);
   const data = await res.json();
@@ -214,6 +256,7 @@ function trackAggregateJob(jobId) {
         appendLog(`[AGG] Hoan tat job tong hop: ${job.id} (${job.status}).\n`);
         logAggregateFileResult("hd_sold.xlsx", job.files?.sold);
         logAggregateFileResult("hd_purchased.xlsx", job.files?.purchased);
+        logAggregatePurchasedTypeResults(job);
       }
     } catch (error) {
       clearAggregatePolling();
@@ -524,13 +567,14 @@ async function continueJob() {
   isBusy = true;
   resetEventTimeline();
   applyControlState();
+  const runMode = getSelectedRunMode();
 
   try {
     attachJobEvents(activeJobId);
     const res = await fetch("/run", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jobId: activeJobId }),
+      body: JSON.stringify({ jobId: activeJobId, runMode }),
     });
     const data = await res.json();
 
@@ -555,7 +599,7 @@ async function continueJob() {
       "rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300",
     );
     appendLog(
-      `[UI] ${data.output || "Da gui tin hieu tiep tuc cho browser session hien tai."}\n`,
+      `[UI] ${data.output || "Da gui tin hieu tiep tuc cho browser session hien tai."} mode=${runMode}\n`,
     );
   } catch (error) {
     setStatus(
@@ -658,6 +702,19 @@ sessionSelect?.addEventListener("change", () => {
   );
 });
 
+purchasedModeCheckbox?.addEventListener("change", () => {
+  if (purchasedModeCheckbox.checked && purchasedTypeSelect && !purchasedTypeSelect.value) {
+    purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+  }
+  syncPurchasedModeControls();
+});
+
+purchasedTypeSelect?.addEventListener("change", () => {
+  if (!purchasedTypeSelect.value) {
+    purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+  }
+});
+
 aggregateBtn?.addEventListener("click", async () => {
   if (isAggregating) return;
   try {
@@ -693,5 +750,9 @@ testSelectRowBtn?.addEventListener("click", async () => {
 });
 
 setSessionJobId(localStorage.getItem(ACTIVE_JOB_STORAGE_KEY));
+if (purchasedTypeSelect) {
+  purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+}
+syncPurchasedModeControls();
 refreshSessions();
 setInterval(refreshSessions, 4000);

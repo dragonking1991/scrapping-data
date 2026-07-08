@@ -1,6 +1,13 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { promises as fs } from "node:fs";
-import type { RunPayload, StartPayload } from "./types.js";
+import type { ContinueRunMode, RunPayload, StartPayload } from "./types.js";
+
+const VALID_CONTINUE_RUN_MODES: ContinueRunMode[] = [
+  "sold",
+  "purchased-hasCode",
+  "purchased-noCode",
+  "purchased-initCode",
+];
 
 export async function pathExists(path: string): Promise<boolean> {
   try {
@@ -55,6 +62,18 @@ export function validateStartPayload(payload: StartPayload): string | null {
   if (!["sold", "purchase"].includes(payload.direction)) {
     return "Loai hoa don khong hop le.";
   }
+  return null;
+}
+
+export function validateContinueRunMode(runMode: string | undefined): string | null {
+  if (!runMode) {
+    return null;
+  }
+
+  if (!VALID_CONTINUE_RUN_MODES.includes(runMode as ContinueRunMode)) {
+    return "Run mode khong hop le.";
+  }
+
   return null;
 }
 

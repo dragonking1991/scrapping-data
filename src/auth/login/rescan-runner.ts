@@ -14,6 +14,15 @@ import {
 import { tryExtractDetailFromNetwork, extractInvoiceDetail, closeInvoiceModal } from "./detail.js";
 import { findAndMarkViewInvoiceButton, clearViewInvoiceMark } from "./toolbar-view.js";
 
+async function pathExists(filePath: string): Promise<boolean> {
+  try {
+    await fs.access(filePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Click the matching invoice row in the result list and confirm it becomes
  * active/selected (highlighted/bold) before continuing. Retries a few times
@@ -321,9 +330,27 @@ async function rescanDataset(
 async function rescanEmptyLineItemsFromJson(page: Page, baseDir: string, continueSignalFile?: string): Promise<void> {
   const soldPath = join(baseDir, "hd_sold.json");
   const purchasedPath = join(baseDir, "hd_purchased.json");
+  const purchasedHasCodePath = join(baseDir, "hd_purchased_hasCode.json");
+  const purchasedNoCodePath = join(baseDir, "hd_purchased_noCode.json");
+  const purchasedInitCodePath = join(baseDir, "hd_purchased_initCode.json");
 
   await rescanDataset(page, "sold", soldPath, continueSignalFile);
-  await rescanDataset(page, "purchased", purchasedPath, continueSignalFile);
+
+  if (await pathExists(purchasedPath)) {
+    await rescanDataset(page, "purchased", purchasedPath, continueSignalFile);
+  }
+
+  if (await pathExists(purchasedHasCodePath)) {
+    await rescanDataset(page, "purchased", purchasedHasCodePath, continueSignalFile);
+  }
+
+  if (await pathExists(purchasedNoCodePath)) {
+    await rescanDataset(page, "purchased", purchasedNoCodePath, continueSignalFile);
+  }
+
+  if (await pathExists(purchasedInitCodePath)) {
+    await rescanDataset(page, "purchased", purchasedInitCodePath, continueSignalFile);
+  }
 }
 
 export { emitDatasetProgress, rescanDataset, rescanEmptyLineItemsFromJson };

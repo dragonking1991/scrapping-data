@@ -1,5 +1,8 @@
 import type { ChildProcess } from "node:child_process";
 
+export type ContinueRunMode = "sold" | "purchased-hasCode" | "purchased-noCode" | "purchased-initCode";
+export type PurchasedAggregateType = "hasCode" | "noCode" | "initCode";
+
 export interface UiDefaults {
   out: string;
   direction: "sold" | "purchase";
@@ -24,6 +27,7 @@ export interface StartPayload {
 
 export interface ContinuePayload {
   jobId?: string;
+  runMode?: ContinueRunMode;
 }
 
 export interface DebugActionPayload {
@@ -66,6 +70,7 @@ export interface AggregateJob {
   files: {
     sold: AggregateFileProgress;
     purchased: AggregateFileProgress;
+    purchasedTypes?: Record<PurchasedAggregateType, AggregateFileProgress>;
   };
 }
 

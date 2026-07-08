@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { URL } from "node:url";
-import { readBody, validateStartPayload, writeJson } from "./helpers.js";
+import { readBody, validateContinueRunMode, validateStartPayload, writeJson } from "./helpers.js";
 import { addLog } from "./logging.js";
 import { startJob } from "./jobs-core.js";
 import { activeSessions, CONTINUE_READY_MARKER, jobs } from "./state.js";
@@ -53,6 +53,12 @@ export async function handleControlRoutes(req: IncomingMessage, res: ServerRespo
     const active =
       (payload.jobId ? activeSessions.get(payload.jobId) : undefined) ??
       Array.from(activeSessions.values()).at(-1);
+    const runMode = payload.runMode ?? "sold";
+    const runModeValidation = validateContinueRunMode(runMode);
+    if (runModeValidation) {
+      writeJson(res, 400, { ok: false, output: runModeValidation });
+      return true;
+    }
 
     if (!active) {
       addLog("ui-api", "/run session not found", { jobId: payload.jobId });
@@ -102,13 +108,14 @@ export async function handleControlRoutes(req: IncomingMessage, res: ServerRespo
       jobId: active.jobId,
       signalFile: active.continueSignalFile,
       waitingForContinue: isWaitingForContinueSignal(activeJob.output),
+      runMode,
     });
-    await fs.writeFile(active.continueSignalFile, "continue", "utf8");
+    await fs.writeFile(active.continueSignalFile, `continue:${runMode}`, "utf8");
     writeJson(res, 200, {
       ok: true,
       jobId: active.jobId,
       status: "running",
-      output: "Da gui tin hieu tiep tuc.",
+      output: `Da gui tin hieu tiep tuc (${runMode}).`,
     });
     return true;
   }

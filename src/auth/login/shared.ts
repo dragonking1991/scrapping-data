@@ -1,5 +1,7 @@
 import type { ManualFilterContext } from "../../shared/types.js";
 
+type ContinueRunMode = "sold" | "purchased-hasCode" | "purchased-noCode" | "purchased-initCode";
+
 const LOGIN_URL = "/";
 
 const USERNAME_SELECTORS = [
@@ -73,12 +75,36 @@ const MANUAL_READY_SELECTORS = [
 
 type ContinueAction =
   | "continue"
+  | `continue:${ContinueRunMode}`
   | "rescan-empty-line-items"
   | "stop-current-flow"
   | "debug-read-pagination"
   | "debug-next-page"
   | "debug-open-invoice"
   | `debug-select-row:${number}`;
+
+function isContinueRunMode(value: string): value is ContinueRunMode {
+  return (
+    value === "sold" ||
+    value === "purchased-hasCode" ||
+    value === "purchased-noCode" ||
+    value === "purchased-initCode"
+  );
+}
+
+function getRunModeFromContinueAction(action: ContinueAction): ContinueRunMode {
+  if (action === "continue") {
+    return "sold";
+  }
+
+  const raw = String(action);
+  if (!raw.startsWith("continue:")) {
+    return "sold";
+  }
+
+  const mode = raw.slice("continue:".length);
+  return isContinueRunMode(mode) ? mode : "sold";
+}
 
 type RescanDataset = "sold" | "purchased";
 
@@ -264,9 +290,12 @@ export {
   MANUAL_READY_SELECTORS,
   normalizeInvoiceDate,
   parseManualFilterFromRequestUrl,
+  getRunModeFromContinueAction,
+  isContinueRunMode,
 };
 
 export type {
+  ContinueRunMode,
   ContinueAction,
   RescanDataset,
   RescanDatasetCounters,

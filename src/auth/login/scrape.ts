@@ -1,8 +1,10 @@
 import { promises as fs } from "node:fs";
+import { join } from "node:path";
 import type { Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
 import { captureHtml, dumpToolbarButtons, emitEvent, readContinueAction } from "./rescan-common.js";
 import { findAndMarkViewInvoiceButton } from "./toolbar-view.js";
+import { getRunModeFromContinueAction, type ContinueRunMode } from "./shared.js";
 import {
   tryExtractDetailFromNetwork,
   extractInvoiceDetail,
@@ -23,6 +25,37 @@ interface ScrapedInvoice {
   itemNames: string[];
 }
 
+interface ScrapeOptions {
+  continueSignalFile?: string;
+  initialRunMode?: ContinueRunMode;
+}
+
+function getExportFileNameByRunMode(runMode: ContinueRunMode): string {
+  if (runMode === "purchased-hasCode") {
+    return "hd_purchased_hasCode.json";
+  }
+  if (runMode === "purchased-noCode") {
+    return "hd_purchased_noCode.json";
+  }
+  if (runMode === "purchased-initCode") {
+    return "hd_purchased_initCode.json";
+  }
+  return "hd_sold.json";
+}
+
+async function readExistingInvoices(filePath: string): Promise<ScrapedInvoice[]> {
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+    return parsed as ScrapedInvoice[];
+  } catch {
+    return [];
+  }
+}
+
 /**
  * New flow requested by the user: for each invoice row, click it to enable the
  * toolbar icons, click "Xem hóa đơn" to open the detail modal, read the
@@ -30,23 +63,28 @@ interface ScrapedInvoice {
  * then close the modal and continue. Paginates across all result pages.
  * Results are written to `${outDir}/invoice-items.json`. Returns the count scraped.
  */
-async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSignalFile?: string): Promise<number> {
+async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, options: ScrapeOptions = {}): Promise<number> {
   await fs.mkdir(outDir, { recursive: true });
 
   const perRowDelayMs = Number(process.env.GDT_XML_ROW_DELAY_MS ?? 500);
   const modalTimeoutMs = Number(process.env.GDT_MODAL_TIMEOUT_MS ?? 15000);
-  const results: ScrapedInvoice[] = [];
+  let currentRunMode: ContinueRunMode = options.initialRunMode ?? "sold";
+  let outputFile = join(outDir, getExportFileNameByRunMode(currentRunMode));
+  const results: ScrapedInvoice[] = await readExistingInvoices(outputFile);
+  const initialCount = results.length;
   const outFile = `${outDir}/invoice-items.json`;
   let dumpedOnce = false;
   let pageIndex = 0;
 
   // Safety cap on pages to avoid infinite loops.
   const maxPages = Number(process.env.GDT_MAX_PAGES ?? 200);
+  const continueSignalFile = options.continueSignalFile;
   const continueTimeoutMs = Number(process.env.GDT_CONTINUE_TIMEOUT_MS ?? 7200000);
   let stopRequested = false;
   let resumeRowIndex: number | null = null;
 
   const persistResults = async (): Promise<void> => {
+    await fs.writeFile(outputFile, JSON.stringify(results, null, 2), "utf8");
     await fs.writeFile(outFile, JSON.stringify(results, null, 2), "utf8");
   };
 
@@ -75,9 +113,9 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
     }
   };
 
-  const waitForResumeSignal = async (): Promise<boolean> => {
+  const waitForResumeSignal = async (): Promise<{ resumed: boolean; runMode: ContinueRunMode }> => {
     if (!continueSignalFile) {
-      return false;
+      return { resumed: false, runMode: currentRunMode };
     }
 
     logger.info("[VIEW] Da tam dung. Vui long bam Lay thong tin de tiep tuc voi list hien tai.");
@@ -91,9 +129,27 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
         await fs.unlink(continueSignalFile).catch(() => undefined);
 
         if (action === "continue") {
+          const runMode = getRunModeFromContinueAction(action);
+          currentRunMode = runMode;
+          outputFile = join(outDir, getExportFileNameByRunMode(currentRunMode));
+          const existing = await readExistingInvoices(outputFile);
+          results.length = 0;
+          results.push(...existing);
           logger.info("[VIEW] Tiep tuc flow dang tam dung tu session hien tai.");
-          emitEvent("resumed", "Tiep tuc flow dang tam dung tu session hien tai.");
-          return true;
+          emitEvent("resumed", `Tiep tuc flow dang tam dung (${runMode}).`);
+          return { resumed: true, runMode };
+        }
+
+        if (String(action).startsWith("continue:")) {
+          const runMode = getRunModeFromContinueAction(action);
+          currentRunMode = runMode;
+          outputFile = join(outDir, getExportFileNameByRunMode(currentRunMode));
+          const existing = await readExistingInvoices(outputFile);
+          results.length = 0;
+          results.push(...existing);
+          logger.info(`[VIEW] Tiep tuc flow dang tam dung tu session hien tai (${runMode}).`);
+          emitEvent("resumed", `Tiep tuc flow dang tam dung (${runMode}).`);
+          return { resumed: true, runMode };
         }
 
         if (action === "stop-current-flow") {
@@ -110,8 +166,10 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
 
     logger.warn("[VIEW] Het thoi gian cho tin hieu tiep tuc, dung luong lay thong tin.");
     emitEvent("stopped", "Het thoi gian cho tiep tuc, ket thuc luong Lay thong tin");
-    return false;
+    return { resumed: false, runMode: currentRunMode };
   };
+
+  logger.info(`[VIEW] Dang ghi ket qua theo mode=${currentRunMode} -> ${outputFile}`);
 
   const selectRowForDetail = async (row: ReturnType<Page["locator"]>, rowNumber: number, invoiceNo: string): Promise<boolean> => {
     const isSelected = async (): Promise<boolean> =>
@@ -159,7 +217,8 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
 
     if (stopRequested) {
       const resumed = await waitForResumeSignal();
-      if (resumed) {
+      if (resumed.resumed) {
+        logger.info(`[VIEW] Chuyen run mode sang ${resumed.runMode}. Output file: ${outputFile}`);
         stopRequested = false;
         continue;
       }
@@ -381,15 +440,16 @@ async function scrapeInvoiceItemsAllPages(page: Page, outDir: string, continueSi
 
   // Persist results.
   await persistResults();
+  const addedCount = Math.max(0, results.length - initialCount);
   if (stopRequested) {
-    logger.warn(`[VIEW] Da tam dung theo yeu cau. Da ghi tam ${results.length} hoa don vao ${outFile}`);
-    emitEvent("saved", `Da tam dung. Da ghi tam ${results.length} hoa don vao invoice-items.json`);
+    logger.warn(`[VIEW] Da tam dung theo yeu cau. Da ghi tam ${addedCount} hoa don vao ${outputFile}`);
+    emitEvent("saved", `Da tam dung. Da ghi tam ${addedCount} hoa don vao ${getExportFileNameByRunMode(currentRunMode)}`);
   } else {
-    logger.info(`[VIEW] Da ghi ${results.length} hoa don vao ${outFile}`);
-    emitEvent("saved", `Da ghi ${results.length} hoa don vao invoice-items.json`);
+    logger.info(`[VIEW] Da ghi them ${addedCount} hoa don vao ${outputFile}`);
+    emitEvent("saved", `Da ghi them ${addedCount} hoa don vao ${getExportFileNameByRunMode(currentRunMode)}`);
   }
 
-  return results.length;
+  return addedCount;
 }
 
 export type { ScrapedInvoice };

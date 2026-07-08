@@ -8,6 +8,7 @@ import type { AppConfig } from "../../shared/config.js";
 import { sanitizeBaseUrl } from "../../shared/config.js";
 import {
   LOGIN_URL,
+  getRunModeFromContinueAction,
   USERNAME_SELECTORS,
   PASSWORD_SELECTORS,
   CAPTCHA_SELECTORS,
@@ -207,6 +208,7 @@ export async function loginAndGetToken(
         throw new Error("Khong phat hien token dang nhap thu cong trong thoi gian cho");
       }
       const continueAction = await waitForContinueSignal(page, options?.continueSignalFile);
+      const runMode = getRunModeFromContinueAction(continueAction);
 
       let manualFilter: ManualFilterContext = {};
       const domFilter = await extractManualFilterContext(page, options?.desiredDirection);
@@ -248,7 +250,11 @@ export async function loginAndGetToken(
       if (options?.autoExportXml && options?.xmlDir) {
         try {
           logger.info("[VIEW] Bat dau xem tung hoa don va ghi lai ten hang hoa/dich vu...");
-          const count = await scrapeInvoiceItemsAllPages(page, options.xmlDir, options?.continueSignalFile);
+          logger.info(`[VIEW] Run mode duoc chon: ${runMode}`);
+          const count = await scrapeInvoiceItemsAllPages(page, options.xmlDir, {
+            continueSignalFile: options?.continueSignalFile,
+            initialRunMode: runMode,
+          });
           if (count > 0) {
             exportedXmlDir = options.xmlDir;
             logger.info(`[VIEW] Da xu ly ${count} hoa don, ket qua tai ${options.xmlDir}/invoice-items.json`);

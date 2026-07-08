@@ -333,6 +333,10 @@ async function waitForContinueSignal(
         logger.warn("Da nhan yeu cau dung flow hien tai trong luc cho tiep tuc. Van tiep tuc cho den khi bam Lay thong tin.");
         continue;
       }
+
+      if (action === "continue" || String(action).startsWith("continue:")) {
+        return action;
+      }
       return action;
     } catch {
       await page.waitForTimeout(1000);

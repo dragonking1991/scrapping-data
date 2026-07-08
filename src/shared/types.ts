@@ -1,5 +1,6 @@
 export type InvoiceType = "invoice" | "ticket";
 export type InvoiceDirection = "sold" | "purchase";
+export type ContinueRunMode = "sold" | "purchased-hasCode" | "purchased-noCode" | "purchased-initCode";
 
 export interface ManualFilterContext {
   from?: string;
@@ -64,6 +65,7 @@ export interface LoginResult {
   xmlDir?: string;
   continueAction?:
     | "continue"
+    | `continue:${ContinueRunMode}`
     | "rescan-empty-line-items"
     | "stop-current-flow"
     | "debug-read-pagination"

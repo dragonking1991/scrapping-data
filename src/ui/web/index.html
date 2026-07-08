@@ -45,6 +45,29 @@
                 Chọn một session để switch qua và bấm "Lấy thông tin" tiếp tục.
               </p>
             </div>
+            <div class="rounded-xl border border-slate-300 bg-slate-50 p-3">
+              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700" for="purchasedModeCheckbox">
+                <input
+                  id="purchasedModeCheckbox"
+                  type="checkbox"
+                  class="h-4 w-4 rounded border-slate-300 text-amber-600 focus:ring-amber-500"
+                />
+                Mua vào
+              </label>
+              <div id="purchasedTypeWrapper" class="mt-2 hidden">
+                <label for="purchasedTypeSelect" class="mb-1 block text-xs font-semibold text-slate-600"
+                  >Loại dữ liệu mua vào</label
+                >
+                <select
+                  id="purchasedTypeSelect"
+                  class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-200"
+                >
+                  <option value="hasCode">Đã cấp mã hóa đơn</option>
+                  <option value="noCode">Cục Thuế đã nhận không mã</option>
+                  <option value="initCode">Cục Thuế đã nhận có mã khởi tạo từ máy tính tiền</option>
+                </select>
+              </div>
+            </div>
             <div class="grid gap-3 sm:grid-cols-2">
               <button
                 type="button"

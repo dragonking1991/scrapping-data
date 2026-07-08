@@ -2,6 +2,7 @@ import { promises as fs } from "node:fs";
 import type { Page } from "playwright-core";
 import { logger } from "../../shared/logger.js";
 import {
+  isContinueRunMode,
   normalizeInvoiceDate,
   type ContinueAction,
   type RescanCandidate,
@@ -103,6 +104,13 @@ async function writeJsonAtomic(filePath: string, data: unknown): Promise<void> {
 
 async function readContinueAction(filePath: string): Promise<ContinueAction> {
   const content = (await fs.readFile(filePath, "utf8").catch(() => "continue")).trim().toLowerCase();
+  if (content.startsWith("continue:")) {
+    const runMode = content.slice("continue:".length);
+    if (isContinueRunMode(runMode)) {
+      return `continue:${runMode}` as ContinueAction;
+    }
+    return "continue:sold";
+  }
   if (content === "rescan-empty-line-items") {
     return "rescan-empty-line-items";
   }
