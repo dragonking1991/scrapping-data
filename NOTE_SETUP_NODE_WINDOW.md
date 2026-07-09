@@ -7,7 +7,6 @@ Tai lieu nay huong dan chi tiet tu cai NVM den update Node.js, sau do setup va c
 ### Windows
 - NVM for Windows: https://github.com/coreybutler/nvm-windows
 - Link release NVM Windows: https://github.com/coreybutler/nvm-windows/releases
-- Node.js (neu can cai truc tiep, khong dung NVM): https://nodejs.org/en/download
 
 ## 2) Cai NVM
 

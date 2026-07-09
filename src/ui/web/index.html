@@ -247,36 +247,49 @@
           </button>
         </div>
 
-        <div class="mt-4 space-y-3 text-[15px] leading-relaxed text-slate-600">
-          <p>
-            Bấm <span class="font-semibold text-slate-800">Bắt đầu</span> để mở session trình duyệt, đợi nhập user/pass sau đó nhập captcha rồi bấm "Đăng nhập".
-          </p>
-          <p>
-            Khi đăng nhập thành công, chọn ngày và loại dữ liệu muốn lấy.
-          </p>
-          <p>
-            Bấm <span class="font-semibold text-slate-800">tìm kiếm</span> để hiển thị danh sách hóa đơn, sau đó bấm <span class="font-semibold text-slate-800">Lấy thông tin</span> để chạy. Kết quả sẽ hiển thị ở phần "Kết quả chạy" bên phải.
-          </p>
-          <p>
-            Khi xong, bấm <span class="font-semibold text-slate-800">Tổng hợp hóa đơn</span>.<br />
-            File cuối cùng sẽ được lưu ở thư mục <span class="font-mono text-slate-800">gdt-aggregated-xlsx</span>.
-          </p>
-          <p>
-            <b>Lưu ý:</b>
-            <br />
-            - Ứng với từng loại dữ liệu, mặc định không check "Mua vào" sẽ lấy dữ liệu hóa đơn bán ra. <br />
-            Nếu muốn lấy dữ liệu hóa đơn mua vào, hãy check "Mua vào" và chọn loại dữ liệu mua vào.<br />
-            - Khi chạy, nếu có lỗi xảy ra, hãy bấm <span class="font-semibold text-slate-800">Dừng</span> và kiểm tra log để biết nguyên nhân.<br />
-            hoặc bấm <span class="font-semibold text-slate-800">Tắt session</span> để reset lại session trình duyệt sau đó bấm <span class="font-semibold text-slate-800">Bắt đầu</span> để mở lại session mới.<br />
-            - Dữ liệu hóa đơn sẽ được lưu ở thư mục <span class="font-mono text-slate-800">gdt-invoices</span> theo từng loại dữ liệu.<br />
-            - Sau nhấn tổng hợp hóa đơn, file cuối cùng sẽ được lưu ở thư mục <span class="font-mono text-slate-800">gdt-aggregated-xlsx</span>.<br />
-          </p>
-          <p>
-            <b>Ghi chú</b><br />
-            - hasCode: dữ liệu hóa đơn mua vào đã cấp mã hóa đơn<br />
-            - noCode: dữ liệu hóa đơn mua vào cục thuế đã nhận không mã<br />
-            - initCode: dữ liệu hóa đơn mua vào cục thuế đã nhận có mã khởi tạo từ máy tính tiền
-          </p>
+        <div class="mt-4 space-y-4 text-[15px] leading-relaxed text-slate-600">
+          <!-- Hướng dẫn các bước chính -->
+          <div class="space-y-2">
+            <ol class="list-decimal list-inside space-y-2 pl-2">
+              <li>
+                Bấm <span class="font-semibold text-slate-800">Bắt đầu</span> để mở session trình duyệt, đợi nhập user/pass, nhập captcha rồi bấm "Đăng nhập".
+              </li>
+              <li>
+                Khi đăng nhập thành công, chọn ngày và loại dữ liệu muốn lấy.
+              </li>
+              <li>
+                Bấm <span class="font-semibold text-slate-800">tìm kiếm</span> để hiển thị danh sách hóa đơn.
+              </li>
+              <li>
+                Bấm <span class="font-semibold text-slate-800">Lấy thông tin</span> để chạy. Kết quả sẽ hiển thị ở phần "Kết quả chạy" bên phải.
+              </li>
+              <li>
+                Bấm <span class="font-semibold text-slate-800">Tổng hợp hóa đơn</span>. File cuối cùng sẽ được lưu ở thư mục <span class="font-mono text-slate-800">gdt-aggregated-xlsx</span>.
+              </li>
+            </ol>
+          </div>
+
+          <!-- Lưu ý -->
+          <div class="rounded-lg bg-amber-50 p-3 border border-amber-200">
+            <p class="font-semibold text-amber-900 mb-2">⚠️ Lưu ý:</p>
+            <ul class="list-disc list-inside space-y-1.5 text-sm pl-2 text-amber-800">
+              <li>Mặc định không check "Mua vào" sẽ lấy dữ liệu hóa đơn bán ra.</li>
+              <li>Để lấy dữ liệu hóa đơn mua vào, hãy check "Mua vào" và chọn loại dữ liệu mua vào.</li>
+              <li>Nếu có lỗi, bấm <span class="font-semibold">Dừng</span> và kiểm tra log.</li>
+              <li>Hoặc bấm <span class="font-semibold">Tắt session</span> để reset rồi bấm <span class="font-semibold">Bắt đầu</span> để mở lại session mới.</li>
+              <li>Dữ liệu hóa đơn lưu ở thư mục <span class="font-mono">gdt-invoices</span> theo từng loại dữ liệu.</li>
+            </ul>
+          </div>
+
+          <!-- Ghi chú -->
+          <div class="rounded-lg bg-blue-50 p-3 border border-blue-200">
+            <p class="font-semibold text-blue-900 mb-2">📌 Ghi chú:</p>
+            <ul class="list-disc list-inside space-y-1 text-sm pl-2 text-blue-800">
+              <li><span class="font-mono">hasCode</span>: Dữ liệu hóa đơn mua vào đã cấp mã hóa đơn</li>
+              <li><span class="font-mono">noCode</span>: Dữ liệu hóa đơn mua vào cục thuế đã nhận không mã</li>
+              <li><span class="font-mono">initCode</span>: Dữ liệu hóa đơn mua vào cục thuế đã nhận có mã khởi tạo từ máy tính tiền</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
