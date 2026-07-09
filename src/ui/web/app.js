@@ -17,6 +17,9 @@ const sessionSelect = document.getElementById("sessionSelect");
 const purchasedModeCheckbox = document.getElementById("purchasedModeCheckbox");
 const purchasedTypeWrapper = document.getElementById("purchasedTypeWrapper");
 const purchasedTypeSelect = document.getElementById("purchasedTypeSelect");
+const setupGuideBtn = document.getElementById("setupGuideBtn");
+const setupGuideModal = document.getElementById("setupGuideModal");
+const closeSetupGuideBtn = document.getElementById("closeSetupGuideBtn");
 
 const testNextPageBtn = document.getElementById("testNextPageBtn");
 const testScanPageBtn = document.getElementById("testScanPageBtn");
@@ -122,6 +125,18 @@ function syncPurchasedModeControls() {
   }
 
   applyControlState();
+}
+
+function openSetupGuideModal() {
+  if (!setupGuideModal) return;
+  setupGuideModal.classList.remove("hidden");
+  setupGuideModal.classList.add("flex");
+}
+
+function closeSetupGuideModal() {
+  if (!setupGuideModal) return;
+  setupGuideModal.classList.add("hidden");
+  setupGuideModal.classList.remove("flex");
 }
 
 function getSelectedRunMode() {
@@ -712,6 +727,20 @@ purchasedModeCheckbox?.addEventListener("change", () => {
 purchasedTypeSelect?.addEventListener("change", () => {
   if (!purchasedTypeSelect.value) {
     purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+  }
+});
+
+setupGuideBtn?.addEventListener("click", openSetupGuideModal);
+closeSetupGuideBtn?.addEventListener("click", closeSetupGuideModal);
+setupGuideModal?.addEventListener("click", (event) => {
+  if (event.target === setupGuideModal) {
+    closeSetupGuideModal();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    closeSetupGuideModal();
   }
 });
 
