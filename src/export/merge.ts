@@ -12,6 +12,7 @@ interface MergeResult {
   matchedRows: number;
   matchedInvoiceKeys: string[];
   unmatchedInvoiceKeys: string[];
+  unmatchedInvoiceKeysByDate: Record<string, string[]>;
 }
 
 interface ExtractedInvoiceLike {
@@ -81,6 +82,47 @@ function cellText(value: ExcelJS.CellValue): string {
   }
 
   return String(value).trim();
+}
+
+function formatDateKey(day: number, month: number, year: number): string {
+  return `${String(day).padStart(2, "0")}/${String(month).padStart(2, "0")}/${year}`;
+}
+
+function parseDateText(raw: string): string {
+  const value = raw.trim();
+  if (!value) {
+    return "";
+  }
+
+  const normalized = value.replace(/[-.]/g, "/");
+  const [datePart] = normalized.split(/\s+/);
+  const match = datePart?.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+  if (!match) {
+    return "";
+  }
+
+  const day = Number(match[1] ?? "");
+  const month = Number(match[2] ?? "");
+  const yearRaw = match[3] ?? "";
+  const year = Number(yearRaw.length === 2 ? `20${yearRaw}` : yearRaw);
+  if (!Number.isFinite(day) || !Number.isFinite(month) || !Number.isFinite(year)) {
+    return "";
+  }
+
+  const date = new Date(year, month - 1, day);
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+    return "";
+  }
+
+  return formatDateKey(day, month, year);
+}
+
+function normalizeDateCellValue(value: ExcelJS.CellValue): string {
+  if (value instanceof Date) {
+    return formatDateKey(value.getDate(), value.getMonth() + 1, value.getFullYear());
+  }
+
+  return parseDateText(cellText(value));
 }
 
 function detailCellText(value: unknown): string {
@@ -319,6 +361,51 @@ function detectColumns(headerRow: ExcelJS.Row): { numberCol: number; symbolCol: 
   return { numberCol, symbolCol };
 }
 
+function detectDateColumn(headerRow: ExcelJS.Row): number | null {
+  let strictMatchCol: number | null = null;
+  let fallbackCol: number | null = null;
+
+  headerRow.eachCell((cell, col) => {
+    const normalized = normalize(cell.value);
+    if (!normalized.includes("ngay")) {
+      return;
+    }
+
+    if (strictMatchCol == null && (normalized.includes("ngay hoa don") || normalized.includes("ngay lap"))) {
+      strictMatchCol = col;
+      return;
+    }
+
+    if (fallbackCol == null) {
+      fallbackCol = col;
+    }
+  });
+
+  return strictMatchCol ?? fallbackCol;
+}
+
+function findDateFromRowValues(row: ExcelJS.Row, preferredDateCol: number | null): string {
+  if (preferredDateCol) {
+    const preferred = normalizeDateCellValue(row.getCell(preferredDateCol).value);
+    if (preferred) {
+      return preferred;
+    }
+  }
+
+  const maxCol = row.worksheet.columnCount;
+  for (let col = 1; col <= maxCol; col += 1) {
+    if (preferredDateCol != null && col === preferredDateCol) {
+      continue;
+    }
+    const parsed = normalizeDateCellValue(row.getCell(col).value);
+    if (parsed) {
+      return parsed;
+    }
+  }
+
+  return "";
+}
+
 function findHeaderRow(sheet: ExcelJS.Worksheet): number {
   const maxScan = Math.min(sheet.rowCount, 20);
   for (let i = 1; i <= maxScan; i += 1) {
@@ -428,6 +515,7 @@ export async function mergeNamesIntoWorkbook(
   const headerRowIndex = findHeaderRow(sheet);
   const headerRow = sheet.getRow(headerRowIndex);
   const { numberCol, symbolCol } = detectColumns(headerRow);
+  const dateCol = detectDateColumn(headerRow);
 
   const buyerNameCol = ensureBuyerNameColumn(headerRow);
   const targetCol = detectOrCreateDetailColumn(headerRow);
@@ -436,6 +524,7 @@ export async function mergeNamesIntoWorkbook(
   let matchedRows = 0;
   const matchedInvoiceKeys: string[] = [];
   const unmatchedInvoiceKeys: string[] = [];
+  const unmatchedInvoiceKeysByDate: Record<string, string[]> = {};
 
   for (let rowIndex = headerRowIndex + 1; rowIndex <= sheet.rowCount; rowIndex += 1) {
     const row = sheet.getRow(rowIndex);
@@ -466,6 +555,12 @@ export async function mergeNamesIntoWorkbook(
       row.getCell(targetCol).alignment = { wrapText: true, vertical: "top" };
       unmatchedRows += 1;
       unmatchedInvoiceKeys.push(invoiceKey);
+      const invoiceDate = findDateFromRowValues(row, dateCol);
+      const dateKey = invoiceDate || "(khong ro ngay)";
+      if (!unmatchedInvoiceKeysByDate[dateKey]) {
+        unmatchedInvoiceKeysByDate[dateKey] = [];
+      }
+      unmatchedInvoiceKeysByDate[dateKey].push(invoiceKey);
     }
   }
 
@@ -476,6 +571,7 @@ export async function mergeNamesIntoWorkbook(
     matchedRows,
     matchedInvoiceKeys,
     unmatchedInvoiceKeys,
+    unmatchedInvoiceKeysByDate,
   };
 }
 
@@ -497,6 +593,7 @@ export async function mergeNamesIntoWorkbookWithMetadata(
   const headerRowIndex = findHeaderRow(sheet);
   const headerRow = sheet.getRow(headerRowIndex);
   const { numberCol, symbolCol } = detectColumns(headerRow);
+  const dateCol = detectDateColumn(headerRow);
 
   const buyerNameCol = ensureBuyerNameColumn(headerRow);
   const detailCol = detectOrCreateDetailColumn(headerRow);
@@ -505,6 +602,7 @@ export async function mergeNamesIntoWorkbookWithMetadata(
   let matchedRows = 0;
   const matchedInvoiceKeys: string[] = [];
   const unmatchedInvoiceKeys: string[] = [];
+  const unmatchedInvoiceKeysByDate: Record<string, string[]> = {};
 
   for (let rowIndex = headerRowIndex + 1; rowIndex <= sheet.rowCount; rowIndex += 1) {
     const row = sheet.getRow(rowIndex);
@@ -536,6 +634,12 @@ export async function mergeNamesIntoWorkbookWithMetadata(
       row.getCell(detailCol).alignment = { wrapText: true, vertical: "top" };
       unmatchedRows += 1;
       unmatchedInvoiceKeys.push(invoiceKey);
+      const invoiceDate = findDateFromRowValues(row, dateCol);
+      const dateKey = invoiceDate || "(khong ro ngay)";
+      if (!unmatchedInvoiceKeysByDate[dateKey]) {
+        unmatchedInvoiceKeysByDate[dateKey] = [];
+      }
+      unmatchedInvoiceKeysByDate[dateKey].push(invoiceKey);
     }
   }
 
@@ -546,5 +650,6 @@ export async function mergeNamesIntoWorkbookWithMetadata(
     matchedRows,
     matchedInvoiceKeys,
     unmatchedInvoiceKeys,
+    unmatchedInvoiceKeysByDate,
   };
 }

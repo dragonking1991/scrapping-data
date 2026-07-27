@@ -225,6 +225,55 @@ function logAggregateFileResult(label, file) {
   const unmatchedIds = Array.isArray(file.unmatchedInvoiceKeys)
     ? file.unmatchedInvoiceKeys
     : [];
+  const unmatchedByDate =
+    file && typeof file.unmatchedInvoiceKeysByDate === "object"
+      ? file.unmatchedInvoiceKeysByDate
+      : {};
+
+  function parseDateForSort(raw) {
+    const value = String(raw || "").trim();
+    if (!value) return null;
+
+    const normalized = value.replace(/[-.]/g, "/");
+    const [datePart] = normalized.split(" ");
+    const match = datePart.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if (!match) return null;
+
+    const day = Number(match[1]);
+    const month = Number(match[2]);
+    const year = Number(match[3].length === 2 ? `20${match[3]}` : match[3]);
+
+    if (!Number.isFinite(day) || !Number.isFinite(month) || !Number.isFinite(year)) return null;
+    const date = new Date(year, month - 1, day);
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month - 1 ||
+      date.getDate() !== day
+    ) {
+      return null;
+    }
+
+    return date.getTime();
+  }
+
+  const groupedDates = Object.entries(unmatchedByDate).filter(([, ids]) => Array.isArray(ids) && ids.length > 0);
+  if (groupedDates.length > 0) {
+    appendLog(`[AGG] ${label} | ID khong khop theo ngay:\n`);
+    groupedDates
+      .sort(([dateA], [dateB]) => {
+        const tsA = parseDateForSort(dateA);
+        const tsB = parseDateForSort(dateB);
+        if (tsA != null && tsB != null) return tsA - tsB;
+        if (tsA != null) return -1;
+        if (tsB != null) return 1;
+        return dateA.localeCompare(dateB, "vi");
+      })
+      .forEach(([date, ids]) => {
+        appendLog(
+          `[AGG] ${label} |   - ${date} (${ids.length}): ${ids.join(", ")}\n`,
+        );
+      });
+  }
 
   appendLog(
     `[AGG] ${label} | ID khop (${matchedIds.length}): ${matchedIds.length > 0 ? matchedIds.join(", ") : "(khong co)"}\n`,
