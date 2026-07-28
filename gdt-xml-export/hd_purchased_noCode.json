@@ -67190,5 +67190,6394 @@
     "itemNames": [
       "Dầu Điêzen 0,05S Mức 2"
     ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1683813",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1683813",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "91f0028f-8807-46cc-b396-24f4a112c259",
+        "id": "d452bb91-8a6e-461d-b177-5333f563d160",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.901",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "2",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1684602",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1684602",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "e8b0f85d-a7e9-4a68-92c7-5f209a879ca5",
+        "id": "89d7f130-0961-4273-8a41-d3f25643a188",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "43.802",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "3",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1685246",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1685246",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9cad1cfb-96ce-41f0-b476-391e53863af2",
+        "id": "4fa9109e-fa7e-4b40-97c4-bc9be9edf49d",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.901",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "4",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1686319",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1686319",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cf715fae-d741-4121-b264-d2d38a637745",
+        "id": "cb7fda22-9cdd-43bf-8d87-9749122f2102",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.661",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "6",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "108102",
+    "ngay": "27/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "108102",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "62d8b070-e62f-40ec-a769-c389a2bd6dfa",
+        "id": "787c53ca-b502-4af8-b1ad-ca850be46f3c",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "52.631",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "1150000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "7",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "108172",
+    "ngay": "27/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "108172",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c6a73fd2-d751-49f2-be56-ce1348b3616c",
+        "id": "aba514d3-0f12-4ebb-8dd7-4224bd2291ac",
+        "dgia": "26270",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "38.066",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "8",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1674525",
+    "ngay": "26/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1674525",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "29dfcfc7-2595-47f1-b3d1-4a04c624c400",
+        "id": "fb3ae4f2-4b71-4955-a66d-3e7fc984de13",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.901",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "9",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1674931",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Kính",
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1674931",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "2e950bf5-7740-456f-abc8-0e64c1e0636e",
+        "id": "4a3c2101-0ec9-4a4c-8bb0-21c2f659c951",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "17.521",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "400000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "10",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1676822",
+    "ngay": "26/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1676822",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "81522786-59f3-4f0c-8044-0e27c086560e",
+        "id": "0ac19cf3-b3a9-476f-959e-0ec1e11fbf23",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.827",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "703780",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "11",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "24788",
+    "ngay": "26/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "24788",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "56d7caab-fe16-472e-b730-30010d0fc2b2",
+        "id": "e647012f-e416-4416-8312-4c2334ae3988",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.33",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "12",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "24789",
+    "ngay": "26/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "24789",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "75dca92d-213f-41ec-8114-80de15be77ea",
+        "id": "7a3d4e17-95d8-48aa-b54e-45be3971cb06",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.33",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "13",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDZ",
+    "shdon": "11071",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "Lưu Văn Huy - 51A 37230",
+      "nbmst": "0301444626-029",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "11071",
+      "khhdon": "K26TDZ",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1abbcdc6-cfce-4d93-aed4-2dc2480cf740",
+        "id": "10ff429b-9a62-40d8-a932-caf3eaf8c188",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "41.997",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "900000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "14",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "272719",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Trơn",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "272719",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "00b5928a-b03b-437c-9c87-3d01cb3d47f7",
+        "id": "16d496ac-6d9e-453b-8daf-064c5468606e",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.031",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "640000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "15",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "272764",
+    "ngay": "26/07/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "272764",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "6a0eca86-831c-4007-80a6-75229a013ed1",
+        "id": "5dbacd17-31cb-422a-a805-2fd79456fc8d",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "33.971",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "775558",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "16",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "272966",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Minh",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "272966",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "16293351-5621-4c59-ae4c-eec2ee2bdd76",
+        "id": "f98ab3a4-2d1d-452f-b5ae-21be3cc14fc6",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.901",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "17",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26THA",
+    "shdon": "116630",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "THẠO",
+      "nbmst": "1800158559-034",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "116630",
+      "khhdon": "K26THA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "0baacc84-8487-4a49-bab2-084f3e65cc8a",
+        "id": "e7494415-d9f8-4e71-963e-0347c10ad558",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25.173",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "550030",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "18",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "107455",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "107455",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c49c53d3-7cc9-44d0-86c7-cc2f3c0b09bb",
+        "id": "6cd77a5f-708a-4ff6-b4fe-93377cfd049b",
+        "dgia": "26270",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "34.259",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "900000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "19",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "107576",
+    "ngay": "26/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "107576",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "8608e10c-4cd6-4445-88f3-788a6659e143",
+        "id": "7fa241fe-c308-426f-a319-eeea24b5d16e",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "45.766",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "20",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1671145",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1671145",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "bd964751-9d91-4080-8ac2-377ddc001ede",
+        "id": "c9d449e4-a5a6-4aa7-a738-edfa1cb81545",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.288",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "600160",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "21",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1671828",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1671828",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ddd6ee65-91d5-487c-93a5-da6564ed7e01",
+        "id": "76374f52-6209-4e37-a4b2-f1ba778e9104",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.901",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "22",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1673065",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1673065",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "be2c0576-d19e-4634-9a14-04801fef20c5",
+        "id": "372006e7-5ac7-4276-abb1-180bce9a4a43",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.32",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "532400",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "23",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "98381",
+    "ngay": "25/07/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "98381",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9dbf776f-b292-42ab-a552-49d4713bd357",
+        "id": "b9b582bd-a468-4119-b805-7ae7ab5317c9",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "44.334",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "950078",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "24",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "98382",
+    "ngay": "25/07/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "98382",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cd258ea4-c1d1-41be-86d3-f7bfbc198ab9",
+        "id": "8d3c7858-3d51-4b63-9e62-e94296cda518",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "550000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "25",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "24671",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "24671",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9478bf9e-ed3c-4ab8-abb3-888e2e91a312",
+        "id": "8482b342-493c-47fd-b184-6a09c0a7b406",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.33",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "26",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "24672",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "24672",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "037d99ce-bff6-4692-99e2-e8c67e88c0ea",
+        "id": "935d4df7-1e90-4370-a1ea-7160cc02b211",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25.662",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "550000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "27",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "24673",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "24673",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a6a38ffb-8d17-4b5c-a984-4d3c84a9670f",
+        "id": "3bdebc21-20f7-42fe-b4a2-d0db1cd1e59b",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.365",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "415000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "28",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "271439",
+    "ngay": "25/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Khôi",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "271439",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "27a004a4-2ff5-461a-83c9-4ac84ca52d79",
+        "id": "2e890751-6ca5-4250-837c-008900fbeefe",
+        "dgia": "25760",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "38.819",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "29",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TCN",
+    "shdon": "316270",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "1200100370",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "316270",
+      "khhdon": "K26TCN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "b35d502a-f7a3-4141-b806-ad98d622d42d",
+        "id": "043aa828-bf4a-4d3c-a71b-daba0234f852",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "27.998",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "600000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "30",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDB",
+    "shdon": "95254",
+    "ngay": "25/07/2026",
+    "info": {
+      "nmtnmua": "Thảo",
+      "nbmst": "1200253539",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "95254",
+      "khhdon": "K26TDB",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "219a04d1-0918-4351-968e-0c386c8ee397",
+        "id": "6c0e4e4c-2600-48ed-b387-d009cf3a5a61",
+        "dgia": "21830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "27.49",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "600150",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "31",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TCH",
+    "shdon": "252964",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "1500207131",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "252964",
+      "khhdon": "K26TCH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "e050a794-675e-4ff2-be4e-c2133513c372",
+        "id": "e23f7e7d-e704-45cb-b3f0-d2a3568fb77e",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "16.48",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "360088",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "32",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "523660",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "523660",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "176e8a8e-014a-4392-bee4-58cb0bb2a984",
+        "id": "5bac5519-ec74-4503-b65a-2453a945b66a",
+        "dgia": "22830",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25.837",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "589860",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "33",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "106936",
+    "ngay": "25/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "106936",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "76861797-f782-4bb8-9cc9-bdeba4c9b11a",
+        "id": "ca9b3a0f-eae6-443d-8e1f-6977010a4728",
+        "dgia": "26270",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "38.066",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "34",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "107047",
+    "ngay": "25/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "107047",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "357b7657-b174-4d9b-b097-135a65f969a7",
+        "id": "c8eb42af-620b-4e30-8736-9f99013c1c8b",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "54.919",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "1200000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "35",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "417163",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "5800000689",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "417163",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1e244097-ff23-4eb1-a163-36d189a7d872",
+        "id": "61923021-227e-4807-a5c9-9a7c81b6173a",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "18.307",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "400000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "36",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "187772",
+    "ngay": "25/07/2026",
+    "info": {
+      "nbmst": "5800000689-030",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "187772",
+      "khhdon": "K26TXT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "dab04bf8-d124-4767-9cdb-c30edea27527",
+        "id": "07f5a535-7130-4913-9e83-78cec8a937c9",
+        "dgia": "21850",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.888",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500103",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1362167",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1362167",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "0a113eac-1863-495c-b220-67bbfb81d3c9",
+        "id": "f6fb8cd6-5985-47b5-b1d7-11bcccc37d8b",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "29.4",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "675024",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "2",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1362601",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1362601",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "317a0844-642e-434a-89be-047324be62b1",
+        "id": "d1285da4-f457-4930-9232-7a49d1741b98",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "34.846",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "800064",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "3",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1364057",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1364057",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9b290e64-3596-4630-a6ff-850589205e77",
+        "id": "e7a60e01-e297-423d-8cce-4792b8090cad",
+        "dgia": "27130",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "33.149",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,001S Mức 5",
+        "thtcthue": "",
+        "thtien": "899332",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,001S Mức 5"
+    ]
+  },
+  {
+    "stt": "4",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1365320",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1365320",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "796bbbbc-3751-4c3b-85fb-32bc959057d4",
+        "id": "737fb7dc-a06a-4bea-915e-e8e01d0a8028",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "32.303",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "5",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1365595",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1365595",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "e8e7ef2a-9027-4b4c-9bad-bf2aac339d20",
+        "id": "e3a760ce-3e1a-4bd6-a810-28d6dcf942b5",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "34.612",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "750040",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "6",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1367914",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1367914",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "f2caa918-ef8c-4f92-9ef1-1bc45d0fd799",
+        "id": "26c578c3-8199-4121-9ede-24204c9d11f8",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.82",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "624529",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "7",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSV",
+    "shdon": "36866",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0300631013",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "36866",
+      "khhdon": "K26TSV",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9e23c49b-ae33-4252-a370-c3d530a0c774",
+        "id": "9a79afa1-171c-4eaa-a3d5-1b7ac6dcd5c5",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "55.302",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 - Mức 3",
+        "thtcthue": "",
+        "thtien": "1220000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 - Mức 3"
+    ]
+  },
+  {
+    "stt": "8",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "81561",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "81561",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "4f32ad38-5fb8-49f0-977a-c5eee30618b1",
+        "id": "59887d85-bbcb-43a7-9b23-0996184aa62f",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "9",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "81562",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "81562",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ff6d3ccd-a524-48ce-9b0f-71c56788863e",
+        "id": "1a4d1587-b4dd-4676-941a-aa65d2532fa3",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "10",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "81563",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "81563",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a5d5b85f-fa80-447a-95d9-20ecbaaebcc4",
+        "id": "48d3f142-4065-4b63-baff-404533befb80",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "11",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "81564",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "81564",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a5d19704-6135-474c-acc9-1f1b3e65fca3",
+        "id": "5463f2d8-7ea0-46aa-8fa5-7d72c69e3ccd",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.327",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "12",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "81565",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "81565",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5946c223-316e-4717-bb23-09b734082f4e",
+        "id": "52377e24-ef11-4a45-9ebf-501b5d3ccc0c",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.327",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "13",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "81566",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "81566",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "87159966-df30-4f1b-bddc-3e9afe155d33",
+        "id": "a9be388f-a7db-4fb1-90cb-ec9ad416306b",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "27.058",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "14",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "22501",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "22501",
+      "khhdon": "K26TDD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "b96c73eb-3952-4284-99ba-71ede63cdb7b",
+        "id": "299afe43-3f9e-4a99-bc39-3837061c4aa0",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "15",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "219137",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "219137",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "d00ba894-8931-45c7-9d4b-75a8f4579d96",
+        "id": "de790158-670f-4941-9a74-eee109507355",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.778",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500023",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "16",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "219684",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "219684",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5ed76969-02ae-45b4-88f6-356b49770e1c",
+        "id": "5526fd01-e05d-4a65-b175-40b85a457856",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "18.731",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "430060",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "17",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "219835",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "219835",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "f8be2685-ed61-4ddb-8114-61b4acad1620",
+        "id": "07127fb8-dbcd-4580-a626-9202d3ae8352",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.327",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "18",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "219948",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "219948",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "040aac42-268f-43b6-a0a8-4608c4c22a42",
+        "id": "f87b218e-69e4-4182-876b-69cc1e5398a5",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.777",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "19",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "220031",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "220031",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a14fb4e8-0960-4e61-a7a1-acf3323f9831",
+        "id": "2371bce5-07a6-4d2f-8acc-86267f5efd47",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.073",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "20",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "220041",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "220041",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "df767bb1-335a-4290-ab57-7f51ca4fa8cb",
+        "id": "dfdc618e-7b4d-4eb8-937a-02aaa775b6e8",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.761",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "450000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "21",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "220075",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "THẦY TRƠN",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "220075",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "fb4218e6-6e0b-4ab8-8698-fb0c00f8f6f8",
+        "id": "06e0759d-0f1b-47b5-ac52-bb2290247af1",
+        "dgia": "23530",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.795",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "724607",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "22",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "420545",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "420545",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "3f3a0131-0397-41f6-9c78-40edc8b79d31",
+        "id": "d38d6b27-3a40-4950-a0b9-23365b5c271f",
+        "dgia": "25430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "19.662",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,001S Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,001S Mức 5"
+    ]
+  },
+  {
+    "stt": "23",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "87438",
+    "ngay": "18/06/2026",
+    "info": {
+      "nmtnmua": "Dương Anh Tuấn",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "87438",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "bb7965be-64c7-4f5d-9c8e-1e5ccd30b1e9",
+        "id": "d1000d1e-fcf2-4172-95bd-4770f34a525c",
+        "dgia": "22500",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "57.785",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "1300162",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "24",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "153040",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "5800000689-030",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "153040",
+      "khhdon": "K26TXT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "4a43bbed-b0ba-4487-ae72-e41feea6a8da",
+        "id": "b92c759b-f402-48c4-8d09-347d7fbfd8aa",
+        "dgia": "26380",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "18.954",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "25",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "153041",
+    "ngay": "18/06/2026",
+    "info": {
+      "nbmst": "5800000689-030",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "153041",
+      "khhdon": "K26TXT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "bc1fee78-85d3-4281-8ad7-0bf1d2a10758",
+        "id": "4fbff130-7087-4148-a8de-13cfa9d21fb2",
+        "dgia": "22500",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "40.006",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "900135",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "26",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1352523",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1352523",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "baea689b-0f0a-4574-971d-3059feda9378",
+        "id": "74692fae-1880-4121-92b0-86757a99607c",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "33.211",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "762525",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "27",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1353157",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1353157",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c9a58bc8-4d6a-4d84-a744-75b2a05eff33",
+        "id": "a06857d9-3c98-42d6-b28e-d5f6d0a90aba",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "11.76",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "270010",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "28",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1355531",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1355531",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "3ffe3ec1-b6b8-4fd5-8eee-2e4b2f1adb4e",
+        "id": "72cf2ef4-a188-4bc2-8f30-140f263fa0ab",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.474",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "470080",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "29",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1356337",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1356337",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "b9a8500f-cbe8-4220-bdcf-2138edaa3809",
+        "id": "9c8481e9-a937-46c4-8831-7a172c82a372",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.949",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "480989",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "30",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TGT",
+    "shdon": "109268",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300555450-008",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "109268",
+      "khhdon": "K26TGT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "56d76f26-4480-42b4-bf82-afeb13ca5f73",
+        "id": "33060c91-1927-4a51-a665-fd9c9056d911",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "32.64",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "720038",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "31",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSE",
+    "shdon": "40149",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300631013",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "40149",
+      "khhdon": "K26TSE",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ec74c1d3-4208-45a0-a358-4a9131744652",
+        "id": "09f243a7-2375-4bdc-bab1-f9f19b726780",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 - Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 - Mức 3"
+    ]
+  },
+  {
+    "stt": "32",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSV",
+    "shdon": "36566",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0300631013",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "36566",
+      "khhdon": "K26TSV",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5475eef2-46cb-42c7-a711-336b485ff850",
+        "id": "6a31cc82-0afe-4370-9bbb-260b3b3dbb54",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "52.81",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 - Mức 3",
+        "thtcthue": "",
+        "thtien": "1165000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 - Mức 3"
+    ]
+  },
+  {
+    "stt": "33",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "22365",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "22365",
+      "khhdon": "K26TDD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "8dddcf36-ba92-4ab9-bcc3-e67400ddfaf8",
+        "id": "b7488af6-7dc7-4bdb-8024-2892946bb2dd",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "34",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNH",
+    "shdon": "7028",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "0310496966-039",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "7028",
+      "khhdon": "K26TNH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "7edb3269-1f48-4d48-9913-cd95bf73900b",
+        "id": "2a29d9cb-19a8-40c4-b749-35db55992683",
+        "dgia": "21330",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.16",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E5 RON92 Mức 2",
+        "thtcthue": "",
+        "thtien": "750000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E5 RON92 Mức 2"
+    ]
+  },
+  {
+    "stt": "35",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "353148",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "1100108351",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "353148",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "45ef59dd-70ea-4696-885a-f309222d17da",
+        "id": "0c5b9b47-abae-4138-bc36-e00de9b33a92",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.777",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "36",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218080",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218080",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9c250507-b949-48e6-85ed-fad08510879c",
+        "id": "5f76eea1-4bc4-4050-9883-d056de0fe63b",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "88.914",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "2300205",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "37",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218276",
+    "ngay": "17/06/2026",
+    "info": {
+      "nmtnmua": "GV Trần Đức Hải",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218276",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "b7d3d6e9-aa1e-4741-a427-b75ecdbec63c",
+        "id": "ea6f79bc-9d2d-481e-a14d-ed14a28d7da2",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.488",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "38",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218397",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218397",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "af32aa26-03b2-4534-a2c8-4a14ebcab5d4",
+        "id": "f9235890-f956-4b78-a4e2-dba741d5be88",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "33.573",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "770840",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "39",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218513",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218513",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "4ed6072d-d95f-4ea2-ba76-8b0a43af3835",
+        "id": "4ec57ced-6cb3-4286-a6c9-383574541a33",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.132",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "600000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "40",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218657",
+    "ngay": "17/06/2026",
+    "info": {
+      "nmtnmua": "Thầy Trơn",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218657",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c01ec6e5-8f85-4a7f-831a-d20a2306367a",
+        "id": "0f2917db-1447-4444-8500-f8446fcf90a2",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "42.527",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1100174",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "41",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218685",
+    "ngay": "17/06/2026",
+    "info": {
+      "nmtnmua": "Anh Thạo",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218685",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "94b85634-1b52-410b-9fb6-5ae1fa9a523c",
+        "id": "fddd8940-e64e-48ee-a27e-2bcb7a3bb22b",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.483",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "42",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "218714",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "218714",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "44fcfb97-0382-44b4-bc73-868b17cb931c",
+        "id": "19fff130-9fa3-45f2-816c-b8721102eeac",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.777",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "43",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "86696",
+    "ngay": "17/06/2026",
+    "info": {
+      "nmtnmua": "Dương Anh Tuấn",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "86696",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "0455b974-69c2-4fa3-9468-e54edb4dce59",
+        "id": "a7bef31b-de46-48c4-9026-687da8bf7c81",
+        "dgia": "22500",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.555",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "800000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "44",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TPK",
+    "shdon": "451593",
+    "ngay": "17/06/2026",
+    "info": {
+      "nbmst": "4200240380",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "451593",
+      "khhdon": "K26TPK",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "81cf0354-0e44-41fd-a8c8-8d66dbcd97dc",
+        "id": "165e15cf-1137-43f8-ac8a-d723dd9c1b5b",
+        "dgia": "22410",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "49.091",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "1100129",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "45",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1341466",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1341466",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5df409b9-13a6-4a04-b328-b1c0b19f22f7",
+        "id": "882dfd2f-e782-4da0-b7f5-54fb0331355e",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "17.43",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "400190",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "46",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1348335",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1348335",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5e723acf-fd34-4dbc-a7d4-6da7f2d04d6e",
+        "id": "165893fa-43ee-445c-8a9e-6f6087ab26fe",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "21.777",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "47",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSV",
+    "shdon": "36373",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "0300631013",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "36373",
+      "khhdon": "K26TSV",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "8d1bb252-d3c0-421e-9428-a5e4f90b1a73",
+        "id": "cedca17b-3e05-44fc-b458-4ada6db47d7a",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "54.395",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 - Mức 3",
+        "thtcthue": "",
+        "thtien": "1200000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 - Mức 3"
+    ]
+  },
+  {
+    "stt": "48",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "22246",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "22246",
+      "khhdon": "K26TDD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c91c48f2-e51c-466b-8c47-fe09494a516e",
+        "id": "41d29da5-87c7-4c45-a900-f5aec1aae309",
+        "dgia": "22060",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.665",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "49",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNH",
+    "shdon": "6972",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "0310496966-039",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "6972",
+      "khhdon": "K26TNH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5c6ed5d2-a27f-4cd5-81dc-880fc0bb78e1",
+        "id": "1757a855-e4e0-4e75-9636-2b87e1c0d8e7",
+        "dgia": "21330",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "42.192",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E5 RON92 Mức 2",
+        "thtcthue": "",
+        "thtien": "900000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E5 RON92 Mức 2"
+    ]
+  },
+  {
+    "stt": "50",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "216815",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "216815",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "13316bf0-77d5-4e41-a00d-17936f416711",
+        "id": "6656298f-955a-4517-8acb-7f5e6426ebf2",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "27.443",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "630091",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "51",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "217196",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "217196",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "386df42d-e4b7-4942-8c73-e11343eac10d",
+        "id": "a54d9eb2-2507-4283-9046-d4d6ca08e146",
+        "dgia": "27130",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "29.488",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,001S Mức 5",
+        "thtcthue": "",
+        "thtien": "800000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,001S Mức 5"
+    ]
+  },
+  {
+    "stt": "52",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "217268",
+    "ngay": "16/06/2026",
+    "info": {
+      "nmtnmua": "Nguyễn Quốc Thạnh",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "217268",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ccca1477-e56c-4f45-8377-518fa4ee66e8",
+        "id": "d713ce9a-ab09-40c7-b361-5e8902d462b3",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.954",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "550000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "53",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "217304",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "217304",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cc082db3-2cf6-4515-ad4e-fb227afccdad",
+        "id": "f5b30bdd-a879-42cf-9bfd-b2fa0f2dfcab",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "189.408",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "4900000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "54",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "414187",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "414187",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1f52fbeb-7633-4ffb-97bb-ed5e1b8ee414",
+        "id": "f9a60f8d-6122-4780-b1ab-5b1d70fd490e",
+        "dgia": "25870",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "66.42",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1718285",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "55",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "414492",
+    "ngay": "16/06/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "414492",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "d175df8d-de3f-4b25-8b50-55fbf1c2ec80",
+        "id": "0529dc2d-34cd-4e70-9d7c-1896d9dad28d",
+        "dgia": "22960",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.152",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "600450",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "56",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "86222",
+    "ngay": "16/06/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "86222",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "39a2c52e-f636-4b3f-aacd-55376f5a3103",
+        "id": "d92ee4ca-0af1-4d08-ab06-ab8dc53ed1a8",
+        "dgia": "22500",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.666",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "600000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "57",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "86262",
+    "ngay": "16/06/2026",
+    "info": {
+      "nmtnmua": "Dương Anh Tuấn",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "86262",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cffa6e41-9704-456a-9500-71fd5d90a031",
+        "id": "5de19597-2c60-443d-9281-8f9547a212a5",
+        "dgia": "22500",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.666",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "600000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TVA",
+    "shdon": "2319518",
+    "ngay": "07/07/2026",
+    "info": {
+      "Tên người bán": "Viettel Thành Phố Hồ Chí Minh- Chi nhánh Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106-122",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DGD",
+    "shdon": "1871978",
+    "ngay": "29/06/2026",
+    "info": {
+      "Tên người bán": "NGÂN HÀNG THƯƠNG MẠI CỔ PHẦN KỸ THƯƠNG VIỆT NAM",
+      "Mã số thuế": "0100230800",
+      "Tên người mua": "TRUNG TAM GIAO DUC NGHE NGHIEP BACH VIET",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "226177",
+    "ngay": "23/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "226177",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9a92c743-fdc7-401e-aed4-76c11f96faed",
+        "id": "fbe7fb2b-c200-4856-9997-94ba9d2817fc",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "32.655",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "707630",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TCT",
+    "shdon": "3291808",
+    "ngay": "09/06/2026",
+    "info": {
+      "Tên người bán": "TỔNG CÔNG TY CẤP NƯỚC SÀI GÒN - TNHH MTV",
+      "Mã số thuế": "0301129367",
+      "Tên người mua": "TRUNG TAM DAY NGHE BACH VIET",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TCT",
+    "shdon": "2576458",
+    "ngay": "07/05/2026",
+    "info": {
+      "Tên người bán": "TỔNG CÔNG TY CẤP NƯỚC SÀI GÒN - TNHH MTV",
+      "Mã số thuế": "0301129367",
+      "Tên người mua": "TRUNG TAM DAY NGHE BACH VIET",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1580329",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1580329",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1ac3ae2d-d15c-48d5-ab70-b26d2fe4d2bf",
+        "id": "67830b43-59ba-47c7-85e2-ca8c93ec2d9e",
+        "dgia": "21740",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "45.998",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "2",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1582023",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1582023",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a7404cab-e702-459c-81d7-e5eea54b2f70",
+        "id": "1ebb0dac-3e88-40a2-9902-473bdd9a77ef",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.585",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "3",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1585624",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1585624",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "b1566904-74e8-4059-a040-b2efdc1cd5ef",
+        "id": "d7c58dcd-c948-432a-b7e4-d6c29894a127",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "33.019",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "4",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "387174",
+    "ngay": "15/07/2026",
+    "info": {
+      "nmtnmua": "Trần Đức Hải",
+      "nbmst": "0300555450-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "387174",
+      "khhdon": "K26TXT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c0ddd3f0-9791-4de2-825a-1da7a8978fb7",
+        "id": "6912c365-b068-4526-84cb-431ed2a72954",
+        "dgia": "20000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "42.505",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "850100",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "5",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSE",
+    "shdon": "46856",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0300631013",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "46856",
+      "khhdon": "K26TSE",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "4f700f52-a7ab-4ab0-aaa7-aff3b74bd7b0",
+        "id": "efd79957-cf44-4264-8c56-ae58715b32c4",
+        "dgia": "20000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 - Mức 3",
+        "thtcthue": "",
+        "thtien": "400000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 - Mức 3"
+    ]
+  },
+  {
+    "stt": "6",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "25613",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "25613",
+      "khhdon": "K26TDD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "442517b3-23e0-4f71-9e5a-ab79ca9fe358",
+        "id": "3bf747a7-4dcb-4c5a-b574-a3bb17b099c3",
+        "dgia": "20000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "7",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "37610",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "37610",
+      "khhdon": "K26TDQ",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ec32d65c-cd52-475b-9a7a-d4c8ea5a82b9",
+        "id": "7ef6a664-922b-494d-a3fe-46af7e984477",
+        "dgia": "20000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.03",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "560600",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "8",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "37611",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "37611",
+      "khhdon": "K26TDQ",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "e71c2671-04dc-4c81-a72c-8a65b3f0d326",
+        "id": "e2fab30d-1391-4f16-92f2-ded231c1f6d7",
+        "dgia": "20000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "32.25",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "645000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "9",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDZ",
+    "shdon": "10419",
+    "ngay": "15/07/2026",
+    "info": {
+      "nmtnmua": "Lưu Văn Huy - 51A 37230",
+      "nbmst": "0301444626-029",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "10419",
+      "khhdon": "K26TDZ",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "2b27c77b-9bf3-4b25-a20f-76181e79286c",
+        "id": "615ad859-f6c0-4232-8668-8da7dc13da0c",
+        "dgia": "20000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "45",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "900000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "10",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "416467",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "1100108351",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "416467",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "0ab47307-11c9-4f39-a5e9-759275b4649f",
+        "id": "c7e3018e-bbf9-4161-baed-799ffbaf10df",
+        "dgia": "23840",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25.177",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,001S Mức 5",
+        "thtcthue": "",
+        "thtien": "600220",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,001S Mức 5"
+    ]
+  },
+  {
+    "stt": "11",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "256716",
+    "ngay": "15/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Khôi",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "256716",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "23d119ae-6234-44dd-b7b2-bf1b0d1acbf3",
+        "id": "83e36818-2e59-46f6-8f17-6da33a300ac8",
+        "dgia": "21740",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "64.413",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1400340",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "12",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "256749",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "256749",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1c824d79-f5f9-47a5-8722-763a50df0e5e",
+        "id": "6e952205-6e95-4b20-800c-dac59198743a",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "16.511",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "350030",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "13",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "111457",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "1500207131-104",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "111457",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cbaaa818-a93d-43be-abaa-042445443adb",
+        "id": "313d6974-543d-4a8b-be49-33fa842d7e04",
+        "dgia": "20400",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "34.314",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "700006",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "14",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "493500",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "493500",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "12237901-ab89-4af0-8bc2-9086286e9d00",
+        "id": "b004fab9-a17c-452f-826d-756d74758c48",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.29",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "430150",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "15",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "101897",
+    "ngay": "15/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "101897",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "af4ee8c5-362c-4aa7-a138-0b2b0e5b0776",
+        "id": "b3cc06c9-32d2-4747-a4a4-7a2eea49c501",
+        "dgia": "20400",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.79",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "730116",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TVA",
+    "shdon": "2319518",
+    "ngay": "07/07/2026",
+    "info": {
+      "Tên người bán": "Viettel Thành Phố Hồ Chí Minh- Chi nhánh Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106-122",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19261876",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "2",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19262571",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "3",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19280754",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "4",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19316245",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "5",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1477205",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1477205",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ba340f3c-3d14-4255-9453-e5d3f4f373d5",
+        "id": "19e1045e-2b58-4eed-8ca5-6f3e31e824d8",
+        "dgia": "22250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "22.47",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "6",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1477375",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1477375",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "7cc6490d-16f1-449d-85d1-26f56d95d872",
+        "id": "f701a6f0-2c48-4793-b7d0-6dc72ad37b8e",
+        "dgia": "22250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.95",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "800000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "7",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1481408",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Kính",
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1481408",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "fce6eee4-35bc-48e7-9f4d-5f63690b1aa0",
+        "id": "73a3cb87-725f-463a-b722-1c80a9a22bd0",
+        "dgia": "21610",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "16.196",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "350000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "8",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1482062",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1482062",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "d78fb487-64b9-485d-ad1b-1fea58f36e33",
+        "id": "a15b32a0-3381-4762-8be0-048f7976d349",
+        "dgia": "21610",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.137",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "9",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "361396",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0300555450-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "361396",
+      "khhdon": "K26TXT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9ca9e23e-54e9-4a00-97ae-3698a331a6eb",
+        "id": "31aee585-83c2-416c-a087-13911c07a26f",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.302",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "600000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "10",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSV",
+    "shdon": "39774",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0300631013",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "39774",
+      "khhdon": "K26TSV",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "862004ab-5faa-47cf-9685-1ae76fe0f182",
+        "id": "526d5e97-d7c9-45e6-a821-733094201e2c",
+        "dgia": "23000",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "59.13",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 97 - Mức 3",
+        "thtcthue": "",
+        "thtien": "1360000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 97 - Mức 3"
+    ]
+  },
+  {
+    "stt": "11",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "88035",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "88035",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "faf40f0b-4351-41ba-b97c-94ab0fc021c0",
+        "id": "2b874659-efb7-4f3f-858c-a5a2ae23370a",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.584",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "12",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "88036",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "88036",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a9a785d2-923c-41e2-8b89-6622905d9a1f",
+        "id": "93cb8d59-7435-4047-ba4e-23c3c6d2538f",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.584",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "13",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "88037",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51K-126.36",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "88037",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "d86f49f4-0fe9-48b0-995e-b2d12ea8973b",
+        "id": "b3339533-2860-47cb-a1d9-1197774cba66",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.59",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500108",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "14",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "88042",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "88042",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cdcc5756-ff42-4aba-a08f-8462e4c076d7",
+        "id": "3c2b84ed-afa6-446d-a0ea-8cf98e969444",
+        "dgia": "21860",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "655800",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "15",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "88043",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "88043",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "05094a6a-9659-4c11-ad31-8d394ebc5223",
+        "id": "4fbd8381-1af6-4ae2-86b3-25233df6c965",
+        "dgia": "21860",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "25",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "546500",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "16",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAP",
+    "shdon": "88044",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51C-747.52",
+      "nbmst": "0300649476-026",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "88044",
+      "khhdon": "K26TAP",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c177ab65-1347-4276-b3d9-c4269026ca34",
+        "id": "869acdff-9119-42f0-970b-29b0b3ad9fc4",
+        "dgia": "21860",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "59.469",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1300000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "17",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TSG",
+    "shdon": "2029992",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0300951119-001",
+      "dvtte": "VND",
+      "shdon": "2029992",
+      "khhdon": "K26TSG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "1c1ee46b-dd2d-4e66-a49c-9a8b303a7cc8",
+        "id": "6cc4d64d-8eae-49b7-b973-33e4b066b0de",
+        "dgia": "",
+        "dvtinh": "kWh",
+        "ltsuat": "8%",
+        "sluong": "2897",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "697",
+        "tchat": "",
+        "ten": "Khác",
+        "thtcthue": "",
+        "thtien": "6448722",
+        "tlckhau": "",
+        "tsuat": "0.08",
+        "tthue": "515898",
+        "sxep": "1",
+        "ttkhac": "",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Khác"
+    ]
+  },
+  {
+    "stt": "18",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDD",
+    "shdon": "23985",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "23985",
+      "khhdon": "K26TDD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "b8f825a0-bca5-4bd2-b3c5-3c13e577463a",
+        "id": "983e5879-461c-4838-bc99-31fd3717f09a",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.582",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "19",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "22039",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "22039",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c4f606e9-aad8-42cf-beac-36c3fd07c78c",
+        "id": "582206ee-de27-4e57-9a51-7fdfa050fa6c",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "28.16",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "597000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "20",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "22040",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "22040",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "15ca5647-29d8-4180-ac39-0e6d17eab0db",
+        "id": "e50718c5-df90-406b-ad0b-0d5792dab964",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "33.017",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "21",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDQ",
+    "shdon": "35154",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "35154",
+      "khhdon": "K26TDQ",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "5cb66e7b-c850-4ca7-a13c-398698f4c103",
+        "id": "ac4200af-9320-40be-9b59-c3dffa95cae5",
+        "dgia": "20410",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "41.646",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "850000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "22",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TTC",
+    "shdon": "628049",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "Trần Đức hải",
+      "nbmst": "0400101683",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "628049",
+      "khhdon": "K26TTC",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "224bb79a-0eec-425e-9c60-13bf5d22c948",
+        "id": "e61e3e2c-899e-433f-b3b0-45868e0365a5",
+        "dgia": "22250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "49.443",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "1100107",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "23",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "238971",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "238971",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "800f7eaf-fb0f-4e4e-b168-e6fc2d844ab9",
+        "id": "106d1796-699c-4c92-94c2-68c23ba704f1",
+        "dgia": "22250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.96",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "800110",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "24",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "239129",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "239129",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "11066ae8-d839-4975-8cdc-3fd4500ab11f",
+        "id": "47d57379-5932-4234-b8b1-11a25d440f24",
+        "dgia": "21860",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "224.154",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "4900000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "25",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "239347",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "Thầy Thạnh",
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "239347",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "e7b946d0-a823-403c-88e2-b8cc59fe1979",
+        "id": "4ea47e32-2d5b-462a-9ba8-f67c4859bec3",
+        "dgia": "22250",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "27.859",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "620000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "26",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "95226",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "95226",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "164795d5-c116-4da6-9a13-7e487505e169",
+        "id": "0116a6a6-831d-481b-8f8d-84da861c1d0f",
+        "dgia": "21620",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "56.45",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "1220449",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "27",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "95326",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "95326",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c12957c3-9c49-47c9-930c-a4e61ed56db8",
+        "id": "19fe01b2-f6c0-491d-8b6c-8bda1946275e",
+        "dgia": "22290",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "44.863",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,05S Mức 2",
+        "thtcthue": "",
+        "thtien": "1000000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,05S Mức 2"
+    ]
+  },
+  {
+    "stt": "28",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TPK",
+    "shdon": "495961",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "4200240380",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "495961",
+      "khhdon": "K26TPK",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "ac6f7c12-92b7-4331-aada-d6e1a44deadc",
+        "id": "e05a1926-8277-4cb3-938f-e91ee5f76352",
+        "dgia": "20410",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.95",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "550049",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "29",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TNT",
+    "shdon": "158896",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "4200240380-011",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "158896",
+      "khhdon": "K26TNT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "94798613-0572-4b85-b1fc-0f865c6b96a4",
+        "id": "5d7ed510-78e6-406b-b100-4d0db21ee4ec",
+        "dgia": "20810",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "26.902",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "560000",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "30",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXT",
+    "shdon": "166307",
+    "ngay": "02/07/2026",
+    "info": {
+      "nbmst": "5800000689-030",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "166307",
+      "khhdon": "K26TXT",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c5456c24-6f88-4abd-938e-43da74e6b2fd",
+        "id": "13999c79-ec10-4d95-8bd3-0d277b861c07",
+        "dgia": "21620",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "30.672",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "663129",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "111457",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "1500207131-104",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "111457",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "cbaaa818-a93d-43be-abaa-042445443adb",
+        "id": "313d6974-543d-4a8b-be49-33fa842d7e04",
+        "dgia": "20400",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "34.314",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "700006",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAA",
+    "shdon": "493500",
+    "ngay": "15/07/2026",
+    "info": {
+      "nbmst": "3600247325",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "493500",
+      "khhdon": "K26TAA",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "12237901-ab89-4af0-8bc2-9086286e9d00",
+        "id": "b004fab9-a17c-452f-826d-756d74758c48",
+        "dgia": "21200",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.29",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "430150",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TLH",
+    "shdon": "101897",
+    "ngay": "15/07/2026",
+    "info": {
+      "nmtnmua": "Lê Văn Lộc",
+      "nbmst": "3700146458-009",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "101897",
+      "khhdon": "K26TLH",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "af4ee8c5-362c-4aa7-a138-0b2b0e5b0776",
+        "id": "b3cc06c9-32d2-4747-a4a4-7a2eea49c501",
+        "dgia": "20400",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "35.79",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "730116",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TVA",
+    "shdon": "2319518",
+    "ngay": "07/07/2026",
+    "info": {
+      "Tên người bán": "Viettel Thành Phố Hồ Chí Minh- Chi nhánh Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106-122",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19261876",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19262571",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19280754",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DAB",
+    "shdon": "19316245",
+    "ngay": "02/07/2026",
+    "info": {
+      "Tên người bán": "Tập đoàn Công nghiệp - Viễn thông Quân đội",
+      "Mã số thuế": "0100109106",
+      "Tên người mua": "Trung Tâm Giáo Dục Nghề Nghiệp Bách Việt",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26DGD",
+    "shdon": "1871978",
+    "ngay": "29/06/2026",
+    "info": {
+      "Tên người bán": "NGÂN HÀNG THƯƠNG MẠI CỔ PHẦN KỸ THƯƠNG VIỆT NAM",
+      "Mã số thuế": "0100230800",
+      "Tên người mua": "TRUNG TAM GIAO DUC NGHE NGHIEP BACH VIET",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TXN",
+    "shdon": "226177",
+    "ngay": "23/06/2026",
+    "info": {
+      "nbmst": "1100108351-105",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "226177",
+      "khhdon": "K26TXN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "9a92c743-fdc7-401e-aed4-76c11f96faed",
+        "id": "fbe7fb2b-c200-4856-9997-94ba9d2817fc",
+        "dgia": "21670",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "32.655",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 5",
+        "thtcthue": "",
+        "thtien": "707630",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 5"
+    ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TCT",
+    "shdon": "3291808",
+    "ngay": "09/06/2026",
+    "info": {
+      "Tên người bán": "TỔNG CÔNG TY CẤP NƯỚC SÀI GÒN - TNHH MTV",
+      "Mã số thuế": "0301129367",
+      "Tên người mua": "TRUNG TAM DAY NGHE BACH VIET",
+      "Đơn vị tiền tệ": "VND",
+      "Số bảng kê": "Ngày bảng kê:"
+    },
+    "lineItems": [],
+    "itemNames": []
   }
 ]

@@ -18,12 +18,27 @@ export async function handleRootRoutes(
     return true;
   }
 
-  if (req.method === "GET" && url.pathname === "/web/app.js") {
+  if (req.method === "GET" && url.pathname.startsWith("/web/")) {
     try {
-      const filePath = join(process.cwd(), "src", "ui", "web", "app.js");
+      const relativePath = url.pathname.slice("/web/".length);
+      if (!relativePath || relativePath.includes("..") || relativePath.includes("\\")) {
+        res.statusCode = 400;
+        res.end("Bad Request");
+        return true;
+      }
+
+      const filePath = join(process.cwd(), "src", "ui", "web", relativePath);
       const content = await fs.readFile(filePath, "utf8");
       res.statusCode = 200;
-      res.setHeader("Content-Type", "application/javascript; charset=utf-8");
+      if (relativePath.endsWith(".js")) {
+        res.setHeader("Content-Type", "application/javascript; charset=utf-8");
+      } else if (relativePath.endsWith(".html")) {
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+      } else if (relativePath.endsWith(".css")) {
+        res.setHeader("Content-Type", "text/css; charset=utf-8");
+      } else {
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+      }
       res.end(content);
     } catch {
       res.statusCode = 404;
