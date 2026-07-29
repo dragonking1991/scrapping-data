@@ -54857,5 +54857,93 @@
     "itemNames": [
       "Xăng E10 RON 95 Mức 5"
     ]
+  },
+  {
+    "stt": "14",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TAN",
+    "shdon": "1686804",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0300555450",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "1686804",
+      "khhdon": "K26TAN",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "d60822a8-5ad2-4673-ba3b-25dc34ffafb6",
+        "id": "c078a49f-1731-4dc4-baff-f169923a01cc",
+        "dgia": "27860",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "40.667",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Dầu Điêzen 0,001S Mức 5",
+        "thtcthue": "",
+        "thtien": "1132983",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Dầu Điêzen 0,001S Mức 5"
+    ]
+  },
+  {
+    "stt": "15",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "K26TDG",
+    "shdon": "24929",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0301444626",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "24929",
+      "khhdon": "K26TDG",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "f2334b13-6244-40f8-856e-6774c33a5d3a",
+        "id": "0d23b0a4-355f-46b2-b05d-c54fe2983bae",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "23.33",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "500000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
   }
 ]

@@ -5730,5 +5730,211 @@
     "itemNames": [
       "Xăng E10 RON95 Mức 3"
     ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "C26TBD",
+    "shdon": "197522",
+    "ngay": "27/07/2026",
+    "info": {
+      "nmtnmua": "51K-09402",
+      "nbmst": "0302182074",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "197522",
+      "khhdon": "C26TBD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "05921bfe-c3c1-4a6f-b5bd-e9dd6d5e2954",
+        "id": "961bc7a6-b281-4261-b8e0-bac3ccce07a8",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "20.998",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "450000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "2",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "C26TBD",
+    "shdon": "197966",
+    "ngay": "27/07/2026",
+    "info": {
+      "nmtnmua": "51L 32108",
+      "nbmst": "0302182074",
+      "dvtte": "VND",
+      "htttoan": "3",
+      "shdon": "197966",
+      "khhdon": "C26TBD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "4b08d21f-98df-4aff-869b-22946b91958a",
+        "id": "c42b2fd0-c807-4cd9-a3fa-8d50b80d0bb1",
+        "dgia": "21430",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "sluong": "32.664",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON95 Mức 3",
+        "thtcthue": "",
+        "thtien": "700000",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON95 Mức 3"
+    ]
+  },
+  {
+    "stt": "3",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "C26TAV",
+    "shdon": "11467",
+    "ngay": "27/07/2026",
+    "info": {
+      "nbmst": "0306372735",
+      "dvtte": "VND",
+      "htttoan": "9",
+      "shdon": "11467",
+      "khhdon": "C26TAV",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "a74a5b36-7479-444c-bec4-78a477c50f8f",
+        "id": "a804e05d-fa47-4c55-843e-e77270b5801f",
+        "dgia": "",
+        "dvtinh": "",
+        "ltsuat": "0%",
+        "sluong": "",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "1",
+        "tchat": "4",
+        "ten": "Sửa chữa xe BKS 51A91775",
+        "thtcthue": "",
+        "thtien": "0",
+        "tlckhau": "",
+        "tsuat": "0",
+        "tthue": "",
+        "sxep": "1",
+        "ttkhac": "[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      },
+      {
+        "idhdon": "a74a5b36-7479-444c-bec4-78a477c50f8f",
+        "id": "4fdc9de5-ef6e-4060-bbfc-f6ec1f1bb0f9",
+        "dgia": "190000",
+        "dvtinh": "Lượt",
+        "ltsuat": "8%",
+        "sluong": "1",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "2",
+        "tchat": "1",
+        "ten": "Bảo dưỡng cấp nhỏ",
+        "thtcthue": "",
+        "thtien": "190000",
+        "tlckhau": "",
+        "tsuat": "0.08",
+        "tthue": "",
+        "sxep": "2",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      },
+      {
+        "idhdon": "a74a5b36-7479-444c-bec4-78a477c50f8f",
+        "id": "b8429ecc-04f2-4f84-beba-e6996c1152e3",
+        "dgia": "104400",
+        "dvtinh": "Lít",
+        "ltsuat": "8%",
+        "sluong": "3.4",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "3",
+        "tchat": "1",
+        "ten": "Dầu máy SP 10W-30 (phuy 200L)",
+        "thtcthue": "",
+        "thtien": "354960",
+        "tlckhau": "",
+        "tsuat": "0.08",
+        "tthue": "",
+        "sxep": "3",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      },
+      {
+        "idhdon": "a74a5b36-7479-444c-bec4-78a477c50f8f",
+        "id": "541aeda5-5b19-4f72-819d-82688d5ef2a5",
+        "dgia": "10800",
+        "dvtinh": "Cái",
+        "ltsuat": "8%",
+        "sluong": "1",
+        "stbchu": "",
+        "stckhau": "",
+        "stt": "4",
+        "tchat": "1",
+        "ten": "Gioăng làm kín ốc xả dầu",
+        "thtcthue": "",
+        "thtien": "10800",
+        "tlckhau": "",
+        "tsuat": "0.08",
+        "tthue": "",
+        "sxep": "4",
+        "ttkhac": "[object Object],[object Object],[object Object]",
+        "dvtte": "",
+        "tgia": "",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Sửa chữa xe BKS 51A91775",
+      "Bảo dưỡng cấp nhỏ",
+      "Dầu máy SP 10W-30 (phuy 200L)",
+      "Gioăng làm kín ốc xả dầu"
+    ]
   }
 ]
