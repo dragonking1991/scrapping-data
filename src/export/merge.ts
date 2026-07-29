@@ -117,9 +117,39 @@ function parseDateText(raw: string): string {
   return formatDateKey(day, month, year);
 }
 
+function excelSerialToDateKey(raw: number): string {
+  if (!Number.isFinite(raw)) {
+    return "";
+  }
+
+  const serial = Math.trunc(raw);
+  if (serial < 1) {
+    return "";
+  }
+
+  const utcMillis = (serial - 25569) * 24 * 60 * 60 * 1000;
+  const date = new Date(utcMillis);
+  if (!Number.isFinite(date.getTime())) {
+    return "";
+  }
+
+  return formatDateKey(date.getUTCDate(), date.getUTCMonth() + 1, date.getUTCFullYear());
+}
+
 function normalizeDateCellValue(value: ExcelJS.CellValue): string {
   if (value instanceof Date) {
     return formatDateKey(value.getDate(), value.getMonth() + 1, value.getFullYear());
+  }
+
+  if (typeof value === "number") {
+    return excelSerialToDateKey(value);
+  }
+
+  if (typeof value === "object" && value != null && "result" in value) {
+    const formulaValue = value as { result?: ExcelJS.CellValue };
+    if (formulaValue.result != null) {
+      return normalizeDateCellValue(formulaValue.result);
+    }
   }
 
   return parseDateText(cellText(value));
@@ -420,6 +450,105 @@ function findHeaderRow(sheet: ExcelJS.Worksheet): number {
   throw new Error("Khong xac dinh duoc dong header cua file xlsx");
 }
 
+function cloneStyle<T>(value: T): T {
+  return structuredClone(value);
+}
+
+function copyColumnStyleFromTemplate(worksheet: ExcelJS.Worksheet, targetCol: number, templateCol: number): void {
+  if (templateCol < 1 || templateCol > worksheet.columnCount) {
+    return;
+  }
+
+  const targetColumn = worksheet.getColumn(targetCol);
+  const templateColumn = worksheet.getColumn(templateCol);
+  targetColumn.width = templateColumn.width;
+
+  for (let rowIndex = 1; rowIndex <= worksheet.rowCount; rowIndex += 1) {
+    const row = worksheet.getRow(rowIndex);
+    const sourceCell = row.getCell(templateCol);
+    const targetCell = row.getCell(targetCol);
+    targetCell.style = cloneStyle(sourceCell.style);
+    targetCell.numFmt = sourceCell.numFmt;
+  }
+}
+
+function dateSortNumber(dateKey: string): number {
+  const match = dateKey.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  const day = Number(match[1] ?? "");
+  const month = Number(match[2] ?? "");
+  const year = Number(match[3] ?? "");
+  if (!Number.isFinite(day) || !Number.isFinite(month) || !Number.isFinite(year)) {
+    return Number.POSITIVE_INFINITY;
+  }
+
+  return year * 10_000 + month * 100 + day;
+}
+
+function sortWorksheetByDateAscending(sheet: ExcelJS.Worksheet, headerRowIndex: number, dateCol: number | null): void {
+  if (!dateCol) {
+    return;
+  }
+
+  interface CellSnapshot {
+    value: ExcelJS.CellValue;
+    style: Partial<ExcelJS.Style>;
+    numFmt?: string;
+  }
+
+  interface RowSnapshot {
+    originalIndex: number;
+    sortKey: number;
+    cells: CellSnapshot[];
+  }
+
+  const maxCol = sheet.columnCount;
+  const rows: RowSnapshot[] = [];
+
+  for (let rowIndex = headerRowIndex + 1; rowIndex <= sheet.rowCount; rowIndex += 1) {
+    const row = sheet.getRow(rowIndex);
+    const rowSnapshot: RowSnapshot = {
+      originalIndex: rowIndex,
+      sortKey: dateSortNumber(findDateFromRowValues(row, dateCol)),
+      cells: [],
+    };
+
+    for (let col = 1; col <= maxCol; col += 1) {
+      const cell = row.getCell(col);
+      rowSnapshot.cells.push({
+        value: cell.value,
+        style: cloneStyle(cell.style),
+        numFmt: cell.numFmt,
+      });
+    }
+
+    rows.push(rowSnapshot);
+  }
+
+  rows.sort((a, b) => {
+    if (a.sortKey === b.sortKey) {
+      return a.originalIndex - b.originalIndex;
+    }
+    return a.sortKey - b.sortKey;
+  });
+
+  rows.forEach((snapshot, offset) => {
+    const targetRow = sheet.getRow(headerRowIndex + 1 + offset);
+
+    snapshot.cells.forEach((cell, index) => {
+      const targetCell = targetRow.getCell(index + 1);
+      targetCell.value = cell.value;
+      targetCell.style = cloneStyle(cell.style);
+      if (cell.numFmt != null) {
+        targetCell.numFmt = cell.numFmt;
+      }
+    });
+  });
+}
+
 function ensureBuyerNameColumn(headerRow: ExcelJS.Row): number {
   let buyerNameCol: number | null = null;
   let detailCol: number | null = null;
@@ -435,12 +564,26 @@ function ensureBuyerNameColumn(headerRow: ExcelJS.Row): number {
   });
 
   if (buyerNameCol != null) {
+    const worksheet = headerRow.worksheet;
+    const templateCol =
+      (detailCol != null && detailCol !== buyerNameCol
+        ? detailCol
+        : buyerNameCol > 1
+          ? buyerNameCol - 1
+          : buyerNameCol < worksheet.columnCount
+            ? buyerNameCol + 1
+            : buyerNameCol);
+
+    copyColumnStyleFromTemplate(worksheet, buyerNameCol, templateCol);
     headerRow.getCell(buyerNameCol).value = BUYER_NAME_HEADER;
     return buyerNameCol;
   }
 
   const insertAt = detailCol ?? headerRow.cellCount + 1;
+  const templateColBeforeInsert = insertAt > 1 ? insertAt - 1 : insertAt;
   headerRow.worksheet.spliceColumns(insertAt, 0, []);
+  const templateColAfterInsert = templateColBeforeInsert >= insertAt ? templateColBeforeInsert + 1 : templateColBeforeInsert;
+  copyColumnStyleFromTemplate(headerRow.worksheet, insertAt, templateColAfterInsert);
   headerRow.getCell(insertAt).value = BUYER_NAME_HEADER;
   return insertAt;
 }
@@ -543,7 +686,10 @@ export async function mergeNamesIntoWorkbook(
       (compositeKey ? buyerNames?.byComposite.get(compositeKey) : undefined) ?? buyerNames?.byNumberOnly.get(shdon);
 
     row.getCell(buyerNameCol).value = buyerName ?? "";
-    row.getCell(buyerNameCol).alignment = { wrapText: true, vertical: "top" };
+    row.getCell(buyerNameCol).alignment = {
+      ...(row.getCell(buyerNameCol).alignment ?? {}),
+      wrapText: true,
+    };
 
     if (name) {
       row.getCell(targetCol).value = name;
@@ -563,6 +709,8 @@ export async function mergeNamesIntoWorkbook(
       unmatchedInvoiceKeysByDate[dateKey].push(invoiceKey);
     }
   }
+
+  sortWorksheetByDateAscending(sheet, headerRowIndex, dateCol);
 
   const output = await workbook.xlsx.writeBuffer();
   return {
@@ -622,7 +770,10 @@ export async function mergeNamesIntoWorkbookWithMetadata(
       options.buyerNames?.byNumberOnly.get(shdon);
 
     row.getCell(buyerNameCol).value = buyerName ?? "";
-    row.getCell(buyerNameCol).alignment = { wrapText: true, vertical: "top" };
+    row.getCell(buyerNameCol).alignment = {
+      ...(row.getCell(buyerNameCol).alignment ?? {}),
+      wrapText: true,
+    };
 
     if (name) {
       row.getCell(detailCol).value = name;
@@ -642,6 +793,8 @@ export async function mergeNamesIntoWorkbookWithMetadata(
       unmatchedInvoiceKeysByDate[dateKey].push(invoiceKey);
     }
   }
+
+  sortWorksheetByDateAscending(sheet, headerRowIndex, dateCol);
 
   const output = await workbook.xlsx.writeBuffer();
   return {
