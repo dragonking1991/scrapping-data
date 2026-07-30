@@ -153,10 +153,15 @@ export async function handleProcessingRoutes(req: IncomingMessage, res: ServerRe
     res.setHeader("Content-Type", "text/event-stream; charset=utf-8");
     res.setHeader("Cache-Control", "no-cache");
     res.setHeader("Connection", "keep-alive");
-
-    sseWrite(res, "status", { status: job.status });
+    res.flushHeaders();
 
     let cursor = 0;
+    sseWrite(res, "status", { status: job.status });
+    if (job.output.length > 0) {
+      sseWrite(res, "log", { chunk: job.output });
+      cursor = job.output.length;
+    }
+
     const interval = setInterval(() => {
       const current = jobs.get(jobId);
       if (!current) {
@@ -181,6 +186,18 @@ export async function handleProcessingRoutes(req: IncomingMessage, res: ServerRe
     req.on("close", () => {
       clearInterval(interval);
     });
+    return true;
+  }
+
+  if (req.method === "GET" && url.pathname === "/job-output") {
+    const jobId = url.searchParams.get("jobId") ?? "";
+    const job = jobs.get(jobId);
+    if (!job) {
+      writeJson(res, 404, { ok: false, output: "Khong tim thay job" });
+      return true;
+    }
+
+    writeJson(res, 200, { ok: true, output: job.output, status: job.status });
     return true;
   }
 

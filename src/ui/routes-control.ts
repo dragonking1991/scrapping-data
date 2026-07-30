@@ -89,14 +89,9 @@ export async function handleControlRoutes(req: IncomingMessage, res: ServerRespo
     }
 
     if (activeJob.status === "running" && !isWaitingForContinueSignal(activeJob.output)) {
-      addLog("ui-api", "/run ignored already running", { jobId: active.jobId });
-      writeJson(res, 200, {
-        ok: true,
-        jobId: active.jobId,
-        status: "running",
-        output: "Flow dang chay, khong can gui tiep tuc.",
-      });
-      return true;
+      addLog("ui-api", "/run sending continue while running", { jobId: active.jobId });
+      // allow sending a continue signal even when the job is already running
+      // (the CLI will consume the signal when it reaches a wait point)
     }
 
     if (activeJob.status === "paused") {

@@ -6,9 +6,12 @@ import { activeSessions, jobs } from "./state.js";
 import type { Job, RunPayload } from "./types.js";
 
 export function trimJobs(limit = 20): void {
-  const all = Array.from(jobs.values()).sort((a, b) => b.startedAt - a.startedAt);
-  for (let i = limit; i < all.length; i += 1) {
-    const stale = all[i];
+  const finishedJobs = Array.from(jobs.values())
+    .filter((job) => job.status === "success" || job.status === "failed")
+    .sort((a, b) => b.startedAt - a.startedAt);
+
+  for (let i = limit; i < finishedJobs.length; i += 1) {
+    const stale = finishedJobs[i];
     if (stale) {
       jobs.delete(stale.id);
     }
@@ -45,6 +48,7 @@ export function startJob(payload: RunPayload): Job {
     cwd: process.cwd(),
     env: buildCliEnv(),
     detached: true,
+    shell:true
   });
 
   job.child = child;

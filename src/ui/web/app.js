@@ -44,6 +44,8 @@ let currentJobId = null;
 let eventSource = null;
 let aggregateJobId = null;
 let aggregatePollTimer = null;
+let logPollTimer = null;
+let logPollCursor = 0;
 let isAggregating = false;
 
 let eventCount = 0;
@@ -409,6 +411,48 @@ async function refreshSessions() {
   }
 }
 
+function stopLogPolling() {
+  if (logPollTimer) {
+    clearInterval(logPollTimer);
+    logPollTimer = null;
+  }
+  logPollCursor = 0;
+}
+
+async function pollJobOutput(jobId) {
+  try {
+    const res = await fetch(`/job-output?jobId=${encodeURIComponent(jobId)}`);
+    const data = await res.json();
+    if (!data.ok) {
+      appendLog(`[UI] Loi lay log tu server: ${data.output || "Unknown"}\n`);
+      return;
+    }
+
+    const output = String(data.output || "");
+    if (output.length > logPollCursor) {
+      const chunk = output.slice(logPollCursor);
+      logPollCursor = output.length;
+      appendLog(chunk);
+      ingestEventChunk(chunk);
+    }
+
+    if (data.status === "success" || data.status === "failed") {
+      stopLogPolling();
+    }
+  } catch (error) {
+    appendLog(`[UI] Loi polling log fallback: ${String(error)}\n`);
+  }
+}
+
+function startLogPolling(jobId) {
+  stopLogPolling();
+  logPollCursor = 0;
+  pollJobOutput(jobId);
+  logPollTimer = setInterval(() => {
+    void pollJobOutput(jobId);
+  }, 1000);
+}
+
 function attachJobEvents(jobId) {
   if (currentJobId === jobId && eventSource) return;
 
@@ -417,6 +461,7 @@ function attachJobEvents(jobId) {
     eventSource = null;
   }
 
+  stopLogPolling();
   setSessionJobId(jobId);
   eventSource = new EventSource(`/events?jobId=${encodeURIComponent(jobId)}`);
 
@@ -478,10 +523,15 @@ function attachJobEvents(jobId) {
   });
 
   eventSource.onerror = () => {
-    if (eventSource) {
-      eventSource.close();
-      eventSource = null;
+    // Keep the EventSource object alive so the browser can reconnect automatically
+    // if the stream has a transient error.
+    if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
+      startLogPolling(jobId);
     }
+  };
+
+  eventSource.onopen = () => {
+    stopLogPolling();
   };
 }
 

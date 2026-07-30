@@ -22,6 +22,7 @@ const child = spawn(process.execPath, [tsxCliPath, "src/ui/server.ts"], {
   detached: true,
   stdio: ["ignore", logFd, logFd],
   env: process.env,
+  shell:true
 });
 
 child.unref();
