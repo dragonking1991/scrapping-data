@@ -1,7 +1,7 @@
 import { closeSession, continueJob, sendDebugAction, startBrowser, stopCurrentJob } from "./actions.js";
 import { trackAggregateJob } from "./aggregate.js";
 import { dom } from "./dom.js";
-import { resetEventTimeline } from "./event-timeline.js";
+import { resetEventTimeline, ingestEventChunk } from "./event-timeline.js";
 import { appendLog, setLog, setStatus, escapeHtml } from "./log-utils.js";
 import { DEFAULT_PURCHASED_TYPE, ACTIVE_JOB_STORAGE_KEY, state, DEFAULT_OUT, EVENT_LABELS } from "./state.js";
 import { attachJobEvents, refreshSessions, setSessionJobId } from "./sessions.js";
@@ -86,91 +86,7 @@ function startLogPolling(jobId) {
   }, 1000);
 }
 
-function attachJobEvents(jobId) {
-  if (state.currentJobId === jobId && state.eventSource) return;
-
-  if (state.eventSource) {
-    try {
-      state.eventSource.close();
-    } catch (e) {}
-    state.eventSource = null;
-  }
-
-  stopLogPolling();
-  setSessionJobId(jobId);
-  state.eventSource = new EventSource(`/events?jobId=${encodeURIComponent(jobId)}`);
-
-  state.eventSource.addEventListener("log", (ev) => {
-    const payload = JSON.parse(ev.data);
-    const chunk = payload.chunk || "";
-    appendLog(chunk);
-    ingestEventChunk(chunk);
-  });
-
-  state.eventSource.addEventListener("status", (ev) => {
-    const payload = JSON.parse(ev.data);
-    if (payload.status === "running") {
-      state.isRunningFlow = true;
-      setStatus(
-        "Đang chạy",
-        "rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300",
-      );
-      applyControlState();
-      return;
-    }
-
-    if (payload.status === "paused") {
-      state.isRunningFlow = false;
-      setStatus(
-        "Đã dừng flow",
-        "rounded-full bg-sky-500/20 px-3 py-1 text-xs font-bold text-sky-300",
-      );
-      state.isBusy = false;
-      state.continueInFlight = false;
-      applyControlState();
-      return;
-    }
-
-    if (payload.status === "success") {
-      state.isRunningFlow = false;
-      setStatus(
-        "Thành công",
-        "rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300",
-      );
-    } else if (payload.status === "failed") {
-      state.isRunningFlow = false;
-      setStatus(
-        "Thất bại",
-        "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
-      );
-    }
-
-    if (payload.status === "success" || payload.status === "failed") {
-      state.isBusy = false;
-      state.continueInFlight = false;
-      setSessionJobId(null);
-      if (state.eventSource) {
-        try {
-          state.eventSource.close();
-        } catch (e) {}
-        state.eventSource = null;
-      }
-      applyControlState();
-    }
-  });
-
-  state.eventSource.onerror = () => {
-    // Keep the EventSource object alive so the browser can reconnect automatically
-    // if the stream has a transient error.
-    if (!state.eventSource || state.eventSource.readyState === EventSource.CLOSED) {
-      startLogPolling(jobId);
-    }
-  };
-
-  state.eventSource.onopen = () => {
-    stopLogPolling();
-  };
-}
+// `attachJobEvents` is implemented in `sessions.js` to avoid duplicate definitions.
 
 
 

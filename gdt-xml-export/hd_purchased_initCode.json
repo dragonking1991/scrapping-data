@@ -54945,5 +54945,47 @@
     "itemNames": [
       "Xăng E10 RON95 Mức 3"
     ]
+  },
+  {
+    "stt": "1",
+    "mst": "0310518384",
+    "khmshdon": "1",
+    "khhdon": "C26MXD",
+    "shdon": "501047",
+    "ngay": "02/07/2026",
+    "info": {
+      "nmtnmua": "51F 88592 NGUYỄN CAO DŨNG",
+      "nbmst": "4200636551",
+      "shdon": "501047",
+      "khhdon": "C26MXD",
+      "khmshdon": "1"
+    },
+    "lineItems": [
+      {
+        "idhdon": "c21c6376-b54a-4f60-a275-27362394ede9",
+        "id": "8433a0bd-8dad-4ada-a27e-c85c76a27377",
+        "dgia": "21550",
+        "dvtinh": "Lít",
+        "ltsuat": "KKKNT",
+        "mhhdvu": "Xăng E10 RON 95 Mức 3",
+        "sluong": "34.812",
+        "stbchu": "",
+        "stckhau": "0",
+        "stt": "1",
+        "sxep": "1",
+        "tchat": "1",
+        "ten": "Xăng E10 RON 95 Mức 3",
+        "thtcthue": "",
+        "thtien": "750210",
+        "tlckhau": "0",
+        "tsuat": "0",
+        "tthue": "",
+        "ttkhac": "[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]",
+        "tthhdtrung": ""
+      }
+    ],
+    "itemNames": [
+      "Xăng E10 RON 95 Mức 3"
+    ]
   }
 ]
