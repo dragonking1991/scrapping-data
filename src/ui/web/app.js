@@ -1,413 +1,46 @@
-const form = document.getElementById("runForm");
-const logEl = document.getElementById("log");
-const statusBadge = document.getElementById("statusBadge");
+import { closeSession, continueJob, sendDebugAction, startBrowser, stopCurrentJob } from "./actions.js";
+import { trackAggregateJob } from "./aggregate.js";
+import { dom } from "./dom.js";
+import { resetEventTimeline } from "./event-timeline.js";
+import { appendLog, setLog, setStatus, escapeHtml } from "./log-utils.js";
+import { DEFAULT_PURCHASED_TYPE, ACTIVE_JOB_STORAGE_KEY, state, DEFAULT_OUT, EVENT_LABELS } from "./state.js";
+import { attachJobEvents, refreshSessions, setSessionJobId } from "./sessions.js";
+import { syncPurchasedModeControls, getSelectedRunMode, applyControlState } from "./ui-controls.js";
 
-const startBtn = document.getElementById("startBtn");
-const runBtn = document.getElementById("runBtn");
-const stopBtn = document.getElementById("stopBtn");
-const closeSessionBtn = document.getElementById("closeSessionBtn");
-const clearBtn = document.getElementById("clearLog");
-
-const aggregateBtn = document.getElementById("aggregateBtn");
-const aggSoldStatus = document.getElementById("aggSoldStatus");
-const aggSoldMsg = document.getElementById("aggSoldMsg");
-const aggPurchasedStatus = document.getElementById("aggPurchasedStatus");
-const aggPurchasedMsg = document.getElementById("aggPurchasedMsg");
-const sessionSelect = document.getElementById("sessionSelect");
-const purchasedModeCheckbox = document.getElementById("purchasedModeCheckbox");
-const purchasedTypeWrapper = document.getElementById("purchasedTypeWrapper");
-const purchasedTypeSelect = document.getElementById("purchasedTypeSelect");
-const setupGuideBtn = document.getElementById("setupGuideBtn");
-const setupGuideModal = document.getElementById("setupGuideModal");
-const closeSetupGuideBtn = document.getElementById("closeSetupGuideBtn");
-
-const testNextPageBtn = document.getElementById("testNextPageBtn");
-const testScanPageBtn = document.getElementById("testScanPageBtn");
-const testOpenInvoiceBtn = document.getElementById("testOpenInvoiceBtn");
-const testSelectRowBtn = document.getElementById("testSelectRowBtn");
-const testRowInput = document.getElementById("testRowInput");
-
-const clearEventsBtn = document.getElementById("clearEvents");
-const eventTimeline = document.getElementById("eventTimeline");
-const testPaginationValue = document.getElementById("testPaginationValue");
-
-const ACTIVE_JOB_STORAGE_KEY = "gdt-active-job-id";
-const DEFAULT_OUT = window.__DEFAULT_OUT__ || "./DANH-SACH-HOA-DON.xlsx";
-const DEFAULT_PURCHASED_TYPE = "hasCode";
-
-let isBusy = false;
-let hasSession = false;
-let isRunningFlow = false;
-let continueInFlight = false;
-let closingSession = false;
-let currentJobId = null;
-let eventSource = null;
-let aggregateJobId = null;
-let aggregatePollTimer = null;
 let logPollTimer = null;
 let logPollCursor = 0;
-let isAggregating = false;
-
 let eventCount = 0;
 let eventLineBuffer = "";
 
-const EVENT_LABELS = {
-  "rows-found": ["🧾", "text-emerald-300"],
-  "no-rows": ["⚠️", "text-amber-300"],
-  stopped: ["⏸️", "text-amber-300"],
-  resumed: ["▶️", "text-emerald-300"],
-  "select-checkbox": ["☑️", "text-sky-300"],
-  "click-row": ["👆", "text-sky-300"],
-  "find-icon": ["🔍", "text-slate-300"],
-  hover: ["🖱️", "text-slate-400"],
-  "found-view-icon": ["👁️", "text-emerald-300"],
-  "icon-not-found": ["❌", "text-rose-300"],
-  "click-view": ["👁️", "text-blue-300"],
-  "detail-modal": ["🪟", "text-amber-300"],
-  "items-extracted": ["📦", "text-emerald-300"],
-  "items-empty": ["⚠️", "text-amber-300"],
-  "modal-closed": ["✖️", "text-slate-400"],
-  "next-page": ["⏭️", "text-sky-300"],
-  "pagination-state": ["📄", "text-cyan-300"],
-  "pagination-end": ["🏁", "text-emerald-300"],
-  "row-error": ["🛑", "text-rose-300"],
-  saved: ["💾", "text-emerald-300"],
-};
-
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function setLog(text) {
-  logEl.textContent = text;
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-function appendLog(text) {
-  logEl.textContent += text;
-  logEl.scrollTop = logEl.scrollHeight;
-}
-
-function setStatus(text, cls) {
-  statusBadge.textContent = text;
-  statusBadge.className = cls;
-}
-
-function applyControlState() {
-  if (startBtn) startBtn.disabled = isBusy || continueInFlight;
-  if (runBtn) runBtn.disabled = isBusy || continueInFlight || !hasSession;
-  if (stopBtn) stopBtn.disabled = !isRunningFlow;
-  if (closeSessionBtn) closeSessionBtn.disabled = !hasSession || closingSession;
-  if (aggregateBtn) aggregateBtn.disabled = isAggregating;
-  if (sessionSelect) sessionSelect.disabled = isBusy || continueInFlight;
-  if (purchasedModeCheckbox) purchasedModeCheckbox.disabled = isBusy || continueInFlight;
-  if (purchasedTypeSelect)
-    purchasedTypeSelect.disabled =
-      isBusy || continueInFlight || !(purchasedModeCheckbox && purchasedModeCheckbox.checked);
-
-  if (testNextPageBtn) testNextPageBtn.disabled = !hasSession;
-  if (testScanPageBtn) testScanPageBtn.disabled = !hasSession;
-  if (testOpenInvoiceBtn) testOpenInvoiceBtn.disabled = !hasSession;
-  if (testSelectRowBtn) testSelectRowBtn.disabled = !hasSession;
-  if (testRowInput) testRowInput.disabled = !hasSession;
-}
-
-function syncPurchasedModeControls() {
-  const checked = Boolean(purchasedModeCheckbox && purchasedModeCheckbox.checked);
-  if (purchasedTypeWrapper) {
-    purchasedTypeWrapper.classList.toggle("hidden", !checked);
-  }
-
-  if (checked && purchasedTypeSelect && !purchasedTypeSelect.value) {
-    purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
-  }
-
-  applyControlState();
-}
-
 function openSetupGuideModal() {
-  if (!setupGuideModal) return;
-  setupGuideModal.classList.remove("hidden");
-  setupGuideModal.classList.add("flex");
+  if (!dom.setupGuideModal) return;
+  dom.setupGuideModal.classList.remove("hidden");
+  dom.setupGuideModal.classList.add("flex");
 }
 
 function closeSetupGuideModal() {
-  if (!setupGuideModal) return;
-  setupGuideModal.classList.add("hidden");
-  setupGuideModal.classList.remove("flex");
+  if (!dom.setupGuideModal) return;
+  dom.setupGuideModal.classList.add("hidden");
+  dom.setupGuideModal.classList.remove("flex");
 }
 
-function getSelectedRunMode() {
-  if (!purchasedModeCheckbox || !purchasedModeCheckbox.checked) {
-    return "sold";
-  }
-
-  const value = purchasedTypeSelect?.value || DEFAULT_PURCHASED_TYPE;
-  if (value === "noCode") return "purchased-noCode";
-  if (value === "initCode") return "purchased-initCode";
-  return "purchased-hasCode";
-}
-
-function getAggregateStatusPresentation(status) {
-  switch (status) {
-    case "running":
-      return {
-        label: "Đang chạy",
-        className:
-          "rounded-full bg-amber-200 px-2 py-0.5 font-bold text-amber-800",
-      };
-    case "success":
-      return {
-        label: "Thành công",
-        className:
-          "rounded-full bg-emerald-200 px-2 py-0.5 font-bold text-emerald-800",
-      };
-    case "failed":
-      return {
-        label: "Lỗi",
-        className: "rounded-full bg-rose-200 px-2 py-0.5 font-bold text-rose-800",
-      };
-    case "skipped":
-      return {
-        label: "Bỏ qua",
-        className:
-          "rounded-full bg-slate-300 px-2 py-0.5 font-bold text-slate-700",
-      };
-    default:
-      return {
-        label: "Chưa chạy",
-        className:
-          "rounded-full bg-slate-200 px-2 py-0.5 font-bold text-slate-700",
-      };
-  }
-}
-
-function renderAggregateFile(file, statusEl, msgEl) {
-  if (!statusEl || !msgEl) return;
-  const view = getAggregateStatusPresentation(file?.status || "pending");
-  statusEl.textContent = view.label;
-  statusEl.className = view.className;
-  msgEl.textContent =
-    file?.message ||
-    (file?.status === "pending" ? "Chưa có trạng thái." : "Không có thông tin.");
-}
-
-function clearAggregatePolling() {
-  if (aggregatePollTimer) {
-    clearInterval(aggregatePollTimer);
-    aggregatePollTimer = null;
-  }
-}
-
-function renderAggregateJob(job) {
-  if (!job) return;
-  renderAggregateFile(job.files?.sold, aggSoldStatus, aggSoldMsg);
-  renderAggregateFile(job.files?.purchased, aggPurchasedStatus, aggPurchasedMsg);
-  isAggregating = job.status === "running";
-  applyControlState();
-}
-
-function logAggregateFileResult(label, file) {
-  if (!file) {
-    appendLog(`[AGG] ${label}: Khong co du lieu.\n`);
-    return;
-  }
-
-  appendLog(
-    `[AGG] ${label}: status=${file.status}, matched=${file.matchedRows}, unmatched=${file.unmatchedRows}\n`,
-  );
-
-  const matchedIds = Array.isArray(file.matchedInvoiceKeys)
-    ? file.matchedInvoiceKeys
-    : [];
-  const unmatchedIds = Array.isArray(file.unmatchedInvoiceKeys)
-    ? file.unmatchedInvoiceKeys
-    : [];
-
-  appendLog(
-    `[AGG] ${label} | ID khop (${matchedIds.length}): ${matchedIds.length > 0 ? matchedIds.join(", ") : "(khong co)"}\n`,
-  );
-  appendLog(
-    `[AGG] ${label} | ID khong khop (${unmatchedIds.length}): ${unmatchedIds.length > 0 ? unmatchedIds.join(", ") : "(khong co)"}\n`,
-  );
-}
-
-function logAggregatePurchasedTypeResults(job) {
-  const purchasedTypes = job?.files?.purchasedTypes;
-  if (!purchasedTypes) return;
-
-  ["hasCode", "noCode", "initCode"].forEach((type) => {
-    const file = purchasedTypes[type];
-    logAggregateFileResult(`hd_purchased_${type}.xlsx`, file);
-  });
-}
-
-async function fetchAggregateStatus(jobId) {
-  const res = await fetch(`/aggregate-status?jobId=${encodeURIComponent(jobId)}`);
-  const data = await res.json();
-  if (!data.ok || !data.job) {
-    throw new Error(data.output || "Khong doc duoc trang thai tong hop");
-  }
-  return data.job;
-}
-
-function trackAggregateJob(jobId) {
-  aggregateJobId = jobId;
-  isAggregating = true;
-  applyControlState();
-  clearAggregatePolling();
-
-  const refresh = async () => {
-    if (!aggregateJobId) return;
-    try {
-      const job = await fetchAggregateStatus(aggregateJobId);
-      renderAggregateJob(job);
-
-      if (job.status === "success" || job.status === "failed") {
-        clearAggregatePolling();
-        aggregateJobId = null;
-        appendLog(`[AGG] Hoan tat job tong hop: ${job.id} (${job.status}).\n`);
-        logAggregateFileResult("hd_sold.xlsx", job.files?.sold);
-        logAggregateFileResult("hd_purchased.xlsx", job.files?.purchased);
-        logAggregatePurchasedTypeResults(job);
-      }
-    } catch (error) {
-      clearAggregatePolling();
-      aggregateJobId = null;
-      isAggregating = false;
-      applyControlState();
-      appendLog(`[AGG] Loi cap nhat trang thai: ${String(error)}\n`);
-    }
-  };
-
-  void refresh();
-  aggregatePollTimer = setInterval(() => {
-    void refresh();
-  }, 1200);
-}
-
-function setSessionJobId(jobId) {
-  currentJobId = jobId || null;
-  hasSession = Boolean(currentJobId);
-  if (!hasSession) {
-    isRunningFlow = false;
-  }
-
-  if (currentJobId) {
-    localStorage.setItem(ACTIVE_JOB_STORAGE_KEY, currentJobId);
-  } else {
-    localStorage.removeItem(ACTIVE_JOB_STORAGE_KEY);
-  }
-
-  if (sessionSelect) {
-    sessionSelect.value = currentJobId || "";
-  }
-
-  applyControlState();
-}
-
-function updatePaginationLabel(detail) {
-  if (!testPaginationValue) return;
-  const match = String(detail || "").match(/(\d+)\s*\/\s*(\d+)/);
-  if (match) {
-    testPaginationValue.textContent = `${match[1]}/${match[2]}`;
-  }
-}
-
-function resetEventTimeline() {
-  eventCount = 0;
-  eventLineBuffer = "";
-  if (eventTimeline) {
-    eventTimeline.innerHTML =
-      '<p class="text-slate-500">Chưa có sự kiện nào. Chạy "Lấy thông tin" để bắt đầu ghi.</p>';
-  }
-}
-
-function renderEvent(evt) {
-  if (!eventTimeline) return;
-  if (eventCount === 0) eventTimeline.innerHTML = "";
-  eventCount += 1;
-
-  const [icon, tone] = EVENT_LABELS[evt.action] || ["•", "text-slate-300"];
-  const time = new Date(evt.ts || Date.now());
-  const hh = String(time.getHours()).padStart(2, "0");
-  const mm = String(time.getMinutes()).padStart(2, "0");
-  const ss = String(time.getSeconds()).padStart(2, "0");
-
-  const wrap = document.createElement("div");
-  wrap.className = "rounded-lg border border-slate-800 bg-slate-900/60 p-2";
-  wrap.innerHTML =
-    `<div class="flex items-start gap-2">` +
-    `<span class="shrink-0">${icon}</span>` +
-    `<span class="shrink-0 font-mono text-[10px] text-slate-500">${hh}:${mm}:${ss}</span>` +
-    `<span class="font-mono text-[11px] font-bold ${tone}">${escapeHtml(evt.action)}</span>` +
-    `<span class="min-w-0 break-words text-slate-300">${escapeHtml(evt.detail || "")}</span>` +
-    `</div>`;
-
-  eventTimeline.appendChild(wrap);
-  eventTimeline.scrollTop = eventTimeline.scrollHeight;
-
-  if (
-    evt.action === "pagination-state" ||
-    evt.action === "next-page" ||
-    evt.action === "pagination-end"
-  ) {
-    updatePaginationLabel(evt.detail || "");
-  }
-}
-
-function ingestEventChunk(chunk) {
-  eventLineBuffer += chunk;
-  let idx;
-  while ((idx = eventLineBuffer.indexOf("\n")) >= 0) {
-    const line = eventLineBuffer.slice(0, idx);
-    eventLineBuffer = eventLineBuffer.slice(idx + 1);
-    const marker = line.indexOf("[GDT-EVENT]");
-    if (marker >= 0) {
-      const jsonPart = line.slice(marker + "[GDT-EVENT]".length).trim();
-      try {
-        renderEvent(JSON.parse(jsonPart));
-      } catch {
-        // ignore malformed event line
-      }
-    }
-  }
-}
-
-async function refreshSessions() {
-  if (!sessionSelect) return;
-
+async function startAggregate() {
+  if (state.isAggregating) return;
   try {
-    const res = await fetch("/sessions");
+    const res = await fetch("/aggregate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
     const data = await res.json();
-    const sessions = data?.sessions || [];
-    const prev = currentJobId || sessionSelect.value || "";
-
-    if (sessions.length === 0) {
-      sessionSelect.innerHTML =
-        '<option value="">(chưa có session — bấm Bắt đầu để mở)</option>';
-    } else {
-      let html = '<option value="">(chọn session)</option>';
-      sessions.forEach((s, idx) => {
-        const t = new Date(s.startedAt);
-        const hh = String(t.getHours()).padStart(2, "0");
-        const mm = String(t.getMinutes()).padStart(2, "0");
-        const ss = String(t.getSeconds()).padStart(2, "0");
-        const label = `Session ${idx + 1} • ${hh}:${mm}:${ss} • ${s.jobId}`;
-        html += `<option value="${s.jobId}">${label}</option>`;
-      });
-      sessionSelect.innerHTML = html;
+    if (!data.ok || !data.jobId) {
+      appendLog(`[AGG] Loi: ${data.output || "Khong tao duoc job"}\n`);
+      return;
     }
 
-    if (prev && sessions.some((s) => s.jobId === prev)) {
-      sessionSelect.value = prev;
-    }
-  } catch {
-    // ignore transient fetch errors
+    appendLog(`[AGG] Da gui job tong hop: ${data.jobId}\n`);
+    trackAggregateJob(data.jobId);
+  } catch (error) {
+    appendLog(`[AGG] Loi: ${String(error)}\n`);
   }
 }
 
@@ -454,28 +87,30 @@ function startLogPolling(jobId) {
 }
 
 function attachJobEvents(jobId) {
-  if (currentJobId === jobId && eventSource) return;
+  if (state.currentJobId === jobId && state.eventSource) return;
 
-  if (eventSource) {
-    eventSource.close();
-    eventSource = null;
+  if (state.eventSource) {
+    try {
+      state.eventSource.close();
+    } catch (e) {}
+    state.eventSource = null;
   }
 
   stopLogPolling();
   setSessionJobId(jobId);
-  eventSource = new EventSource(`/events?jobId=${encodeURIComponent(jobId)}`);
+  state.eventSource = new EventSource(`/events?jobId=${encodeURIComponent(jobId)}`);
 
-  eventSource.addEventListener("log", (ev) => {
+  state.eventSource.addEventListener("log", (ev) => {
     const payload = JSON.parse(ev.data);
     const chunk = payload.chunk || "";
     appendLog(chunk);
     ingestEventChunk(chunk);
   });
 
-  eventSource.addEventListener("status", (ev) => {
+  state.eventSource.addEventListener("status", (ev) => {
     const payload = JSON.parse(ev.data);
     if (payload.status === "running") {
-      isRunningFlow = true;
+      state.isRunningFlow = true;
       setStatus(
         "Đang chạy",
         "rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300",
@@ -485,25 +120,25 @@ function attachJobEvents(jobId) {
     }
 
     if (payload.status === "paused") {
-      isRunningFlow = false;
+      state.isRunningFlow = false;
       setStatus(
         "Đã dừng flow",
         "rounded-full bg-sky-500/20 px-3 py-1 text-xs font-bold text-sky-300",
       );
-      isBusy = false;
-      continueInFlight = false;
+      state.isBusy = false;
+      state.continueInFlight = false;
       applyControlState();
       return;
     }
 
     if (payload.status === "success") {
-      isRunningFlow = false;
+      state.isRunningFlow = false;
       setStatus(
         "Thành công",
         "rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300",
       );
     } else if (payload.status === "failed") {
-      isRunningFlow = false;
+      state.isRunningFlow = false;
       setStatus(
         "Thất bại",
         "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
@@ -511,327 +146,108 @@ function attachJobEvents(jobId) {
     }
 
     if (payload.status === "success" || payload.status === "failed") {
-      isBusy = false;
-      continueInFlight = false;
+      state.isBusy = false;
+      state.continueInFlight = false;
       setSessionJobId(null);
-      if (eventSource) {
-        eventSource.close();
-        eventSource = null;
+      if (state.eventSource) {
+        try {
+          state.eventSource.close();
+        } catch (e) {}
+        state.eventSource = null;
       }
       applyControlState();
     }
   });
 
-  eventSource.onerror = () => {
+  state.eventSource.onerror = () => {
     // Keep the EventSource object alive so the browser can reconnect automatically
     // if the stream has a transient error.
-    if (!eventSource || eventSource.readyState === EventSource.CLOSED) {
+    if (!state.eventSource || state.eventSource.readyState === EventSource.CLOSED) {
       startLogPolling(jobId);
     }
   };
 
-  eventSource.onopen = () => {
+  state.eventSource.onopen = () => {
     stopLogPolling();
   };
 }
 
-async function sendDebugAction(action, label) {
-  if (!hasSession) return;
-  try {
-    const res = await fetch("/debug-action", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jobId: currentJobId || undefined, action }),
-    });
-    const data = await res.json();
-    appendLog(
-      data.ok
-        ? `[UI-TEST] Da gui test: ${label}\n`
-        : `[UI-TEST] Loi: ${data.output || "Khong gui duoc test action"}\n`,
-    );
-  } catch (error) {
-    appendLog(`[UI-TEST] Loi gui test action: ${String(error)}\n`);
-  }
-}
 
-async function startBrowser() {
-  if (isBusy || continueInFlight) return;
-  continueInFlight = true;
-  isBusy = true;
-  applyControlState();
 
-  setStatus(
-    "Đang mở browser",
-    "rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300",
+function bindEvents() {
+  dom.clearBtn?.addEventListener("click", () => setLog(""));
+  dom.clearEventsBtn?.addEventListener("click", resetEventTimeline);
+  dom.startBtn?.addEventListener("click", startBrowser);
+  dom.stopBtn?.addEventListener("click", stopCurrentJob);
+  dom.closeSessionBtn?.addEventListener("click", closeSession);
+  dom.aggregateBtn?.addEventListener("click", () => void startAggregate());
+
+  dom.form?.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    await continueJob();
+  });
+
+  dom.sessionSelect?.addEventListener("change", () => {
+    const chosen = dom.sessionSelect.value;
+    if (!chosen) {
+      setSessionJobId(null);
+      return;
+    }
+    attachJobEvents(chosen);
+    setLog(`[UI] Da switch sang session ${chosen}. Bam "Lay thong tin" de tiep tuc.\n`);
+  });
+
+  dom.purchasedModeCheckbox?.addEventListener("change", () => {
+    if (dom.purchasedModeCheckbox.checked && dom.purchasedTypeSelect && !dom.purchasedTypeSelect.value) {
+      dom.purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+    }
+    syncPurchasedModeControls();
+  });
+
+  dom.purchasedTypeSelect?.addEventListener("change", () => {
+    if (!dom.purchasedTypeSelect.value) {
+      dom.purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+    }
+  });
+
+  dom.setupGuideBtn?.addEventListener("click", openSetupGuideModal);
+  dom.closeSetupGuideBtn?.addEventListener("click", closeSetupGuideModal);
+  dom.setupGuideModal?.addEventListener("click", (event) => {
+    if (event.target === dom.setupGuideModal) {
+      closeSetupGuideModal();
+    }
+  });
+
+  dom.testNextPageBtn?.addEventListener("click", () =>
+    sendDebugAction("debug-next-page", "chuyen trang"),
   );
-  setLog("Dang mo Cloakbrowser va chuan bi browser session...\n");
-
-  try {
-    const res = await fetch("/start", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        direction: "sold",
-        out: DEFAULT_OUT,
-        verifyOnly: false,
-        manualFirst: true,
-        autoExportXml: true,
-      }),
-    });
-    const data = await res.json();
-
-    if (!data.ok) {
-      setStatus(
-        "Thất bại",
-        "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
-      );
-      setLog((data.output || "Khong mo duoc browser") + "\n");
-      return;
-    }
-
-    if (data.jobId) attachJobEvents(data.jobId);
-    isRunningFlow = true;
-    await refreshSessions();
-    setStatus(
-      "Đã mở browser",
-      "rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold text-emerald-300",
-    );
-    appendLog(
-      "[UI] Da mo browser va dien user/pass. Ban nhap captcha + dang nhap + bam Tim kiem tren GDT. Sau do bam Lay thong tin de tiep tuc cung browser session.\n",
-    );
-  } catch (error) {
-    setStatus(
-      "Lỗi",
-      "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
-    );
-    setLog(String(error));
-  } finally {
-    isBusy = false;
-    continueInFlight = false;
-    applyControlState();
-  }
-}
-
-async function continueJob() {
-  if (isBusy || continueInFlight) return;
-
-  const activeJobId = currentJobId || sessionSelect?.value || "";
-  if (!activeJobId) {
-    setStatus(
-      "Thiếu session",
-      "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
-    );
-    appendLog(
-      "[UI] Khong co session dang mo. Bam Bat dau de tao session moi.\n",
-    );
-    setSessionJobId(null);
-    return;
-  }
-
-  continueInFlight = true;
-  isBusy = true;
-  resetEventTimeline();
-  applyControlState();
-  const runMode = getSelectedRunMode();
-
-  try {
-    attachJobEvents(activeJobId);
-    const res = await fetch("/run", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jobId: activeJobId, runMode }),
-    });
-    const data = await res.json();
-
-    if (!data.ok || !data.jobId) {
-      if (
-        String(data.output || "").includes("Khong tim thay browser session")
-      ) {
-        setSessionJobId(null);
-      }
-      setStatus(
-        "Thất bại",
-        "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
-      );
-      appendLog((data.output || "Khong tao duoc job") + "\n");
-      return;
-    }
-
-    attachJobEvents(data.jobId);
-    isRunningFlow = true;
-    setStatus(
-      "Đang chạy",
-      "rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-300",
-    );
-    appendLog(
-      `[UI] ${data.output || "Da gui tin hieu tiep tuc cho browser session hien tai."} mode=${runMode}\n`,
-    );
-  } catch (error) {
-    setStatus(
-      "Lỗi",
-      "rounded-full bg-rose-500/20 px-3 py-1 text-xs font-bold text-rose-300",
-    );
-    setLog(String(error));
-  } finally {
-    isBusy = false;
-    continueInFlight = false;
-    applyControlState();
-  }
-}
-
-async function stopCurrentJob() {
-  const targetJobId = currentJobId || sessionSelect?.value || "";
-  if (!targetJobId) return;
-  try {
-    const res = await fetch("/stop", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jobId: targetJobId }),
-    });
-    const data = await res.json();
-    appendLog(
-      data.ok
-        ? "[UI] Da gui yeu cau dung job.\n"
-        : `[UI] Khong dung duoc: ${data.output || ""}\n`,
-    );
-  } catch (error) {
-    appendLog(`[UI] Loi khi dung job: ${String(error)}\n`);
-  }
-}
-
-async function closeSession() {
-  if (closingSession || !hasSession) return;
-  const targetJobId = currentJobId || sessionSelect?.value || "";
-  if (!targetJobId) {
-    appendLog("[UI] Khong co session de tat.\n");
-    return;
-  }
-
-  closingSession = true;
-  applyControlState();
-
-  try {
-    const res = await fetch("/close-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jobId: targetJobId }),
-    });
-    const data = await res.json();
-    if (!data.ok) {
-      appendLog(`[UI] Khong tat duoc session: ${data.output || ""}\n`);
-      return;
-    }
-
-    if (eventSource) {
-      eventSource.close();
-      eventSource = null;
-    }
-
-    setSessionJobId(null);
-    isRunningFlow = false;
-    setStatus(
-      "Đã tắt session",
-      "rounded-full bg-slate-500/20 px-3 py-1 text-xs font-bold text-slate-300",
-    );
-    appendLog(`[UI] Da tat session ${targetJobId}.\n`);
-    await refreshSessions();
-  } catch (error) {
-    appendLog(`[UI] Loi khi tat session: ${String(error)}\n`);
-  } finally {
-    closingSession = false;
-    applyControlState();
-  }
-}
-
-clearBtn?.addEventListener("click", () => setLog(""));
-clearEventsBtn?.addEventListener("click", resetEventTimeline);
-
-startBtn?.addEventListener("click", startBrowser);
-form?.addEventListener("submit", async (ev) => {
-  ev.preventDefault();
-  await continueJob();
-});
-
-stopBtn?.addEventListener("click", stopCurrentJob);
-closeSessionBtn?.addEventListener("click", closeSession);
-
-sessionSelect?.addEventListener("change", () => {
-  const chosen = sessionSelect.value;
-  if (!chosen) {
-    setSessionJobId(null);
-    return;
-  }
-  attachJobEvents(chosen);
-  setLog(
-    `[UI] Da switch sang session ${chosen}. Bam "Lay thong tin" de tiep tuc.\n`,
+  dom.testScanPageBtn?.addEventListener("click", () =>
+    sendDebugAction("debug-read-pagination", "quet phan trang"),
   );
-});
+  dom.testOpenInvoiceBtn?.addEventListener("click", () =>
+    sendDebugAction("debug-open-invoice", "bam xem hoa don"),
+  );
+  dom.testSelectRowBtn?.addEventListener("click", async () => {
+    const rowNum = Math.max(1, Number(dom.testRowInput?.value || "1") || 1);
+    await sendDebugAction(`debug-select-row:${rowNum}`, `chon row #${rowNum}`);
+  });
 
-purchasedModeCheckbox?.addEventListener("change", () => {
-  if (purchasedModeCheckbox.checked && purchasedTypeSelect && !purchasedTypeSelect.value) {
-    purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeSetupGuideModal();
+  });
+}
+
+function init() {
+  setSessionJobId(localStorage.getItem(ACTIVE_JOB_STORAGE_KEY));
+  if (dom.purchasedTypeSelect) {
+    dom.purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
   }
   syncPurchasedModeControls();
-});
-
-purchasedTypeSelect?.addEventListener("change", () => {
-  if (!purchasedTypeSelect.value) {
-    purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
-  }
-});
-
-setupGuideBtn?.addEventListener("click", openSetupGuideModal);
-closeSetupGuideBtn?.addEventListener("click", closeSetupGuideModal);
-setupGuideModal?.addEventListener("click", (event) => {
-  if (event.target === setupGuideModal) {
-    closeSetupGuideModal();
-  }
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    closeSetupGuideModal();
-  }
-});
-
-aggregateBtn?.addEventListener("click", async () => {
-  if (isAggregating) return;
-  try {
-    const res = await fetch("/aggregate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await res.json();
-    if (!data.ok || !data.jobId) {
-      appendLog(`[AGG] Loi: ${data.output || "Khong tao duoc job"}\n`);
-      return;
-    }
-
-    appendLog(`[AGG] Da gui job tong hop: ${data.jobId}\n`);
-    trackAggregateJob(data.jobId);
-  } catch (error) {
-    appendLog(`[AGG] Loi: ${String(error)}\n`);
-  }
-});
-
-testNextPageBtn?.addEventListener("click", () =>
-  sendDebugAction("debug-next-page", "chuyen trang"),
-);
-testScanPageBtn?.addEventListener("click", () =>
-  sendDebugAction("debug-read-pagination", "quet phan trang"),
-);
-testOpenInvoiceBtn?.addEventListener("click", () =>
-  sendDebugAction("debug-open-invoice", "bam xem hoa don"),
-);
-testSelectRowBtn?.addEventListener("click", async () => {
-  const rowNum = Math.max(1, Number(testRowInput?.value || "1") || 1);
-  await sendDebugAction(`debug-select-row:${rowNum}`, `chon row #${rowNum}`);
-});
-
-setSessionJobId(localStorage.getItem(ACTIVE_JOB_STORAGE_KEY));
-if (purchasedTypeSelect) {
-  purchasedTypeSelect.value = DEFAULT_PURCHASED_TYPE;
+  void refreshSessions();
+  setInterval(() => {
+    void refreshSessions();
+  }, 4000);
+  bindEvents();
 }
-syncPurchasedModeControls();
-refreshSessions();
-setInterval(refreshSessions, 4000);
+
+init();

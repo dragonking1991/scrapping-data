@@ -20,6 +20,7 @@ function createBlankProgress(): AggregateFileProgress {
     unmatchedRows: 0,
     matchedInvoiceKeys: [],
     unmatchedInvoiceKeys: [],
+    unmatchedInvoiceKeysByDate: {},
   };
 }
 
@@ -91,6 +92,7 @@ async function processAggregateFile(
     slot.unmatchedRows = merged.unmatchedRows;
     slot.matchedInvoiceKeys = merged.matchedInvoiceKeys;
     slot.unmatchedInvoiceKeys = merged.unmatchedInvoiceKeys;
+    slot.unmatchedInvoiceKeysByDate = merged.unmatchedInvoiceKeysByDate;
     return { progress: slot, mergedOutput: merged.output };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
@@ -208,6 +210,16 @@ export async function runAggregateJob(job: AggregateJob): Promise<void> {
   purchasedSummary.unmatchedInvoiceKeys = PURCHASED_TYPES.flatMap((type) =>
     (job.files.purchasedTypes?.[type].unmatchedInvoiceKeys ?? []).map((key) => `${type}:${key}`),
   );
+  purchasedSummary.unmatchedInvoiceKeysByDate = PURCHASED_TYPES.reduce<Record<string, string[]>>((acc, type) => {
+    const grouped = job.files.purchasedTypes?.[type].unmatchedInvoiceKeysByDate ?? {};
+    for (const [date, keys] of Object.entries(grouped)) {
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(...keys.map((key) => `${type}:${key}`));
+    }
+    return acc;
+  }, {});
 
   if (purchasedHasSuccess) {
     await buildPurchasedWorkbook(purchasedOutputPath, purchasedSheets);

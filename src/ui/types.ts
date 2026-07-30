@@ -59,6 +59,7 @@ export interface AggregateFileProgress {
   unmatchedRows: number;
   matchedInvoiceKeys: string[];
   unmatchedInvoiceKeys: string[];
+  unmatchedInvoiceKeysByDate: Record<string, string[]>;
   outputPath?: string;
 }
 
