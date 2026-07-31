@@ -7,6 +7,7 @@ export const dom = {
   stopBtn: document.getElementById("stopBtn"),
   closeSessionBtn: document.getElementById("closeSessionBtn"),
   clearBtn: document.getElementById("clearLog"),
+  copyBtn: document.getElementById("copyLog"),
   aggregateBtn: document.getElementById("aggregateBtn"),
   aggSoldStatus: document.getElementById("aggSoldStatus"),
   aggSoldMsg: document.getElementById("aggSoldMsg"),

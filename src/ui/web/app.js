@@ -92,6 +92,28 @@ function startLogPolling(jobId) {
 
 function bindEvents() {
   dom.clearBtn?.addEventListener("click", () => setLog(""));
+  dom.copyBtn?.addEventListener("click", async () => {
+    const logText = dom.logEl?.textContent ?? "";
+    if (!logText) return;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(logText);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = logText;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
+      appendLog("[UI] Da sao chep log vao clipboard.\n");
+    } catch (error) {
+      appendLog(`[UI] Loi sao chep log: ${String(error)}\n`);
+    }
+  });
   dom.clearEventsBtn?.addEventListener("click", resetEventTimeline);
   dom.startBtn?.addEventListener("click", startBrowser);
   dom.stopBtn?.addEventListener("click", stopCurrentJob);
