@@ -87,10 +87,9 @@ function logAggregateFileResult(label, file) {
   }
 
   appendLog(
-    `[AGG] ${label}: status=${file.status}, matched=${file.matchedRows}, unmatched=${file.unmatchedRows}\n`,
+    `[AGG] ${label}: status=${file.status}, unmatched=${file.unmatchedRows}\n`,
   );
 
-  const matchedIds = Array.isArray(file.matchedInvoiceKeys) ? file.matchedInvoiceKeys : [];
   const unmatchedIds = Array.isArray(file.unmatchedInvoiceKeys) ? file.unmatchedInvoiceKeys : [];
   const unmatchedByDate =
     file && typeof file.unmatchedInvoiceKeysByDate === "object"
@@ -117,9 +116,6 @@ function logAggregateFileResult(label, file) {
       });
   }
 
-  appendLog(
-    `[AGG] ${label} | ID khop (${matchedIds.length}): ${matchedIds.length > 0 ? matchedIds.join(", ") : "(khong co)"}\n`,
-  );
   appendLog(
     `[AGG] ${label} | ID khong khop (${unmatchedIds.length}): ${unmatchedIds.length > 0 ? unmatchedIds.join(", ") : "(khong co)"}\n`,
   );
